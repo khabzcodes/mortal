@@ -27,6 +27,10 @@ import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { useMutation } from "@tanstack/react-query";
+import { createNote } from "@/rpc/notes";
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 type CreateNoteDialogProps = {
   isOpen: boolean;
@@ -55,6 +59,19 @@ export const CreateNoteDialog = ({
 const CreateNoteForm = () => {
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<string[]>([]);
+
+  const router = useRouter();
+
+  const mutation = useMutation({
+    mutationFn: async (data: CreateNoteInputValidation) => createNote(data),
+    onSuccess: (response) => {
+      toast.success("Note created successfully!");
+      router.push(`/editor/${response.id}`);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
 
   const form = useForm<CreateNoteInputValidation>({
     resolver: zodResolver(createNoteValidation),
@@ -91,9 +108,15 @@ const CreateNoteForm = () => {
     setTags(newTags);
     form.setValue("tags", newTags, { shouldValidate: true });
   };
+
+  const onSubmit = async (data: CreateNoteInputValidation) => {
+    await mutation.mutateAsync(data);
+  };
+
+  const isLoading = mutation.isPending;
   return (
     <Form {...form}>
-      <form className="grid gap-4">
+      <form className="grid gap-4" onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid gap-2">
           <FormField
             name="title"
@@ -103,6 +126,7 @@ const CreateNoteForm = () => {
                 <FormLabel htmlFor="title">Title</FormLabel>
                 <FormControl>
                   <Input
+                    disabled={isLoading}
                     placeholder="Title"
                     {...field}
                     className="border-r border-dashed"
@@ -122,6 +146,7 @@ const CreateNoteForm = () => {
                 <FormLabel htmlFor="description">Description</FormLabel>
                 <FormControl>
                   <Textarea
+                    disabled={isLoading}
                     placeholder="Description"
                     {...field}
                     className="resize-none border-r border-dashed"
@@ -135,6 +160,7 @@ const CreateNoteForm = () => {
         <div className="grid gap-2">
           <FormLabel htmlFor="tags">Tags</FormLabel>
           <Input
+            disabled={isLoading}
             id="tags"
             placeholder="Add tags (press Enter)"
             value={tagInput}
@@ -152,6 +178,7 @@ const CreateNoteForm = () => {
                 >
                   {tag}
                   <button
+                    disabled={isLoading}
                     type="button"
                     onClick={() => handleRemoveTag(tag)}
                     className="ml-1 rounded-full hover:bg-muted"
@@ -164,8 +191,9 @@ const CreateNoteForm = () => {
             </div>
           )}
         </div>
-        <Button size="sm" variant="default" type="submit">
+        <Button size="sm" variant="default" type="submit" disabled={isLoading}>
           Continue
+          {isLoading && <Loader2 className="animate-spin" />}
         </Button>
       </form>
     </Form>
