@@ -1,7 +1,8 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import * as schema from "./schemas/auth-schema";
+import * as authSchema from "./schemas/auth-schema";
 import { env } from "@/env";
+import { notes } from "./schemas/notes";
 
 const sql = postgres(env.DATABASE_URL, {
   max: 10, // Connection pool size
@@ -12,4 +13,9 @@ const sql = postgres(env.DATABASE_URL, {
       ? { rejectUnauthorized: true }
       : false,
 });
-export const db = drizzle(sql, { schema });
+export const db = drizzle(sql, {
+  schema: {
+    authSchema,
+    notes,
+  },
+});
