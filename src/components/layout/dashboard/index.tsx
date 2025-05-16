@@ -7,7 +7,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
       <DashboardNavbar />
       <div className="flex h-full">
         <Sidebar />
-        <div id="main" className="flex-1 overflow-y-auto">
+        <div id="main" className="flex-1 overflow-y-auto p-4">
           {children}
         </div>
       </div>
