@@ -1,0 +1,1 @@
+ALTER TABLE "notes" ALTER COLUMN "id" SET DEFAULT 'RuN9oYsxgGLl';

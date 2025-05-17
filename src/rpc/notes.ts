@@ -26,3 +26,13 @@ export const createNote = async (note: CreateNoteInputValidation) => {
 
   return data;
 };
+
+export const getNoteById = async (id: string) => {
+  const response = await route[":id"].$get({ param: { id } });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Failed to fetch note");
+  }
+  const { data } = await response.json();
+  return data;
+};

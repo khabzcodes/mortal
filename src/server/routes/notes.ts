@@ -24,6 +24,26 @@ export const notes = new Hono()
       return c.json({ message: "Failed to fetch notes" }, 500);
     }
   })
+  .get("/:id", async (c) => {
+    try {
+      const session = await getSession();
+      if (!session) {
+        return c.json({ message: "Unauthorized" }, 401);
+      }
+
+      const noteId = c.req.param("id");
+      const note = await notesRepository.selectNoteById(noteId);
+
+      if (!note || note.userId !== session.user.id) {
+        return c.json({ message: "Note not found" }, 404);
+      }
+
+      return c.json({ data: note }, 200);
+    } catch (error) {
+      logger.error("Error fetching note", error);
+      return c.json({ message: "Failed to fetch note" }, 500);
+    }
+  })
   .post("/", zValidator("json", createNoteValidation), async (c) => {
     try {
       const session = await getSession();
