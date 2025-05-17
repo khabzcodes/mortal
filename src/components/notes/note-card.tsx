@@ -33,8 +33,8 @@ export const NoteCard = ({
   note: { id, title, description, isFavorite, tags, createdAt, updatedAt },
 }: NoteCardProps) => {
   return (
-    <Card className="shadow-lg border-muted/20 bg-card/50 backdrop-blur-sm rounded-none border border-dashed max-w-96">
-      <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
+    <Card className="shadow-lg bg-card/50 backdrop-blur-sm rounded-none border border-dashed max-w-96">
+      <CardHeader className="flex flex-row items-start justify-between space-y-0">
         <div>
           <CardTitle className="text-lg font-bold">{title}</CardTitle>
           <CardDescription className="line-clamp-2 mt-1">
@@ -60,7 +60,7 @@ export const NoteCard = ({
         </DropdownMenu>
       </CardHeader>
       <CardContent className="flex-1">
-        <div className="flex flex-wrap gap-2 pt-2">
+        <div className="flex flex-wrap gap-2">
           {tags.map((tag) => (
             <Badge key={tag} variant="secondary" className="text-xs">
               <Tag className="mr-1 h-3 w-3" />

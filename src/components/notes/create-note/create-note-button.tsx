@@ -17,7 +17,7 @@ export const CreateNoteButton = () => {
         onClick={() => setIsOpen(true)}
       >
         <Icons.addSquare />
-        Create new note
+        Add new note
       </Button>
       <CreateNoteDialog isOpen={isOpen} onOpenChange={setIsOpen} />
     </>
