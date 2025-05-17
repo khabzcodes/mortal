@@ -11,7 +11,7 @@ export const NotesList = () => {
     queryFn: () => getUserNotes(),
   });
   return (
-    <div className="grid gap-2 grid-cols-4">
+    <div className="grid gap-2 sm:grid-cols-2">
       {data?.map((note, idx) => (
         <NoteCard
           key={idx}

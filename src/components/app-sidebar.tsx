@@ -9,6 +9,7 @@ import {
   Frame,
   GalleryVerticalEnd,
   Map,
+  Notebook,
   PieChart,
   Settings2,
   SquareTerminal,
@@ -23,8 +24,12 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
+  SidebarMenuButton,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { Button } from "./ui/button";
+import Link from "next/link";
+import { siteConfig } from "@/config/site.config";
 
 // This is sample data.
 const data = {
@@ -160,14 +165,22 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props} className="border-r border-dashed">
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <SidebarMenuButton
+          size="lg"
+          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+        >
+          <div className="bg-accent-foreground text-green-600 flex aspect-square size-8 items-center justify-center rounded-xl">
+            <Notebook className="size-4" />
+          </div>
+          <span className="truncate font-medium">{siteConfig.name}</span>
+        </SidebarMenuButton>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

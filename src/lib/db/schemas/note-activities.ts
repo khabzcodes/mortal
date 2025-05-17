@@ -1,6 +1,7 @@
 import { pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { notes } from "./notes";
 import { user } from "./auth-schema";
+import { relations } from "drizzle-orm";
 
 export const actions = pgEnum("actions", [
   "CREATE",
@@ -25,3 +26,14 @@ export const noteActivities = pgTable("note_activities", {
     .notNull()
     .defaultNow(),
 });
+
+export const noteActivitiesRelations = relations(noteActivities, ({ one }) => ({
+  note: one(notes, {
+    fields: [noteActivities.noteId],
+    references: [notes.id],
+  }),
+  user: one(user, {
+    fields: [noteActivities.userId],
+    references: [user.id],
+  }),
+}));

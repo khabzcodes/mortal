@@ -33,7 +33,7 @@ export const NoteCard = ({
   note: { id, title, description, isFavorite, tags, createdAt, updatedAt },
 }: NoteCardProps) => {
   return (
-    <Card className="shadow-lg bg-card/50 backdrop-blur-sm rounded-none border border-dashed max-w-96">
+    <Card className="shadow-lg bg-card/50 backdrop-blur-sm rounded-none border border-dashed">
       <CardHeader className="flex flex-row items-start justify-between space-y-0">
         <div>
           <CardTitle className="text-lg font-bold">{title}</CardTitle>

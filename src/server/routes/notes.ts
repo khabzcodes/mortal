@@ -8,6 +8,7 @@ import {
   updateContentValidation,
 } from "@/validations/notes";
 import { ZodError } from "zod";
+import { actions } from "@/lib/db/schemas/note-activities";
 
 const logger = createLogger("NotesRoute");
 
@@ -66,6 +67,8 @@ export const notes = new Hono()
       if (!note) {
         return c.json({ message: "Failed to create note" }, 500);
       }
+
+      await c.trackActivity(note.id, session.user.id, "CREATE");
 
       return c.json({ data: note }, 201);
     } catch (error) {

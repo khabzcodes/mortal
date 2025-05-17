@@ -2,6 +2,7 @@ import { getUser } from "@/lib/auth-utils";
 import { NotesList } from "@/components/notes/notes-list";
 import { PageHeader } from "@/components/layout/dashboard/page-header";
 import { CreateNoteButton } from "@/components/notes/create-note/create-note-button";
+import { ActivityFeed } from "@/components/activities/feed";
 
 export default async function DashboardPage() {
   const user = await getUser();
@@ -14,7 +15,14 @@ export default async function DashboardPage() {
       >
         <CreateNoteButton />
       </PageHeader>
-      <NotesList />
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <NotesList />
+        </div>
+        <div className="lg:col-span-1">
+          <ActivityFeed />
+        </div>
+      </div>
     </div>
   );
 }
