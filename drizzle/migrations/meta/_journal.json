@@ -85,6 +85,20 @@
       "when": 1747441684410,
       "tag": "0011_revert_content_to_string",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1747507747515,
+      "tag": "0012_note_activites",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1747507837453,
+      "tag": "0013_note_activites",
+      "breakpoints": true
     }
   ]
 }
