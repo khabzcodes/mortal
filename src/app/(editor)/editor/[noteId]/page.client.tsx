@@ -3,22 +3,34 @@
 import NotFound from "@/app/not-found";
 import { Editor } from "@/components/editor";
 import { EditorHeader } from "@/components/editor/header";
-import { getNoteById } from "@/rpc/notes";
+import { getNoteById, updateNoteContent } from "@/rpc/notes";
 import { QueryKeys } from "@/rpc/query-keys";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { useCallback, useRef, useState } from "react";
 
 type EditorClientProps = {
   noteId: string;
 };
 export const EditorClient = ({ noteId }: EditorClientProps) => {
+  const queryClient = useQueryClient();
+
   const { data, isPending, error } = useQuery({
     queryKey: [QueryKeys.GET_NODE_BY_ID, noteId],
     queryFn: () => getNoteById(noteId),
+  });
+
+  const mutation = useMutation({
+    mutationFn: (content: string) => updateNoteContent(noteId, content),
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.GET_NODE_BY_ID, noteId],
+      });
+    },
   });
 
   if (isPending) return <div>Loading...</div>;
@@ -33,6 +45,14 @@ export const EditorClient = ({ noteId }: EditorClientProps) => {
     updatedAt: data.updatedAt ? new Date(data.updatedAt) : null,
   };
 
+  const handleUpdate = async (content: string) => {
+    try {
+      await mutation.mutateAsync(content);
+    } catch (error) {
+      console.error("Error updating note content:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col">
       <EditorHeader
@@ -41,10 +61,18 @@ export const EditorClient = ({ noteId }: EditorClientProps) => {
       />
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel defaultSize={80}>
-          <Editor />
+          <Editor
+            note={formattedNote}
+            onUpdate={(content) => handleUpdate(JSON.stringify(content))}
+          />
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={20}>Two</ResizablePanel>
+        <ResizablePanel defaultSize={20}>
+          <div className="flex flex-col items-center justify-center h-full">
+            <h2 className="text-lg font-semibold">Ask AI</h2>
+            <span className="text-sm text-gray-500"> (Coming soon)</span>
+          </div>
+        </ResizablePanel>
       </ResizablePanelGroup>
     </div>
   );

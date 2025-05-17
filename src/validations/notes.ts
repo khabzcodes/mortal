@@ -16,4 +16,8 @@ export const createNoteValidation = z.object({
   tags: z.array(tagSchema).default([]).optional(),
 });
 
+export const updateContentValidation = z.object({
+  content: z.string().min(1, { message: "Content is required" }),
+});
+
 export type CreateNoteInputValidation = z.infer<typeof createNoteValidation>;

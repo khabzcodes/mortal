@@ -18,4 +18,14 @@ export const notesRepository: NotesRepository = {
     const [newNote] = await db.insert(notes).values(note).returning();
     return newNote;
   },
+  updateNoteContent: async (id, content) => {
+    const [updatedNote] = await db
+      .update(notes)
+      .set({
+        content,
+      })
+      .where(eq(notes.id, id))
+      .returning();
+    return updatedNote;
+  },
 };

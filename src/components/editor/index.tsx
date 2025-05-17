@@ -1,7 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { EditorContent, EditorContext, useEditor } from "@tiptap/react";
+import {
+  EditorContent,
+  EditorContext,
+  JSONContent,
+  useEditor,
+  Editor as EditorInstance,
+} from "@tiptap/react";
 
 // --- Tiptap Core Extensions ---
 import { StarterKit } from "@tiptap/starter-kit";
@@ -65,7 +71,7 @@ import { LinkIcon } from "@/components/tiptap-icons/link-icon";
 import { useMobile } from "@/hooks/use-mobile";
 import { useWindowSize } from "@/hooks/use-window-size";
 import { useCursorVisibility } from "@/hooks/use-cursor-visibility";
-
+import { useDebouncedCallback } from "use-debounce";
 // --- Lib ---
 import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils";
 
@@ -74,6 +80,7 @@ import "@/components/editor/simple-editor.scss";
 
 import content from "@/components/editor/data/content.json";
 import { ScrollArea } from "../ui/scroll-area";
+import { Note } from "@/types/notes";
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -176,7 +183,12 @@ const MobileToolbarContent = ({
   </>
 );
 
-export function Editor() {
+type EditorProps = {
+  note: Note;
+  onUpdate: (content: JSONContent) => void;
+};
+
+export function Editor({ note, onUpdate }: EditorProps) {
   const isMobile = useMobile();
   const windowSize = useWindowSize();
   const [mobileView, setMobileView] = React.useState<
@@ -217,8 +229,21 @@ export function Editor() {
       TrailingNode,
       Link.configure({ openOnClick: false }),
     ],
-    content: content,
+    onUpdate: ({ editor }) => {
+      debouncedUpdates(editor);
+    },
+    content: note.content ? JSON.parse(note.content!) : note.content,
   });
+
+  const debouncedUpdates = useDebouncedCallback(
+    async (editor: EditorInstance) => {
+      const json = editor.getJSON();
+      if (!json.content) return;
+
+      onUpdate(json);
+    },
+    2000
+  );
 
   const bodyRect = useCursorVisibility({
     editor,

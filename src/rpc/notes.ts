@@ -36,3 +36,16 @@ export const getNoteById = async (id: string) => {
   const { data } = await response.json();
   return data;
 };
+
+export const updateNoteContent = async (id: string, content: string) => {
+  const response = await route[":id"].content.$put({
+    param: { id },
+    json: { content },
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Failed to update note");
+  }
+  const { data } = await response.json();
+  return data;
+};

@@ -9,4 +9,5 @@ export type NotesRepository = {
       "id" | "content" | "isFavorite" | "createdAt" | "updatedAt"
     >
   ): Promise<Note>;
+  updateNoteContent(id: string, content: string): Promise<Note | null>;
 };
