@@ -3,7 +3,7 @@
 import { getUserNotes } from "@/rpc/notes";
 import { QueryKeys } from "@/rpc/query-keys";
 import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
+import { NoteCard } from "./note-card";
 
 export const NotesList = () => {
   const { data } = useQuery({
@@ -11,15 +11,20 @@ export const NotesList = () => {
     queryFn: () => getUserNotes(),
   });
   return (
-    <div>
+    <div className="grid gap-2 grid-cols-4">
       {data?.map((note, idx) => (
-        <Link
+        <NoteCard
           key={idx}
-          href={`/editor/${note.id}`}
-          className="block p-4 mb-2 bg-gray-100 rounded-md shadow-md hover:bg-gray-200"
-        >
-          <h2 className="text-lg font-semibold">{note.title}</h2>
-        </Link>
+          note={{
+            id: note.id,
+            title: note.title,
+            description: note.description,
+            isFavorite: note.isFavorite,
+            tags: note.tags || [],
+            createdAt: new Date(note.createdAt),
+            updatedAt: note.updatedAt ? new Date(note.updatedAt) : null,
+          }}
+        />
       ))}
     </div>
   );

@@ -1,22 +1,32 @@
 import type { Metadata } from "next";
-import { Manrope, JetBrains_Mono, Inter } from "next/font/google";
+import {
+  Manrope,
+  JetBrains_Mono,
+  Inter,
+  Space_Grotesk,
+} from "next/font/google";
 import "@/styles/globals.css";
 import { siteConfig } from "@/config/site.config";
 import { cn } from "@/lib/utils";
 import RootProviders from "@/components/providers";
 
-const fontSans = Manrope({
-  variable: "--font-sans",
-  subsets: ["latin"],
-});
+// const fontSans = Manrope({
+//   variable: "--font-sans",
+//   subsets: ["latin"],
+// });
 
-const fontMono = JetBrains_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
-});
+// const fontMono = JetBrains_Mono({
+//   variable: "--font-mono",
+//   subsets: ["latin"],
+// });
 
-const fontHeading = Inter({
-  variable: "--font-inter",
+// const fontHeading = Inter({
+//   variable: "--font-inter",
+//   subsets: ["latin"],
+// });
+
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
 });
 
@@ -70,9 +80,7 @@ export default function RootLayout({
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable,
-          fontHeading.variable,
-          fontMono.variable
+          spaceGrotesk.className
         )}
       >
         <RootProviders>{children}</RootProviders>

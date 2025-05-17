@@ -2,6 +2,7 @@ import { NotesRepository } from "@/lib/db/repositories/interfaces/notes";
 import { db } from "@/lib/db";
 import { eq, desc } from "drizzle-orm";
 import { notes } from "../schemas/notes";
+import { nanoid } from "nanoid";
 
 export const notesRepository: NotesRepository = {
   selectNotesByUserId: async (userId) => {
@@ -15,7 +16,13 @@ export const notesRepository: NotesRepository = {
     return note;
   },
   insertNote: async (note) => {
-    const [newNote] = await db.insert(notes).values(note).returning();
+    const [newNote] = await db
+      .insert(notes)
+      .values({
+        id: nanoid(12),
+        ...note,
+      })
+      .returning();
     return newNote;
   },
   updateNoteContent: async (id, content) => {
