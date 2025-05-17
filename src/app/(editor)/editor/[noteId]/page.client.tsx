@@ -6,6 +6,11 @@ import { EditorHeader } from "@/components/editor/header";
 import { getNoteById } from "@/rpc/notes";
 import { QueryKeys } from "@/rpc/query-keys";
 import { useQuery } from "@tanstack/react-query";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
 
 type EditorClientProps = {
   noteId: string;
@@ -34,7 +39,13 @@ export const EditorClient = ({ noteId }: EditorClientProps) => {
         title={formattedNote.title}
         description={formattedNote.description}
       />
-      <Editor />
+      <ResizablePanelGroup direction="horizontal">
+        <ResizablePanel defaultSize={80}>
+          <Editor />
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel defaultSize={20}>Two</ResizablePanel>
+      </ResizablePanelGroup>
     </div>
   );
 };

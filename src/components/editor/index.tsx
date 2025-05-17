@@ -73,6 +73,7 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils";
 import "@/components/editor/simple-editor.scss";
 
 import content from "@/components/editor/data/content.json";
+import { ScrollArea } from "../ui/scroll-area";
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -257,11 +258,15 @@ export function Editor() {
       </Toolbar>
 
       <div className="content-wrapper">
-        <EditorContent
-          editor={editor}
-          role="presentation"
-          className="simple-editor-content"
-        />
+        <ScrollArea className="h-screen">
+          <div className="pb-20">
+            <EditorContent
+              editor={editor}
+              role="presentation"
+              className="simple-editor-content"
+            />
+          </div>
+        </ScrollArea>
       </div>
     </EditorContext.Provider>
   );
