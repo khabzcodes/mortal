@@ -12,11 +12,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Calendar, Star, Tag } from "lucide-react";
+import { MoreHorizontal, Calendar, Star, Tag, Clock } from "lucide-react";
 import { Button } from "../ui/button";
 import { formatDate } from "@/lib/utils";
 import { Badge } from "../ui/badge";
 import Link from "next/link";
+import relativeTime from "dayjs/plugin/relativeTime";
+import dayjs from "dayjs";
+
+dayjs.extend(relativeTime);
 
 type NoteCardProps = {
   note: {
@@ -74,8 +78,12 @@ export const NoteCard = ({
       </CardContent>
       <CardFooter className="flex items-center justify-between border-t border-dashed p-4 text-xs text-muted-foreground max-h-5">
         <div className="flex items-center">
-          <Calendar className="mr-1 h-3 w-3" />
-          <span>{formatDate(updatedAt || createdAt || "")}</span>
+          <Clock className="mr-1 h-3 w-3" />
+          <span>
+            {updatedAt
+              ? dayjs().to(dayjs(updatedAt))
+              : dayjs().to(dayjs(createdAt))}
+          </span>
         </div>
         <Button variant="ghost" size="icon" className="h-8 w-8">
           <Star

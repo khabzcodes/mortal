@@ -169,7 +169,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           size="lg"
           className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
         >
-          <div className="bg-accent-foreground text-green-600 flex aspect-square size-8 items-center justify-center rounded-xl">
+          <div className="bg-card flex aspect-square size-8 items-center justify-center rounded-xl dark:text-white border border-dashed">
             <Notebook className="size-4" />
           </div>
           <span className="truncate font-medium">{siteConfig.name}</span>

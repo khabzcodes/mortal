@@ -2,7 +2,6 @@
 
 import NotFound from "@/app/not-found";
 import { Editor } from "@/components/editor";
-import { EditorHeader } from "@/components/editor/header";
 import { getNoteById, updateNoteContent } from "@/rpc/notes";
 import { QueryKeys } from "@/rpc/query-keys";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,7 +10,6 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { useCallback, useRef, useState } from "react";
 
 type EditorClientProps = {
   noteId: string;
@@ -55,10 +53,6 @@ export const EditorClient = ({ noteId }: EditorClientProps) => {
 
   return (
     <div className="flex flex-col">
-      <EditorHeader
-        title={formattedNote.title}
-        description={formattedNote.description}
-      />
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel defaultSize={80}>
           <Editor
