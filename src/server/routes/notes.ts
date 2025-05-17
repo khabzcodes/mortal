@@ -98,6 +98,8 @@ export const notes = new Hono()
           return c.json({ message: "Note not found" }, 404);
         }
 
+        await c.trackActivity(note.id, session.user.id, "UPDATE");
+
         return c.json({ data: note }, 200);
       } catch (error) {
         logger.error("Error updating note content", error);

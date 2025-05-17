@@ -8,7 +8,6 @@ import {
   getActivityDescription,
   groupActivitiesByDate,
 } from "@/components/activities/utils";
-import { formatDate } from "@/lib/utils";
 import { Icons } from "@/components/icons";
 
 const activityIcons = {
@@ -45,7 +44,7 @@ export const ActivityFeed = () => {
 
   return (
     <Card className="shadow-lg bg-card/50 backdrop-blur-sm rounded-none border border-dashed">
-      <CardHeader>
+      <CardHeader className="border-b border-dashed">
         <CardTitle>Activity</CardTitle>
       </CardHeader>
       <div className="space-y-8">
@@ -66,7 +65,7 @@ export const ActivityFeed = () => {
         ) : (
           Object.entries(groupedActivities).map(([date, activities]) => (
             <div key={date} className="px-6">
-              <div className="sticky top-0 z-10 mb-2 bg-background pb-1 text-sm font-medium">
+              <div className="sticky top-0 z-10 mb-2 pb-1 text-sm font-medium">
                 {new Date(date).toLocaleDateString("en-US", {
                   month: "long",
                   day: "numeric",

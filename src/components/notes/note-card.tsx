@@ -12,10 +12,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Link, Calendar, Star, Tag } from "lucide-react";
+import { MoreHorizontal, Calendar, Star, Tag } from "lucide-react";
 import { Button } from "../ui/button";
 import { formatDate } from "@/lib/utils";
 import { Badge } from "../ui/badge";
+import Link from "next/link";
 
 type NoteCardProps = {
   note: {
@@ -50,7 +51,9 @@ export const NoteCard = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild>
-              <Link href={`/notes/${id}`}>Edit</Link>
+              <Link href={`/editor/${id}`} className="w-full">
+                Go to editor
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
               {isFavorite ? "Remove from favorites" : "Add to favorites"}

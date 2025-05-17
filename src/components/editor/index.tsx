@@ -242,7 +242,7 @@ export function Editor({ note, onUpdate }: EditorProps) {
 
       onUpdate(json);
     },
-    2000
+    60 * 1000
   );
 
   const bodyRect = useCursorVisibility({
