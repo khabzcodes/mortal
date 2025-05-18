@@ -10,6 +10,10 @@ import { useRef } from "react";
 import Markdown from "react-markdown";
 import { AiStorage } from "../ai";
 
+function isSpace(ch: string): boolean {
+  return /\s/.test(ch);
+}
+
 const AiWriterView = ({ editor, node, getPos }: NodeViewProps) => {
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -32,8 +36,13 @@ const AiWriterView = ({ editor, node, getPos }: NodeViewProps) => {
 
     const from = getPos();
     const to = from + node.nodeSize;
+    const sanitizedContent = message.trim();
 
-    editor.chain().focus().insertContentAt({ from, to }, message).run();
+    editor
+      .chain()
+      .deleteRange({ from, to })
+      .insertContent(sanitizedContent)
+      .run();
   };
 
   const remove = () => {

@@ -20,6 +20,7 @@ import { Highlight } from "@tiptap/extension-highlight";
 import { Subscript } from "@tiptap/extension-subscript";
 import { Superscript } from "@tiptap/extension-superscript";
 import { Underline } from "@tiptap/extension-underline";
+import { Markdown } from "tiptap-markdown";
 
 // --- Custom Extensions ---
 import { Link } from "@/components/tiptap-extension/link-extension";
@@ -257,6 +258,9 @@ export function Editor({ note, onUpdate }: EditorProps) {
       Typography,
       Superscript,
       Subscript,
+      Markdown.configure({
+        html: true,
+      }),
       Youtube.configure({
         HTMLAttributes: {
           class: cn("border border-muted"),
