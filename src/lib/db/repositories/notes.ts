@@ -35,4 +35,14 @@ export const notesRepository: NotesRepository = {
       .returning();
     return updatedNote;
   },
+  toggleNoteFavorite: async (id, isFavorite) => {
+    const [updatedNote] = await db
+      .update(notes)
+      .set({
+        isFavorite,
+      })
+      .where(eq(notes.id, id))
+      .returning();
+    return updatedNote;
+  },
 };

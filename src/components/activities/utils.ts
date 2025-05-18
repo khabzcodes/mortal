@@ -6,13 +6,13 @@ export const getActivityDescription = (
 ) => {
   switch (type) {
     case "CREATE":
-      return "Created ";
+      return "Created";
     case "UPDATE":
-      return "Edited note";
+      return "Edited";
     case "DELETE":
-      return "Deleted note";
+      return "Deleted ";
     case "PINNED":
-      return "Pinned note";
+      return "Pinned";
     case "UNPINNED":
       return "Unpinned note";
     case "ADD_TO_FAVORITES":

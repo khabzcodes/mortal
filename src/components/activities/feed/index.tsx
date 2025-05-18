@@ -9,6 +9,7 @@ import {
   groupActivitiesByDate,
 } from "@/components/activities/utils";
 import { Icons } from "@/components/icons";
+import { Star } from "lucide-react";
 
 const activityIcons = {
   CREATE: () => <Icons.fileAdd className="h-3.5 w-3.5" />,
@@ -16,8 +17,10 @@ const activityIcons = {
   DELETE: () => <Icons.fileRemove className="h-3.5 w-3.5" />,
   PINNED: () => <div>Pinned</div>,
   UNPINNED: () => <div>Unpinned</div>,
-  ADD_TO_FAVORITES: () => <div>Add to favorites</div>,
-  REMOVE_FROM_FAVORITES: () => <div>Remove from favorites</div>,
+  ADD_TO_FAVORITES: () => (
+    <Star className="h-3.5 w-3.5 text-accent-foreground" />
+  ),
+  REMOVE_FROM_FAVORITES: () => <Star className="h-3.5 w-3.5" />,
 } as const;
 
 export const ActivityFeed = () => {

@@ -21,6 +21,9 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";
 import { JSONContent } from "@tiptap/react";
 import { Icons } from "../icons";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toggleNoteFavorite } from "@/rpc/notes";
+import { QueryKeys } from "@/rpc/query-keys";
 
 dayjs.extend(relativeTime);
 
@@ -53,6 +56,20 @@ export const NoteCard = ({
   const taskList = jsonContent?.content?.find(
     (item: any) => item.type === "taskList"
   );
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (favorite: boolean) => toggleNoteFavorite(id, favorite),
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.GET_NOTES],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.GET_USER_ACTIVITY_SUMMARY],
+      });
+    },
+  });
   return (
     <Card className="shadow-lg bg-card/50 backdrop-blur-sm rounded-none border border-dashed">
       <CardHeader className="flex flex-row items-start justify-between space-y-0">
@@ -104,7 +121,7 @@ export const NoteCard = ({
         <div className="flex items-center gap-2">
           {taskList && taskList?.content && (
             <div className="flex items-center">
-              <Icons.taskDone className="size-4 text-green-800 mr-1" />
+              <Icons.taskDone className="size-4 mr-1" />
               <span className="text-xs mr-1">
                 {taskList.content.filter((item) => item.attrs?.checked).length}/
                 {taskList.content.length}
@@ -112,10 +129,18 @@ export const NoteCard = ({
               <span className="text-xs">Tasks</span>
             </div>
           )}
-          <Button variant="ghost" size="icon" className="h-8 w-8">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={(e) => {
+              e.stopPropagation();
+              mutation.mutate(!isFavorite);
+            }}
+          >
             <Star
               className={`h-4 w-4 ${
-                isFavorite ? "fill-yellow-400 text-yellow-400" : ""
+                isFavorite ? "fill-accent text-accent" : ""
               }`}
             />
             <span className="sr-only">

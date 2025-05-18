@@ -10,4 +10,5 @@ export type NotesRepository = {
     >
   ): Promise<Note>;
   updateNoteContent(id: string, content: string): Promise<Note | null>;
+  toggleNoteFavorite(id: string, isFavorite: boolean): Promise<Note | null>;
 };
