@@ -18,6 +18,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { Icons } from "./icons";
+import Link from "next/link";
 
 export function NavMain({
   items,
@@ -34,12 +35,14 @@ export function NavMain({
         {items.map((item, idx) => {
           const Icon = Icons[item.icon as keyof typeof Icons];
           return (
-            <SidebarMenuItem key={idx}>
-              <SidebarMenuButton tooltip={item.title}>
-                {Icon && <Icon className="mr-2 h-4 w-4" />}
-                <span>{item.title}</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
+            <Link key={idx} href={item.url}>
+              <SidebarMenuItem key={idx}>
+                <SidebarMenuButton tooltip={item.title}>
+                  {Icon && <Icon className="mr-2 h-4 w-4" />}
+                  <span>{item.title}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </Link>
           );
         })}
       </SidebarMenu>

@@ -62,6 +62,7 @@ import {
 import { MarkButton } from "@/components/tiptap-ui/mark-button";
 import { TextAlignButton } from "@/components/tiptap-ui/text-align-button";
 import { UndoRedoButton } from "@/components/tiptap-ui/undo-redo-button";
+import Youtube from "@tiptap/extension-youtube";
 
 // --- Icons ---
 import { ArrowLeftIcon } from "@/components/tiptap-icons/arrow-left-icon";
@@ -84,6 +85,9 @@ import { Note } from "@/types/notes";
 import { ThemeToggle } from "./theme-toggle";
 import { UserProfile } from "../user-profile";
 import { Badge } from "../ui/badge";
+import { cn } from "@/lib/utils";
+import { SlashCommand } from "./slash-command/slash-command";
+import { getSuggestion } from "./slash-command/suggestion";
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -249,7 +253,12 @@ export function Editor({ note, onUpdate }: EditorProps) {
       Typography,
       Superscript,
       Subscript,
-
+      Youtube.configure({
+        HTMLAttributes: {
+          class: cn("border border-muted"),
+        },
+        nocookie: true,
+      }),
       Selection,
       ImageUploadNode.configure({
         accept: "image/*",
@@ -260,6 +269,9 @@ export function Editor({ note, onUpdate }: EditorProps) {
       }),
       TrailingNode,
       Link.configure({ openOnClick: false }),
+      SlashCommand.configure({
+        suggestion: getSuggestion({ ai: false }),
+      }),
     ],
     onUpdate: ({ editor }) => {
       setUnsaved(true);
