@@ -5,9 +5,10 @@ import { notes } from "../schemas/notes";
 import { nanoid } from "nanoid";
 
 export const notesRepository: NotesRepository = {
-  selectNotesByUserId: async (userId) => {
+  selectNotesByUserId: async (userId, limit = 6) => {
     return await db.query.notes.findMany({
       where: (n) => eq(n.userId, userId),
+      limit: limit,
       orderBy: (n) => [desc(n.createdAt)],
     });
   },
