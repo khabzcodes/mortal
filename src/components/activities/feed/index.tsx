@@ -45,7 +45,7 @@ export const ActivityFeed = () => {
   return (
     <Card className="shadow-lg bg-card/50 backdrop-blur-sm rounded-none border border-dashed">
       <CardHeader className="border-b border-dashed">
-        <CardTitle>Activity</CardTitle>
+        <CardTitle>Recent Activities</CardTitle>
       </CardHeader>
       <div className="space-y-8">
         {isLoading && (
@@ -81,6 +81,7 @@ export const ActivityFeed = () => {
                       key={activity.id}
                       className="relative flex items-center gap-4"
                     >
+                      <div className="absolute left-[13px] top-4 h-full w-px bg-border" />
                       <div className="relative mt-1 flex h-7 w-7 flex-none items-center justify-center rounded-full border border-dashed bg-background">
                         <ActivityIcon />
                       </div>

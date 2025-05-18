@@ -12,13 +12,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Calendar, Star, Tag, Clock } from "lucide-react";
+import { MoreHorizontal, Star, Tag, Clock } from "lucide-react";
 import { Button } from "../ui/button";
 import { formatDate } from "@/lib/utils";
 import { Badge } from "../ui/badge";
 import Link from "next/link";
 import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";
+import { JSONContent } from "@tiptap/react";
+import { Icons } from "../icons";
 
 dayjs.extend(relativeTime);
 
@@ -28,6 +30,7 @@ type NoteCardProps = {
     title: string;
     description: string;
     isFavorite: boolean;
+    content: string | null;
     tags: string[];
     createdAt: Date;
     updatedAt: Date | null;
@@ -35,8 +38,21 @@ type NoteCardProps = {
 };
 
 export const NoteCard = ({
-  note: { id, title, description, isFavorite, tags, createdAt, updatedAt },
+  note: {
+    id,
+    title,
+    description,
+    isFavorite,
+    content,
+    tags,
+    createdAt,
+    updatedAt,
+  },
 }: NoteCardProps) => {
+  const jsonContent: JSONContent = content ? JSON.parse(content) : null;
+  const taskList = jsonContent?.content?.find(
+    (item: any) => item.type === "taskList"
+  );
   return (
     <Card className="shadow-lg bg-card/50 backdrop-blur-sm rounded-none border border-dashed">
       <CardHeader className="flex flex-row items-start justify-between space-y-0">
@@ -85,16 +101,28 @@ export const NoteCard = ({
               : dayjs().to(dayjs(createdAt))}
           </span>
         </div>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
-          <Star
-            className={`h-4 w-4 ${
-              isFavorite ? "fill-yellow-400 text-yellow-400" : ""
-            }`}
-          />
-          <span className="sr-only">
-            {isFavorite ? "Remove from favorites" : "Add to favorites"}
-          </span>
-        </Button>
+        <div className="flex items-center gap-2">
+          {taskList && taskList?.content && (
+            <div className="flex items-center">
+              <Icons.taskDone className="size-4 text-green-800 mr-1" />
+              <span className="text-xs mr-1">
+                {taskList.content.filter((item) => item.attrs?.checked).length}/
+                {taskList.content.length}
+              </span>
+              <span className="text-xs">Tasks</span>
+            </div>
+          )}
+          <Button variant="ghost" size="icon" className="h-8 w-8">
+            <Star
+              className={`h-4 w-4 ${
+                isFavorite ? "fill-yellow-400 text-yellow-400" : ""
+              }`}
+            />
+            <span className="sr-only">
+              {isFavorite ? "Remove from favorites" : "Add to favorites"}
+            </span>
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );
