@@ -16,7 +16,7 @@ export default async function generateAiResponse({
   });
 
   const result = streamText({
-    model: openai("gpt-4o-mini"),
+    model: openai("gpt-4.1-nano"),
     prompt,
   });
 

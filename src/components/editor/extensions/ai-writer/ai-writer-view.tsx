@@ -10,10 +10,6 @@ import { useRef } from "react";
 import Markdown from "react-markdown";
 import { AiStorage } from "../ai";
 
-function isSpace(ch: string): boolean {
-  return /\s/.test(ch);
-}
-
 const AiWriterView = ({ editor, node, getPos }: NodeViewProps) => {
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 

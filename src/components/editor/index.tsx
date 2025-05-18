@@ -21,6 +21,7 @@ import { Subscript } from "@tiptap/extension-subscript";
 import { Superscript } from "@tiptap/extension-superscript";
 import { Underline } from "@tiptap/extension-underline";
 import { Markdown } from "tiptap-markdown";
+import Placeholder from "@tiptap/extension-placeholder";
 
 // --- Custom Extensions ---
 import { Link } from "@/components/tiptap-extension/link-extension";
@@ -92,6 +93,8 @@ import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
 import { SlashCommand } from "./extensions/slash-command/slash-command";
 import { getSuggestion } from "./extensions/slash-command/suggestion";
+import { defaultExtensions } from "./extensions/default-extensions";
+import { toast } from "sonner";
 
 // const MainToolbarContent = ({
 //   onHighlighterClick,
@@ -237,7 +240,6 @@ export function Editor({ note, onUpdate }: EditorProps) {
   const toolbarRef = React.useRef<HTMLDivElement>(null);
 
   const editor = useEditor({
-    shouldRerenderOnTransaction: false,
     editorProps: {
       attributes: {
         autocomplete: "off",
@@ -247,64 +249,82 @@ export function Editor({ note, onUpdate }: EditorProps) {
       },
     },
     extensions: [
-      StarterKit,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Underline,
-      TaskList,
-      TaskItem.configure({ nested: true }),
-      Highlight.configure({ multicolor: true }),
-      Image,
-      Typography,
-      Superscript,
-      Subscript,
-      Markdown.configure({
-        html: true,
-      }),
-      Youtube.configure({
-        HTMLAttributes: {
-          class: cn("border border-muted"),
-        },
-        nocookie: true,
-      }),
-      Selection,
-      ImageUploadNode.configure({
-        accept: "image/*",
-        maxSize: MAX_FILE_SIZE,
-        limit: 3,
-        upload: handleImageUpload,
-        onError: (error) => console.error("Upload failed:", error),
-      }),
-      TrailingNode,
-      AiPlaceholder.configure({
-        HTMLAttributes: {
-          class: cn("!text-muted-foreground not-draggable"),
-        },
-      }),
-      AiWriter.configure({
-        HTMLAttributes: {
-          class: cn("py-3 px-1 select-none"),
-        },
+      ...defaultExtensions,
+      Placeholder.configure({
+        placeholder: "Type  /  for commands...",
+        emptyEditorClass: cn("is-editor-empty text-gray-400"),
+        emptyNodeClass: cn("is-empty text-gray-400"),
       }),
       Ai.configure({
         onError: (error) => {
-          console.error("AI error:", error);
+          toast.error(error.message);
         },
       }),
-
-      Link.configure({ openOnClick: false }),
       SlashCommand.configure({
         suggestion: getSuggestion({ ai: true }),
       }),
     ],
+    // extensions: [
+    //   StarterKit,
+    //   TextAlign.configure({ types: ["heading", "paragraph"] }),
+    //   Underline,
+    //   TaskList,
+    //   TaskItem.configure({ nested: true }),
+    //   Highlight.configure({ multicolor: true }),
+    //   Image,
+    //   Typography,
+    //   Superscript,
+    //   Subscript,
+    //   Markdown.configure({
+    //     html: true,
+    //   }),
+    //   Youtube.configure({
+    //     HTMLAttributes: {
+    //       class: cn("border border-muted"),
+    //     },
+    //     nocookie: true,
+    //   }),
+    //   Selection,
+    //   ImageUploadNode.configure({
+    //     accept: "image/*",
+    //     maxSize: MAX_FILE_SIZE,
+    //     limit: 3,
+    //     upload: handleImageUpload,
+    //     onError: (error) => console.error("Upload failed:", error),
+    //   }),
+    //   TrailingNode,
+    //   AiPlaceholder.configure({
+    //     HTMLAttributes: {
+    //       class: cn("!text-muted-foreground not-draggable"),
+    //     },
+    //   }),
+    //   AiWriter.configure({
+    //     HTMLAttributes: {
+    //       class: cn("py-3 px-1 select-none"),
+    //     },
+    //   }),
+    //   Ai.configure({
+    //     onError: (error) => {
+    //       console.error("AI error:", error);
+    //     },
+    //   }),
+
+    //   Link.configure({ openOnClick: false }),
+    //   SlashCommand.configure({
+    //     suggestion: getSuggestion({ ai: true }),
+    //   }),
+    // ],
     onUpdate: ({ editor }) => {
-      setUnsaved(true);
-      debouncedUpdates(editor);
-      console.log("Editor updated:", editor);
+      // setUnsaved(true);
+      // debouncedUpdates(editor);
+      // console.log("Editor updated:", editor);
     },
     onCreate: ({ editor }) => {
       editor.commands.focus("end");
     },
     content: note.content ? JSON.parse(note.content!) : note.content,
+    immediatelyRender: true,
+    shouldRerenderOnTransaction: false,
   });
 
   const debouncedUpdates = useDebouncedCallback(

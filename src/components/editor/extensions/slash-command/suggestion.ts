@@ -129,14 +129,14 @@ const list: CommandSuggestionItem[] = [
         .toggleCodeBlock({ language: "plaintext" })
         .run(),
   },
-  //   {
-  //     title: "Table",
-  //     description: "Capture a table.",
-  //     keywords: ["table"],
-  //     icon: TableIcon,
-  //     command: ({ editor, range }) =>
-  //       editor.chain().focus().deleteRange(range).insertTable().run(),
-  //   },
+  {
+    title: "Table",
+    description: "Capture a table.",
+    keywords: ["table"],
+    icon: TableIcon,
+    command: ({ editor, range }) =>
+      editor.chain().focus().deleteRange(range).insertTable().run(),
+  },
   {
     title: "Youtube",
     description: "Embed a Youtube video.",
