@@ -237,7 +237,6 @@ export function Editor({ note, onUpdate }: EditorProps) {
   const toolbarRef = React.useRef<HTMLDivElement>(null);
 
   const editor = useEditor({
-    immediatelyRender: true,
     shouldRerenderOnTransaction: false,
     editorProps: {
       attributes: {
@@ -298,8 +297,8 @@ export function Editor({ note, onUpdate }: EditorProps) {
       }),
     ],
     onUpdate: ({ editor }) => {
-      // setUnsaved(true);
-      // debouncedUpdates(editor);
+      setUnsaved(true);
+      debouncedUpdates(editor);
       console.log("Editor updated:", editor);
     },
     onCreate: ({ editor }) => {

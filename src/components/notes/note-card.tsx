@@ -53,9 +53,9 @@ export const NoteCard = ({
   },
 }: NoteCardProps) => {
   const jsonContent: JSONContent = content ? JSON.parse(content) : null;
-  const taskList = jsonContent?.content?.find(
-    (item: any) => item.type === "taskList"
-  );
+
+  const completedTaskCount = completeTask(jsonContent);
+  const totalTaskCount = countTasks(jsonContent);
 
   const queryClient = useQueryClient();
 
@@ -119,16 +119,13 @@ export const NoteCard = ({
           </span>
         </div>
         <div className="flex items-center gap-2">
-          {taskList && taskList?.content && (
-            <div className="flex items-center">
-              <Icons.taskDone className="size-4 mr-1" />
-              <span className="text-xs mr-1">
-                {taskList.content.filter((item) => item.attrs?.checked).length}/
-                {taskList.content.length}
-              </span>
-              <span className="text-xs">Tasks</span>
-            </div>
-          )}
+          <div className="flex items-center">
+            <Icons.taskDone className="size-4 mr-1" />
+            <span className="text-xs mr-1">
+              {completedTaskCount}/{totalTaskCount}
+            </span>
+            <span className="text-xs">Tasks</span>
+          </div>
           <Button
             variant="ghost"
             size="icon"
@@ -151,4 +148,44 @@ export const NoteCard = ({
       </CardFooter>
     </Card>
   );
+};
+
+const countTasks = (node: JSONContent): number => {
+  if (!node) return 0;
+
+  let count = 0;
+
+  // Count if current node is a taskItem
+  if (node.type === "taskItem") {
+    count += 1;
+  }
+
+  // Recurse into children
+  if (Array.isArray(node.content)) {
+    for (const child of node.content) {
+      count += countTasks(child);
+    }
+  }
+
+  return count;
+};
+
+const completeTask = (node: JSONContent): number => {
+  if (!node) return 0;
+
+  let count = 0;
+
+  // Count if current node is a taskItem
+  if (node.type === "taskItem" && node?.attrs?.checked) {
+    count += 1;
+  }
+
+  // Recurse into children
+  if (Array.isArray(node.content)) {
+    for (const child of node.content) {
+      count += completeTask(child);
+    }
+  }
+
+  return count;
 };

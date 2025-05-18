@@ -34,6 +34,8 @@ const AiWriterView = ({ editor, node, getPos }: NodeViewProps) => {
       return;
     }
 
+    console.log("Inserting message:", message);
+
     const from = getPos();
     const to = from + node.nodeSize;
     const sanitizedContent = message.trim();
