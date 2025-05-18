@@ -27,7 +27,8 @@ import { Selection } from "@/components/tiptap-extension/selection-extension";
 import { TrailingNode } from "@/components/tiptap-extension/trailing-node-extension";
 
 // --- UI Primitives ---
-import { Button } from "@/components/tiptap-ui-primitive/button";
+// import { Button } from "@/components/tiptap-ui-primitive/button";
+import { Button } from "@/components/ui/button";
 import { Spacer } from "@/components/tiptap-ui-primitive/spacer";
 import {
   Toolbar,
@@ -78,18 +79,24 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils";
 // --- Styles ---
 import "@/components/editor/simple-editor.scss";
 
-import content from "@/components/editor/data/content.json";
 import { ScrollArea } from "../ui/scroll-area";
 import { Note } from "@/types/notes";
+import { ThemeToggle } from "./theme-toggle";
+import { UserProfile } from "../user-profile";
+import { Badge } from "../ui/badge";
 
 const MainToolbarContent = ({
   onHighlighterClick,
   onLinkClick,
   isMobile,
+  isUnsaved,
+  onClickSave,
 }: {
   onHighlighterClick: () => void;
   onLinkClick: () => void;
   isMobile: boolean;
+  isUnsaved: boolean;
+  onClickSave: () => void;
 }) => {
   return (
     <>
@@ -149,6 +156,30 @@ const MainToolbarContent = ({
 
       <Spacer />
 
+      <ToolbarGroup>
+        {!isUnsaved ? (
+          <Badge variant="outline" className="text-xs border border-dashed">
+            No unsaved changes
+          </Badge>
+        ) : (
+          <Button
+            size="sm"
+            variant="outline"
+            className="text-xs border border-dashed"
+            onClick={() => {
+              onClickSave();
+            }}
+          >
+            Save Changes
+          </Button>
+        )}
+      </ToolbarGroup>
+
+      <ToolbarGroup>
+        <ThemeToggle />
+        <UserProfile />
+      </ToolbarGroup>
+
       {isMobile && <ToolbarSeparator />}
     </>
   );
@@ -189,6 +220,7 @@ type EditorProps = {
 };
 
 export function Editor({ note, onUpdate }: EditorProps) {
+  const [useSaved, setUnsaved] = React.useState<boolean>(false);
   const isMobile = useMobile();
   const windowSize = useWindowSize();
   const [mobileView, setMobileView] = React.useState<
@@ -230,6 +262,7 @@ export function Editor({ note, onUpdate }: EditorProps) {
       Link.configure({ openOnClick: false }),
     ],
     onUpdate: ({ editor }) => {
+      setUnsaved(true);
       debouncedUpdates(editor);
     },
     content: note.content ? JSON.parse(note.content!) : note.content,
@@ -241,8 +274,9 @@ export function Editor({ note, onUpdate }: EditorProps) {
       if (!json.content) return;
 
       onUpdate(json);
+      setUnsaved(false);
     },
-    2000
+    60 * 1000
   );
 
   const bodyRect = useCursorVisibility({
@@ -270,6 +304,11 @@ export function Editor({ note, onUpdate }: EditorProps) {
       >
         {mobileView === "main" ? (
           <MainToolbarContent
+            isUnsaved={useSaved}
+            onClickSave={() => {
+              setUnsaved(false);
+              onUpdate(editor?.getJSON()!);
+            }}
             onHighlighterClick={() => setMobileView("highlighter")}
             onLinkClick={() => setMobileView("link")}
             isMobile={isMobile}

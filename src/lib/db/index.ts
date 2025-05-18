@@ -3,6 +3,10 @@ import postgres from "postgres";
 import * as authSchema from "./schemas/auth-schema";
 import { env } from "@/env";
 import { notes } from "./schemas/notes";
+import {
+  noteActivities,
+  noteActivitiesRelations,
+} from "./schemas/note-activities";
 
 const sql = postgres(env.DATABASE_URL, {
   max: 10, // Connection pool size
@@ -17,5 +21,7 @@ export const db = drizzle(sql, {
   schema: {
     authSchema,
     notes,
+    noteActivities,
+    noteActivitiesRelations,
   },
 });

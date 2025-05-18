@@ -49,3 +49,16 @@ export const updateNoteContent = async (id: string, content: string) => {
   const { data } = await response.json();
   return data;
 };
+
+export const toggleNoteFavorite = async (id: string, isFavorite: boolean) => {
+  const response = await route[":id"].favorite.$put({
+    param: { id },
+    json: { isFavorite },
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Failed to update note");
+  }
+  const { data } = await response.json();
+  return data;
+};

@@ -12,10 +12,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Link, Calendar, Star, Tag } from "lucide-react";
+import { MoreHorizontal, Star, Tag, Clock } from "lucide-react";
 import { Button } from "../ui/button";
 import { formatDate } from "@/lib/utils";
 import { Badge } from "../ui/badge";
+import Link from "next/link";
+import relativeTime from "dayjs/plugin/relativeTime";
+import dayjs from "dayjs";
+import { JSONContent } from "@tiptap/react";
+import { Icons } from "../icons";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toggleNoteFavorite } from "@/rpc/notes";
+import { QueryKeys } from "@/rpc/query-keys";
+
+dayjs.extend(relativeTime);
 
 type NoteCardProps = {
   note: {
@@ -23,6 +33,7 @@ type NoteCardProps = {
     title: string;
     description: string;
     isFavorite: boolean;
+    content: string | null;
     tags: string[];
     createdAt: Date;
     updatedAt: Date | null;
@@ -30,11 +41,38 @@ type NoteCardProps = {
 };
 
 export const NoteCard = ({
-  note: { id, title, description, isFavorite, tags, createdAt, updatedAt },
+  note: {
+    id,
+    title,
+    description,
+    isFavorite,
+    content,
+    tags,
+    createdAt,
+    updatedAt,
+  },
 }: NoteCardProps) => {
+  const jsonContent: JSONContent = content ? JSON.parse(content) : null;
+  const taskList = jsonContent?.content?.find(
+    (item: any) => item.type === "taskList"
+  );
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (favorite: boolean) => toggleNoteFavorite(id, favorite),
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.GET_NOTES],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.GET_USER_ACTIVITY_SUMMARY],
+      });
+    },
+  });
   return (
-    <Card className="shadow-lg border-muted/20 bg-card/50 backdrop-blur-sm rounded-none border border-dashed max-w-96">
-      <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
+    <Card className="shadow-lg bg-card/50 backdrop-blur-sm rounded-none border border-dashed">
+      <CardHeader className="flex flex-row items-start justify-between space-y-0">
         <div>
           <CardTitle className="text-lg font-bold">{title}</CardTitle>
           <CardDescription className="line-clamp-2 mt-1">
@@ -50,7 +88,9 @@ export const NoteCard = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild>
-              <Link href={`/notes/${id}`}>Edit</Link>
+              <Link href={`/editor/${id}`} className="w-full">
+                Go to editor
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
               {isFavorite ? "Remove from favorites" : "Add to favorites"}
@@ -60,7 +100,7 @@ export const NoteCard = ({
         </DropdownMenu>
       </CardHeader>
       <CardContent className="flex-1">
-        <div className="flex flex-wrap gap-2 pt-2">
+        <div className="flex flex-wrap gap-2">
           {tags.map((tag) => (
             <Badge key={tag} variant="secondary" className="text-xs">
               <Tag className="mr-1 h-3 w-3" />
@@ -71,19 +111,43 @@ export const NoteCard = ({
       </CardContent>
       <CardFooter className="flex items-center justify-between border-t border-dashed p-4 text-xs text-muted-foreground max-h-5">
         <div className="flex items-center">
-          <Calendar className="mr-1 h-3 w-3" />
-          <span>{formatDate(updatedAt || createdAt || "")}</span>
-        </div>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
-          <Star
-            className={`h-4 w-4 ${
-              isFavorite ? "fill-yellow-400 text-yellow-400" : ""
-            }`}
-          />
-          <span className="sr-only">
-            {isFavorite ? "Remove from favorites" : "Add to favorites"}
+          <Clock className="mr-1 h-3 w-3" />
+          <span>
+            {updatedAt
+              ? dayjs().to(dayjs(updatedAt))
+              : dayjs().to(dayjs(createdAt))}
           </span>
-        </Button>
+        </div>
+        <div className="flex items-center gap-2">
+          {taskList && taskList?.content && (
+            <div className="flex items-center">
+              <Icons.taskDone className="size-4 mr-1" />
+              <span className="text-xs mr-1">
+                {taskList.content.filter((item) => item.attrs?.checked).length}/
+                {taskList.content.length}
+              </span>
+              <span className="text-xs">Tasks</span>
+            </div>
+          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={(e) => {
+              e.stopPropagation();
+              mutation.mutate(!isFavorite);
+            }}
+          >
+            <Star
+              className={`h-4 w-4 ${
+                isFavorite ? "fill-accent text-accent" : ""
+              }`}
+            />
+            <span className="sr-only">
+              {isFavorite ? "Remove from favorites" : "Add to favorites"}
+            </span>
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

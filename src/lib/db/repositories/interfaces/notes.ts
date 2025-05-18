@@ -1,7 +1,7 @@
 import { Note } from "@/types/notes";
 
 export type NotesRepository = {
-  selectNotesByUserId(userId: string): Promise<Note[]>;
+  selectNotesByUserId(userId: string, limit: number): Promise<Note[]>;
   selectNoteById(id: string): Promise<Note | null>;
   insertNote(
     note: Omit<
@@ -10,4 +10,5 @@ export type NotesRepository = {
     >
   ): Promise<Note>;
   updateNoteContent(id: string, content: string): Promise<Note | null>;
+  toggleNoteFavorite(id: string, isFavorite: boolean): Promise<Note | null>;
 };

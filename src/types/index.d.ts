@@ -1,3 +1,5 @@
+import { Icons } from "@/components/icons";
+
 export type SiteConfig = {
   name: string;
   title: string;
@@ -13,4 +15,18 @@ export type SiteConfig = {
     github: string;
     x: string;
   };
+};
+
+export type NavItem = {
+  title: string;
+  url: string;
+  icon?: keyof typeof Icons;
+  items?: {
+    title: string;
+    url: string;
+  }[];
+};
+
+export type SidebarConfig = {
+  navItems: NavItem[];
 };

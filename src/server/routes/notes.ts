@@ -7,7 +7,8 @@ import {
   createNoteValidation,
   updateContentValidation,
 } from "@/validations/notes";
-import { ZodError } from "zod";
+import { z, ZodError } from "zod";
+import { actions } from "@/lib/db/schemas/note-activities";
 
 const logger = createLogger("NotesRoute");
 
@@ -67,6 +68,8 @@ export const notes = new Hono()
         return c.json({ message: "Failed to create note" }, 500);
       }
 
+      await c.trackActivity(note.id, session.user.id, "CREATE");
+
       return c.json({ data: note }, 201);
     } catch (error) {
       logger.error("Error creating note", error);
@@ -95,6 +98,8 @@ export const notes = new Hono()
           return c.json({ message: "Note not found" }, 404);
         }
 
+        await c.trackActivity(note.id, session.user.id, "UPDATE");
+
         return c.json({ data: note }, 200);
       } catch (error) {
         logger.error("Error updating note content", error);
@@ -102,6 +107,44 @@ export const notes = new Hono()
           return c.json({ message: error.errors[0].message }, 400);
         }
         return c.json({ message: "Failed to update note content" }, 500);
+      }
+    }
+  )
+  .put(
+    "/:id/favorite",
+    zValidator("json", z.object({ isFavorite: z.boolean() })),
+    async (c) => {
+      try {
+        const session = await getSession();
+        if (!session) {
+          return c.json({ message: "Unauthorized" }, 401);
+        }
+
+        const noteId = c.req.param("id");
+        const { isFavorite } = c.req.valid("json");
+
+        const note = await notesRepository.toggleNoteFavorite(
+          noteId,
+          isFavorite
+        );
+
+        if (!note || note.userId !== session.user.id) {
+          return c.json({ message: "Note not found" }, 404);
+        }
+
+        await c.trackActivity(
+          note.id,
+          session.user.id,
+          isFavorite ? "ADD_TO_FAVORITES" : "REMOVE_FROM_FAVORITES"
+        );
+
+        return c.json({ data: note }, 200);
+      } catch (error) {
+        logger.error("Error toggling note favorite", error);
+        if (error instanceof ZodError) {
+          return c.json({ message: error.errors[0].message }, 400);
+        }
+        return c.json({ message: "Failed to toggle note favorite" }, 500);
       }
     }
   );
