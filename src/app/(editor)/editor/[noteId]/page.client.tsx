@@ -10,11 +10,15 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { useState } from "react";
+import { Editor as EditorInstance } from "@tiptap/core";
+import { EditorHeader } from "@/components/editor/header";
 
 type EditorClientProps = {
   noteId: string;
 };
 export const EditorClient = ({ noteId }: EditorClientProps) => {
+  const [editor, setEditor] = useState<EditorInstance | null>(null);
   const queryClient = useQueryClient();
 
   const { data, isPending, error } = useQuery({
@@ -53,6 +57,10 @@ export const EditorClient = ({ noteId }: EditorClientProps) => {
 
   return (
     <div className="flex flex-col">
+      <EditorHeader
+        title={formattedNote.title}
+        description={formattedNote.description}
+      />
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel defaultSize={80}>
           <Editor

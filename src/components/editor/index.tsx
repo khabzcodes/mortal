@@ -93,134 +93,134 @@ import { cn } from "@/lib/utils";
 import { SlashCommand } from "./extensions/slash-command/slash-command";
 import { getSuggestion } from "./extensions/slash-command/suggestion";
 
-const MainToolbarContent = ({
-  onHighlighterClick,
-  onLinkClick,
-  isMobile,
-  isUnsaved,
-  onClickSave,
-}: {
-  onHighlighterClick: () => void;
-  onLinkClick: () => void;
-  isMobile: boolean;
-  isUnsaved: boolean;
-  onClickSave: () => void;
-}) => {
-  return (
-    <>
-      <Spacer />
+// const MainToolbarContent = ({
+//   onHighlighterClick,
+//   onLinkClick,
+//   isMobile,
+//   isUnsaved,
+//   onClickSave,
+// }: {
+//   onHighlighterClick: () => void;
+//   onLinkClick: () => void;
+//   isMobile: boolean;
+//   isUnsaved: boolean;
+//   onClickSave: () => void;
+// }) => {
+//   return (
+//     <>
+//       <Spacer />
 
-      <ToolbarGroup>
-        <UndoRedoButton action="undo" />
-        <UndoRedoButton action="redo" />
-      </ToolbarGroup>
+//       <ToolbarGroup>
+//         <UndoRedoButton action="undo" />
+//         <UndoRedoButton action="redo" />
+//       </ToolbarGroup>
 
-      <ToolbarSeparator />
+//       <ToolbarSeparator />
 
-      <ToolbarGroup>
-        <HeadingDropdownMenu levels={[1, 2, 3, 4]} />
-        <ListDropdownMenu types={["bulletList", "orderedList", "taskList"]} />
-        <BlockQuoteButton />
-        <CodeBlockButton />
-      </ToolbarGroup>
+//       <ToolbarGroup>
+//         <HeadingDropdownMenu levels={[1, 2, 3, 4]} />
+//         <ListDropdownMenu types={["bulletList", "orderedList", "taskList"]} />
+//         <BlockQuoteButton />
+//         <CodeBlockButton />
+//       </ToolbarGroup>
 
-      <ToolbarSeparator />
+//       <ToolbarSeparator />
 
-      <ToolbarGroup>
-        <MarkButton type="bold" />
-        <MarkButton type="italic" />
-        <MarkButton type="strike" />
-        <MarkButton type="code" />
-        <MarkButton type="underline" />
-        {!isMobile ? (
-          <ColorHighlightPopover />
-        ) : (
-          <ColorHighlightPopoverButton onClick={onHighlighterClick} />
-        )}
-        {!isMobile ? <LinkPopover /> : <LinkButton onClick={onLinkClick} />}
-      </ToolbarGroup>
+//       <ToolbarGroup>
+//         <MarkButton type="bold" />
+//         <MarkButton type="italic" />
+//         <MarkButton type="strike" />
+//         <MarkButton type="code" />
+//         <MarkButton type="underline" />
+//         {!isMobile ? (
+//           <ColorHighlightPopover />
+//         ) : (
+//           <ColorHighlightPopoverButton onClick={onHighlighterClick} />
+//         )}
+//         {!isMobile ? <LinkPopover /> : <LinkButton onClick={onLinkClick} />}
+//       </ToolbarGroup>
 
-      <ToolbarSeparator />
+//       <ToolbarSeparator />
 
-      <ToolbarGroup>
-        <MarkButton type="superscript" />
-        <MarkButton type="subscript" />
-      </ToolbarGroup>
+//       <ToolbarGroup>
+//         <MarkButton type="superscript" />
+//         <MarkButton type="subscript" />
+//       </ToolbarGroup>
 
-      <ToolbarSeparator />
+//       <ToolbarSeparator />
 
-      <ToolbarGroup>
-        <TextAlignButton align="left" />
-        <TextAlignButton align="center" />
-        <TextAlignButton align="right" />
-        <TextAlignButton align="justify" />
-      </ToolbarGroup>
+//       <ToolbarGroup>
+//         <TextAlignButton align="left" />
+//         <TextAlignButton align="center" />
+//         <TextAlignButton align="right" />
+//         <TextAlignButton align="justify" />
+//       </ToolbarGroup>
 
-      <ToolbarSeparator />
+//       <ToolbarSeparator />
 
-      <ToolbarGroup>
-        <ImageUploadButton text="Add" />
-      </ToolbarGroup>
+//       <ToolbarGroup>
+//         <ImageUploadButton text="Add" />
+//       </ToolbarGroup>
 
-      <Spacer />
+//       <Spacer />
 
-      <ToolbarGroup>
-        {!isUnsaved ? (
-          <Badge variant="outline" className="text-xs border border-dashed">
-            No unsaved changes
-          </Badge>
-        ) : (
-          <Button
-            size="sm"
-            variant="outline"
-            className="text-xs border border-dashed"
-            onClick={() => {
-              onClickSave();
-            }}
-          >
-            Save Changes
-          </Button>
-        )}
-      </ToolbarGroup>
+//       <ToolbarGroup>
+//         {!isUnsaved ? (
+//           <Badge variant="outline" className="text-xs border border-dashed">
+//             No unsaved changes
+//           </Badge>
+//         ) : (
+//           <Button
+//             size="sm"
+//             variant="outline"
+//             className="text-xs border border-dashed"
+//             onClick={() => {
+//               onClickSave();
+//             }}
+//           >
+//             Save Changes
+//           </Button>
+//         )}
+//       </ToolbarGroup>
 
-      <ToolbarGroup>
-        <ThemeToggle />
-        <UserProfile />
-      </ToolbarGroup>
+//       <ToolbarGroup>
+//         <ThemeToggle />
+//         <UserProfile />
+//       </ToolbarGroup>
 
-      {isMobile && <ToolbarSeparator />}
-    </>
-  );
-};
+//       {isMobile && <ToolbarSeparator />}
+//     </>
+//   );
+// };
 
-const MobileToolbarContent = ({
-  type,
-  onBack,
-}: {
-  type: "highlighter" | "link";
-  onBack: () => void;
-}) => (
-  <>
-    <ToolbarGroup>
-      <Button data-style="ghost" onClick={onBack}>
-        <ArrowLeftIcon className="tiptap-button-icon" />
-        {type === "highlighter" ? (
-          <HighlighterIcon className="tiptap-button-icon" />
-        ) : (
-          <LinkIcon className="tiptap-button-icon" />
-        )}
-      </Button>
-    </ToolbarGroup>
+// const MobileToolbarContent = ({
+//   type,
+//   onBack,
+// }: {
+//   type: "highlighter" | "link";
+//   onBack: () => void;
+// }) => (
+//   <>
+//     <ToolbarGroup>
+//       <Button data-style="ghost" onClick={onBack}>
+//         <ArrowLeftIcon className="tiptap-button-icon" />
+//         {type === "highlighter" ? (
+//           <HighlighterIcon className="tiptap-button-icon" />
+//         ) : (
+//           <LinkIcon className="tiptap-button-icon" />
+//         )}
+//       </Button>
+//     </ToolbarGroup>
 
-    <ToolbarSeparator />
+//     <ToolbarSeparator />
 
-    {type === "highlighter" ? (
-      <ColorHighlightPopoverContent />
-    ) : (
-      <LinkContent />
-    )}
-  </>
-);
+//     {type === "highlighter" ? (
+//       <ColorHighlightPopoverContent />
+//     ) : (
+//       <LinkContent />
+//     )}
+//   </>
+// );
 
 type EditorProps = {
   note: Note;
@@ -331,35 +331,6 @@ export function Editor({ note, onUpdate }: EditorProps) {
 
   return (
     <EditorContext.Provider value={{ editor }}>
-      <Toolbar
-        ref={toolbarRef}
-        style={
-          isMobile
-            ? {
-                bottom: `calc(100% - ${windowSize.height - bodyRect.y}px)`,
-              }
-            : {}
-        }
-      >
-        {mobileView === "main" ? (
-          <MainToolbarContent
-            isUnsaved={useSaved}
-            onClickSave={() => {
-              setUnsaved(false);
-              onUpdate(editor?.getJSON()!);
-            }}
-            onHighlighterClick={() => setMobileView("highlighter")}
-            onLinkClick={() => setMobileView("link")}
-            isMobile={isMobile}
-          />
-        ) : (
-          <MobileToolbarContent
-            type={mobileView === "highlighter" ? "highlighter" : "link"}
-            onBack={() => setMobileView("main")}
-          />
-        )}
-      </Toolbar>
-
       <div className="content-wrapper">
         <ScrollArea className="h-screen">
           <div className="pb-20">
