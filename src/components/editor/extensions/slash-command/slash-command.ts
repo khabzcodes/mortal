@@ -42,7 +42,9 @@ export const SlashCommand = Extension.create<SlashCommandOptions>({
           props.command({ editor, range });
         },
         allow: ({ editor }) => {
-          // TODO: Disallow if the editor is in a code block
+          if (editor.isActive("codeBlock")) {
+            return false;
+          }
           return true;
         },
       },
@@ -50,15 +52,10 @@ export const SlashCommand = Extension.create<SlashCommandOptions>({
   },
 
   addProseMirrorPlugins() {
-    const { suggestion } = this.options;
-
     return [
       Suggestion({
         editor: this.editor,
-        ...suggestion,
-        command: ({ editor, range, props }) => {
-          props.command({ editor, range });
-        },
+        ...this.options.suggestion,
       }),
     ];
   },

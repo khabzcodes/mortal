@@ -175,18 +175,18 @@ const list: CommandSuggestionItem[] = [
   },
 ];
 
-// const withAiList: CommandSuggestionItem[] = [
-//   {
-//     title: "AI Writer",
-//     description: "Ask AI with custom prompt.",
-//     keywords: ["ai"],
-//     icon: SparklesIcon,
-//     command: ({ editor, range }) => {
-//       editor.chain().focus().deleteRange(range).setAiWriter().run();
-//     },
-//   },
-//   ...list,
-// ];
+const withAiList: CommandSuggestionItem[] = [
+  {
+    title: "AI Writer",
+    description: "Ask AI with custom prompt.",
+    keywords: ["ai"],
+    icon: SparklesIcon,
+    command: ({ editor, range }) => {
+      editor.chain().focus().deleteRange(range).setAiWriter().run();
+    },
+  },
+  ...list,
+];
 
 const getSuggestion = ({ ai }: { ai?: boolean }): SuggestionType => {
   return {
@@ -195,9 +195,9 @@ const getSuggestion = ({ ai }: { ai?: boolean }): SuggestionType => {
         return item.keywords.some((k) => k.startsWith(query.toLowerCase()));
       };
 
-      //   if (ai) {
-      //     return withAiList.filter(filterFun);
-      //   }
+      if (ai) {
+        return withAiList.filter(filterFun);
+      }
       return list.filter(filterFun);
     },
     render: () => {

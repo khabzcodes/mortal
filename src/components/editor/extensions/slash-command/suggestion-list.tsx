@@ -21,8 +21,9 @@ const SuggestionList = forwardRef<SuggestionListHandle, SuggestionListProps>(
   (props, ref) => {
     const [selectedIndex, setSelectedIndex] = useState(0);
 
-    const selectItem = (idx: number) => {
-      const item = props.items[idx];
+    const selectItem = (index: number) => {
+      const item = props.items[index];
+
       if (item) {
         props.command(item);
       }
@@ -64,20 +65,19 @@ const SuggestionList = forwardRef<SuggestionListHandle, SuggestionListProps>(
         return false;
       },
     }));
-
     return (
-      <div className="z-20 flex flex-col space-y-1 bg-popover rounded-none border border-dashed shadow-md transition-all p-1 max-h-[320x] w-72 overflow-y-auto">
+      <div className="z-20 flex flex-col space-y-1 bg-popover rounded-md border shadow-md transition-all p-1 max-h-[320px] w-72 overflow-y-auto">
         {props.items.length > 0 ? (
-          props.items.map((item, idx) => {
+          props.items.map((item, i) => {
             return (
               <div
-                key={idx}
+                key={i}
                 className={cn(
                   [
                     "flex space-x-2 hover:bg-accent p-1 rounded-md cursor-pointer text-foreground",
                   ],
                   {
-                    "bg-accent": idx === selectedIndex,
+                    "bg-accent": i === selectedIndex,
                   }
                 )}
                 onClick={() => {

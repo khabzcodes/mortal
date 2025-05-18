@@ -17,6 +17,8 @@ export const env = createEnv({
     // Discord
     DISCORD_CLIENT_ID: z.string().optional(),
     DISCORD_CLIENT_SECRET: z.string().optional(),
+    // OpenAI
+    OPENAI_API_KEY: z.string().min(1),
   },
   client: {},
   experimental__runtimeEnv: {},

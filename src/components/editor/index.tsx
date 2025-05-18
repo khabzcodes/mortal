@@ -63,6 +63,9 @@ import { MarkButton } from "@/components/tiptap-ui/mark-button";
 import { TextAlignButton } from "@/components/tiptap-ui/text-align-button";
 import { UndoRedoButton } from "@/components/tiptap-ui/undo-redo-button";
 import Youtube from "@tiptap/extension-youtube";
+import { AiPlaceholder } from "@/components/editor/extensions/ai-placeholder/ai-placeholder";
+import { AiWriter } from "@/components/editor/extensions/ai-writer/ai-writer";
+import { Ai } from "@/components/editor/extensions/ai";
 
 // --- Icons ---
 import { ArrowLeftIcon } from "@/components/tiptap-icons/arrow-left-icon";
@@ -86,8 +89,8 @@ import { ThemeToggle } from "./theme-toggle";
 import { UserProfile } from "../user-profile";
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
-import { SlashCommand } from "./slash-command/slash-command";
-import { getSuggestion } from "./slash-command/suggestion";
+import { SlashCommand } from "./extensions/slash-command/slash-command";
+import { getSuggestion } from "./extensions/slash-command/suggestion";
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -233,7 +236,8 @@ export function Editor({ note, onUpdate }: EditorProps) {
   const toolbarRef = React.useRef<HTMLDivElement>(null);
 
   const editor = useEditor({
-    immediatelyRender: false,
+    immediatelyRender: true,
+    shouldRerenderOnTransaction: false,
     editorProps: {
       attributes: {
         autocomplete: "off",
@@ -268,14 +272,34 @@ export function Editor({ note, onUpdate }: EditorProps) {
         onError: (error) => console.error("Upload failed:", error),
       }),
       TrailingNode,
+      AiPlaceholder.configure({
+        HTMLAttributes: {
+          class: cn("!text-muted-foreground not-draggable"),
+        },
+      }),
+      AiWriter.configure({
+        HTMLAttributes: {
+          class: cn("py-3 px-1 select-none"),
+        },
+      }),
+      Ai.configure({
+        onError: (error) => {
+          console.error("AI error:", error);
+        },
+      }),
+
       Link.configure({ openOnClick: false }),
       SlashCommand.configure({
-        suggestion: getSuggestion({ ai: false }),
+        suggestion: getSuggestion({ ai: true }),
       }),
     ],
     onUpdate: ({ editor }) => {
-      setUnsaved(true);
-      debouncedUpdates(editor);
+      // setUnsaved(true);
+      // debouncedUpdates(editor);
+      console.log("Editor updated:", editor);
+    },
+    onCreate: ({ editor }) => {
+      editor.commands.focus("end");
     },
     content: note.content ? JSON.parse(note.content!) : note.content,
   });
@@ -336,11 +360,7 @@ export function Editor({ note, onUpdate }: EditorProps) {
       <div className="content-wrapper">
         <ScrollArea className="h-screen">
           <div className="pb-20">
-            <EditorContent
-              editor={editor}
-              role="presentation"
-              className="simple-editor-content"
-            />
+            <EditorContent editor={editor} className="simple-editor-content" />
           </div>
         </ScrollArea>
       </div>

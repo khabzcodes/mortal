@@ -17,6 +17,14 @@ export type SiteConfig = {
   };
 };
 
+declare module "@tiptap/core" {
+  interface Commands<ReturnType> {
+    aiWriterCommands: {
+      setAiWriter: () => ReturnType;
+    };
+  }
+}
+
 export type NavItem = {
   title: string;
   url: string;
