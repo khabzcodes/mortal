@@ -228,10 +228,11 @@ import { DefaultBubbleMenu } from "./menus/default-bubble-menu";
 
 type EditorProps = {
   note: Note;
-  onUpdate: (content: JSONContent) => void;
+  onUpdate: (editor: EditorInstance) => void;
+  onCreate: (editor: EditorInstance) => void;
 };
 
-export function Editor({ note, onUpdate }: EditorProps) {
+export function Editor({ note, onUpdate, onCreate }: EditorProps) {
   const [useSaved, setUnsaved] = React.useState<boolean>(false);
   const isMobile = useMobile();
   const windowSize = useWindowSize();
@@ -317,12 +318,10 @@ export function Editor({ note, onUpdate }: EditorProps) {
       //   }),
       // ],
       onUpdate: ({ editor }) => {
-        setUnsaved(true);
-        debouncedUpdates(editor);
-        console.log("Editor updated:", editor);
+        onUpdate(editor);
       },
       onCreate: ({ editor }) => {
-        editor.commands.focus("end");
+        onCreate(editor);
       },
       content: note.content ? JSON.parse(note.content!) : note.content,
       immediatelyRender: true,

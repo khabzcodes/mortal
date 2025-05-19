@@ -47,9 +47,13 @@ export const EditorClient = ({ noteId }: EditorClientProps) => {
     updatedAt: data.updatedAt ? new Date(data.updatedAt) : null,
   };
 
-  const handleUpdate = async (content: string) => {
+  const handleUpdate = async () => {
+    const content = editor?.getJSON();
+    if (!content) return;
+
+    const contentString = JSON.stringify(content);
     try {
-      await mutation.mutateAsync(content);
+      await mutation.mutateAsync(contentString);
     } catch (error) {
       console.error("Error updating note content:", error);
     }
@@ -60,12 +64,20 @@ export const EditorClient = ({ noteId }: EditorClientProps) => {
       <EditorHeader
         title={formattedNote.title}
         description={formattedNote.description}
+        lastSyncedAt={
+          formattedNote.updatedAt
+            ? formattedNote.updatedAt
+            : formattedNote.createdAt
+        }
+        onSave={handleUpdate}
+        isSaving={mutation.isPending}
       />
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel defaultSize={80}>
           <Editor
             note={formattedNote}
-            onUpdate={(content) => handleUpdate(JSON.stringify(content))}
+            onUpdate={setEditor}
+            onCreate={setEditor}
           />
         </ResizablePanel>
         <ResizableHandle withHandle />

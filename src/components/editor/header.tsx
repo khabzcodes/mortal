@@ -2,30 +2,72 @@
 import { useSession } from "@/lib/auth-client";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Loader } from "lucide-react";
 import { UserProfile } from "../user-profile";
 import ThemeToggler from "../theme/toggler";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { Icons } from "../icons";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 type EditorHeaderProps = {
   title: string;
   description: string;
+  lastSyncedAt: Date;
+  onSave: () => void;
+  isSaving: boolean;
 };
 
-export const EditorHeader = ({ title, description }: EditorHeaderProps) => {
+export const EditorHeader = ({
+  title,
+  description,
+  lastSyncedAt,
+  onSave,
+  isSaving,
+}: EditorHeaderProps) => {
   const { data: session, isPending } = useSession();
   return (
     <div
       id="nav"
-      className="w-full flex items-center justify-end border-b border-dashed divide-x"
+      className="w-full flex items-center justify-end border-b border-dashed"
     >
       <div
         id="brand"
         className="flex-col font-mono flex-1 flex h-full px-3 border-dashed"
       >
-        {title}
+        <span className="font-bold">{title}</span>
         <span className="text-muted-foreground/70 text-xs truncate">
           {description}
         </span>
+      </div>
+      <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Icons.informationCircle className="size-4" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>
+                Content is automatically saved every 5 minutes. You can manually
+                save to avoid losing any unsaved changes.
+              </p>
+            </TooltipContent>
+          </Tooltip>
+          <span className="text-xs">
+            Last Synced {dayjs().to(dayjs(lastSyncedAt))}
+          </span>
+        </div>
+        <Button
+          onClick={onSave}
+          disabled={isSaving}
+          size="sm"
+          variant="outline"
+          className="h-8 border border-dashed"
+        >
+          Save Changes {isSaving && <Loader className="animate-spin" />}
+        </Button>
       </div>
       {!isPending &&
         (session ? (
