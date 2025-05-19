@@ -119,13 +119,15 @@ export const NoteCard = ({
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex items-center">
-            <Icons.taskDone className="size-4 mr-1" />
-            <span className="text-xs mr-1">
-              {completedTaskCount}/{totalTaskCount}
-            </span>
-            <span className="text-xs">Tasks</span>
-          </div>
+          {totalTaskCount > 0 && (
+            <div className="flex items-center">
+              <Icons.taskDone className="size-4 mr-1" />
+              <span className="text-xs mr-1">
+                {completedTaskCount}/{totalTaskCount}
+              </span>
+              <span className="text-xs">Tasks</span>
+            </div>
+          )}
           <Button
             variant="ghost"
             size="icon"
