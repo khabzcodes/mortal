@@ -1,23 +1,28 @@
-import { getUser } from "@/lib/auth-utils";
+"use client";
 import { NotesList } from "@/components/notes/notes-list";
-import { PageHeader } from "@/components/layout/dashboard/page-header";
-import { CreateNoteButton } from "@/components/notes/create-note/create-note-button";
 import { ActivityFeed } from "@/components/activities/feed";
+import { useQuery } from "@tanstack/react-query";
+import { QueryKeys } from "@/rpc/query-keys";
+import { getUserFavoriteNotes } from "@/rpc/notes";
 
-export default async function DashboardPage() {
-  const user = await getUser();
+export default function DashboardPage() {
+  const { data: notesRaw } = useQuery({
+    queryKey: [QueryKeys.GET_NOTES],
+    queryFn: () => getUserFavoriteNotes(),
+    initialData: [],
+  });
+
+  const notes = notesRaw.map((note) => ({
+    ...note,
+    createdAt: new Date(note.createdAt),
+    updatedAt: note.updatedAt ? new Date(note.updatedAt) : null,
+  }));
 
   return (
     <div className="flex flex-col gap-2">
-      <PageHeader
-        title={`Hi👋, ${user?.name.split(" ")[0]}`}
-        description="Your notes are waiting for you."
-      >
-        <CreateNoteButton />
-      </PageHeader>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <NotesList />
+          <NotesList notes={notes} />
         </div>
         <div className="lg:col-span-1">
           <ActivityFeed />

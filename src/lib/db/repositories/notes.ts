@@ -5,10 +5,16 @@ import { notes } from "../schemas/notes";
 import { nanoid } from "nanoid";
 
 export const notesRepository: NotesRepository = {
-  selectNotesByUserId: async (userId, limit = 6) => {
+  selectNotesByUserId: async (userId) => {
     return await db.query.notes.findMany({
       where: (n) => eq(n.userId, userId),
-      limit: limit,
+      orderBy: (n) => [desc(n.createdAt)],
+    });
+  },
+  selectFavoriteNotesByUserId: async (userId) => {
+    return await db.query.notes.findMany({
+      where: (n) => eq(n.userId, userId) && eq(n.isFavorite, true),
+      limit: 6,
       orderBy: (n) => [desc(n.createdAt)],
     });
   },

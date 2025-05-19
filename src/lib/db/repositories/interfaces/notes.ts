@@ -1,7 +1,8 @@
 import { Note } from "@/types/notes";
 
 export type NotesRepository = {
-  selectNotesByUserId(userId: string, limit: number): Promise<Note[]>;
+  selectNotesByUserId(userId: string): Promise<Note[]>;
+  selectFavoriteNotesByUserId(userId: string): Promise<Note[]>;
   selectNoteById(id: string): Promise<Note | null>;
   insertNote(
     note: Omit<

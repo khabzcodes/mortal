@@ -1,18 +1,16 @@
 "use client";
 
-import { getUserNotes } from "@/rpc/notes";
-import { QueryKeys } from "@/rpc/query-keys";
-import { useQuery } from "@tanstack/react-query";
 import { NoteCard } from "./note-card";
+import { Note } from "@/types/notes";
 
-export const NotesList = () => {
-  const { data } = useQuery({
-    queryKey: [QueryKeys.GET_NOTES],
-    queryFn: () => getUserNotes(),
-  });
+interface NoteListProps {
+  notes: Note[];
+}
+
+export const NotesList = ({ notes }: NoteListProps) => {
   return (
     <div className="grid gap-2 sm:grid-cols-3">
-      {data?.map((note, idx) => (
+      {notes?.map((note, idx) => (
         <NoteCard
           key={idx}
           note={{

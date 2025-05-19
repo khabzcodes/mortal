@@ -28,6 +28,23 @@ export const notes = new Hono()
       return c.json({ message: "Failed to fetch notes" }, 500);
     }
   })
+  .get("/favorites", async (c) => {
+    try {
+      const session = await getSession();
+      if (!session) {
+        return c.json({ message: "Unauthorized" }, 401);
+      }
+
+      const notes = await notesRepository.selectFavoriteNotesByUserId(
+        session.user.id
+      );
+
+      return c.json({ data: notes }, 200);
+    } catch (error) {
+      logger.error("Error fetching favorite notes", error);
+      return c.json({ message: "Failed to fetch favorite notes" }, 500);
+    }
+  })
   .get("/:id", async (c) => {
     try {
       const session = await getSession();

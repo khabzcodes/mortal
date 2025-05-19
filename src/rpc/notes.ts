@@ -37,6 +37,16 @@ export const getNoteById = async (id: string) => {
   return data;
 };
 
+export const getUserFavoriteNotes = async () => {
+  const response = await route.favorites.$get();
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Failed to fetch favorite notes");
+  }
+  const { data } = await response.json();
+  return data;
+};
+
 export const updateNoteContent = async (id: string, content: string) => {
   const response = await route[":id"].content.$put({
     param: { id },
