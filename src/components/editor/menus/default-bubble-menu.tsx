@@ -4,6 +4,7 @@ import { BubbleMenu } from "@tiptap/react";
 import { NodeSelector } from "./selectors/node-selector";
 import { Separator } from "@/components/ui/separator";
 import { TextStylesSelector } from "./selectors/text-styles-selector";
+import { TextAlignSelector } from "./selectors/text-align-selector";
 
 export const DefaultBubbleMenu = ({
   editor,
@@ -35,11 +36,13 @@ export const DefaultBubbleMenu = ({
         return true;
       }}
     >
-      <ScrollArea className="max-w-[90vw] rounded-none border border-dashed bg-popover shadow-xl">
+      <ScrollArea className="max-w-[90vw] border border-dashed bg-popover shadow-xl">
         <div className="flex">
           <NodeSelector editor={editor} />
-          {/* <Separator orientation="horizontal" className="h-10" /> */}
+          <Separator orientation="vertical" className="h-10" />
           <TextStylesSelector editor={editor} />
+          <Separator orientation="vertical" className="h-10" />
+          <TextAlignSelector editor={editor} />
         </div>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
