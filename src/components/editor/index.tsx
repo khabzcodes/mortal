@@ -95,6 +95,7 @@ import { SlashCommand } from "./extensions/slash-command/slash-command";
 import { getSuggestion } from "./extensions/slash-command/suggestion";
 import { defaultExtensions } from "./extensions/default-extensions";
 import { toast } from "sonner";
+import { DefaultBubbleMenu } from "./menus/default-bubble-menu";
 
 // const MainToolbarContent = ({
 //   onHighlighterClick,
@@ -332,11 +333,10 @@ export function Editor({ note, onUpdate }: EditorProps) {
 
   const debouncedUpdates = useDebouncedCallback(
     async (editor: EditorInstance) => {
-      const json = editor.getJSON();
-      if (!json.content) return;
-
-      onUpdate(json);
-      setUnsaved(false);
+      // const json = editor.getJSON();
+      // if (!json.content) return;
+      // onUpdate(json);
+      // setUnsaved(false);
     },
     60 * 1000
   );
@@ -357,7 +357,9 @@ export function Editor({ note, onUpdate }: EditorProps) {
       <div className="content-wrapper">
         <ScrollArea className="h-svh">
           <div className="py-20">
-            <EditorContent editor={editor} className="simple-editor-content" />
+            <EditorContent editor={editor} className="simple-editor-content">
+              <DefaultBubbleMenu editor={editor} />
+            </EditorContent>
           </div>
         </ScrollArea>
       </div>
