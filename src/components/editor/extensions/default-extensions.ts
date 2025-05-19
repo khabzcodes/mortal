@@ -4,6 +4,8 @@ import CharacterCount from "@tiptap/extension-character-count";
 import Heading from "@tiptap/extension-heading";
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
+import { TaskItem } from "@tiptap/extension-task-item";
+import { TaskList } from "@tiptap/extension-task-list";
 import Table, { createColGroup } from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
@@ -12,7 +14,9 @@ import TextAlign from "@tiptap/extension-text-align";
 import TextStyle from "@tiptap/extension-text-style";
 import Underline from "@tiptap/extension-underline";
 import Youtube from "@tiptap/extension-youtube";
-import { DOMOutputSpec } from "@tiptap/pm/model";
+import { Typography } from "@tiptap/extension-typography";
+import { BulletList } from "@tiptap/extension-bullet-list";
+import { OrderedList } from "@tiptap/extension-ordered-list";
 import StarterKit from "@tiptap/starter-kit";
 import GlobalDragHandle from "tiptap-extension-global-drag-handle";
 import { Markdown } from "tiptap-markdown";
@@ -65,6 +69,11 @@ const TiptapStarterKit = StarterKit.configure({
   heading: false,
 });
 
+const typography = Typography;
+
+const bulletList = BulletList;
+const orderedList = OrderedList;
+
 const TiptapHeading = Heading.extend({
   renderHTML({ node, HTMLAttributes }) {
     const hasLevel = node.attrs.level;
@@ -77,6 +86,12 @@ const TiptapHeading = Heading.extend({
     ];
   },
 });
+
+const taskItem = TaskItem.configure({
+  nested: true,
+});
+
+const taskList = TaskList;
 
 const mathematics = Mathematics.configure({
   HTMLAttributes: {
@@ -202,4 +217,9 @@ export const defaultExtensions = [
   aiPlaceholder,
   aiWriter,
   markdown,
+  taskItem,
+  taskList,
+  typography,
+  bulletList,
+  orderedList,
 ];

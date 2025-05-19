@@ -126,7 +126,7 @@ const list: CommandSuggestionItem[] = [
         .chain()
         .focus()
         .deleteRange(range)
-        .toggleCodeBlock({ language: "plaintext" })
+        .toggleCodeBlock({ language: "bash" })
         .run(),
   },
   {

@@ -43,7 +43,8 @@ export const Ai = Extension.create<AiOptions, AiStorage>({
         ({ editor }) => {
           const question = () => {
             if (command === "prompt") {
-              return `Please generate for this prompt: "${prompt}". Use markdown formatting when appropriate.`;
+              return `Please generate for this prompt: "${prompt}". Use markdown formatting when appropriate. Do not include any other text.
+                Do not include any explanations. Do not include any additional text.`;
             }
 
             return `Please ${command} this text: "${prompt}". Use markdown formatting when appropriate.`;

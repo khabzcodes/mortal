@@ -34,13 +34,7 @@ const AiWriterView = ({ editor, node, getPos }: NodeViewProps) => {
 
     const from = getPos();
     const to = from + node.nodeSize;
-    const sanitizedContent = message.trim();
-
-    editor
-      .chain()
-      .deleteRange({ from, to })
-      .insertContent(sanitizedContent)
-      .run();
+    editor.chain().focus().insertContentAt({ from, to }, message).run();
   };
 
   const remove = () => {

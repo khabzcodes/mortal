@@ -20,7 +20,6 @@ export const requestCompletion = async ({
   onError,
   onComplete,
 }: RequestCompletionProps) => {
-  logger.debug("Requesting completion", { prompt });
   try {
     onLoading?.();
     const response = await generateAiResponse({ prompt });

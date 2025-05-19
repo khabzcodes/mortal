@@ -40,7 +40,7 @@ import {
 
 // --- Tiptap Node ---
 import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node/image-upload-node-extension";
-import "@/components/tiptap-node/code-block-node/code-block-node.scss";
+// import "@/components/tiptap-node/code-block-node/code-block-node.scss";
 import "@/components/tiptap-node/list-node/list-node.scss";
 import "@/components/tiptap-node/image-node/image-node.scss";
 import "@/components/tiptap-node/paragraph-node/paragraph-node.scss";
@@ -239,93 +239,96 @@ export function Editor({ note, onUpdate }: EditorProps) {
   >("main");
   const toolbarRef = React.useRef<HTMLDivElement>(null);
 
-  const editor = useEditor({
-    editorProps: {
-      attributes: {
-        autocomplete: "off",
-        autocorrect: "off",
-        autocapitalize: "off",
-        "aria-label": "Main content area, start typing to enter text.",
-      },
-    },
-    extensions: [
-      ...defaultExtensions,
-      Placeholder.configure({
-        placeholder: "Type  /  for commands...",
-        emptyEditorClass: cn("is-editor-empty text-gray-400"),
-        emptyNodeClass: cn("is-empty text-gray-400"),
-      }),
-      Ai.configure({
-        onError: (error) => {
-          toast.error(error.message);
+  const editor = useEditor(
+    {
+      editorProps: {
+        attributes: {
+          autocomplete: "off",
+          autocorrect: "off",
+          autocapitalize: "off",
+          "aria-label": "Main content area, start typing to enter text.",
         },
-      }),
-      SlashCommand.configure({
-        suggestion: getSuggestion({ ai: true }),
-      }),
-    ],
-    // extensions: [
-    //   StarterKit,
-    //   TextAlign.configure({ types: ["heading", "paragraph"] }),
-    //   Underline,
-    //   TaskList,
-    //   TaskItem.configure({ nested: true }),
-    //   Highlight.configure({ multicolor: true }),
-    //   Image,
-    //   Typography,
-    //   Superscript,
-    //   Subscript,
-    //   Markdown.configure({
-    //     html: true,
-    //   }),
-    //   Youtube.configure({
-    //     HTMLAttributes: {
-    //       class: cn("border border-muted"),
-    //     },
-    //     nocookie: true,
-    //   }),
-    //   Selection,
-    //   ImageUploadNode.configure({
-    //     accept: "image/*",
-    //     maxSize: MAX_FILE_SIZE,
-    //     limit: 3,
-    //     upload: handleImageUpload,
-    //     onError: (error) => console.error("Upload failed:", error),
-    //   }),
-    //   TrailingNode,
-    //   AiPlaceholder.configure({
-    //     HTMLAttributes: {
-    //       class: cn("!text-muted-foreground not-draggable"),
-    //     },
-    //   }),
-    //   AiWriter.configure({
-    //     HTMLAttributes: {
-    //       class: cn("py-3 px-1 select-none"),
-    //     },
-    //   }),
-    //   Ai.configure({
-    //     onError: (error) => {
-    //       console.error("AI error:", error);
-    //     },
-    //   }),
+      },
+      extensions: [
+        ...defaultExtensions,
+        Placeholder.configure({
+          placeholder: "Type  /  for commands...",
+          emptyEditorClass: cn("is-editor-empty text-gray-400"),
+          emptyNodeClass: cn("is-empty text-gray-400"),
+        }),
+        Ai.configure({
+          onError: (error) => {
+            toast.error(error.message);
+          },
+        }),
+        SlashCommand.configure({
+          suggestion: getSuggestion({ ai: true }),
+        }),
+      ],
+      // extensions: [
+      //   StarterKit,
+      //   TextAlign.configure({ types: ["heading", "paragraph"] }),
+      //   Underline,
+      //   TaskList,
+      //   TaskItem.configure({ nested: true }),
+      //   Highlight.configure({ multicolor: true }),
+      //   Image,
+      //   Typography,
+      //   Superscript,
+      //   Subscript,
+      //   Markdown.configure({
+      //     html: true,
+      //   }),
+      //   Youtube.configure({
+      //     HTMLAttributes: {
+      //       class: cn("border border-muted"),
+      //     },
+      //     nocookie: true,
+      //   }),
+      //   Selection,
+      //   ImageUploadNode.configure({
+      //     accept: "image/*",
+      //     maxSize: MAX_FILE_SIZE,
+      //     limit: 3,
+      //     upload: handleImageUpload,
+      //     onError: (error) => console.error("Upload failed:", error),
+      //   }),
+      //   TrailingNode,
+      //   AiPlaceholder.configure({
+      //     HTMLAttributes: {
+      //       class: cn("!text-muted-foreground not-draggable"),
+      //     },
+      //   }),
+      //   AiWriter.configure({
+      //     HTMLAttributes: {
+      //       class: cn("py-3 px-1 select-none"),
+      //     },
+      //   }),
+      //   Ai.configure({
+      //     onError: (error) => {
+      //       console.error("AI error:", error);
+      //     },
+      //   }),
 
-    //   Link.configure({ openOnClick: false }),
-    //   SlashCommand.configure({
-    //     suggestion: getSuggestion({ ai: true }),
-    //   }),
-    // ],
-    onUpdate: ({ editor }) => {
-      // setUnsaved(true);
-      // debouncedUpdates(editor);
-      // console.log("Editor updated:", editor);
+      //   Link.configure({ openOnClick: false }),
+      //   SlashCommand.configure({
+      //     suggestion: getSuggestion({ ai: true }),
+      //   }),
+      // ],
+      onUpdate: ({ editor }) => {
+        setUnsaved(true);
+        debouncedUpdates(editor);
+        console.log("Editor updated:", editor);
+      },
+      onCreate: ({ editor }) => {
+        editor.commands.focus("end");
+      },
+      content: note.content ? JSON.parse(note.content!) : note.content,
+      immediatelyRender: true,
+      shouldRerenderOnTransaction: false,
     },
-    onCreate: ({ editor }) => {
-      editor.commands.focus("end");
-    },
-    content: note.content ? JSON.parse(note.content!) : note.content,
-    immediatelyRender: true,
-    shouldRerenderOnTransaction: false,
-  });
+    [note.content]
+  );
 
   const debouncedUpdates = useDebouncedCallback(
     async (editor: EditorInstance) => {
@@ -352,8 +355,8 @@ export function Editor({ note, onUpdate }: EditorProps) {
   return (
     <EditorContext.Provider value={{ editor }}>
       <div className="content-wrapper">
-        <ScrollArea className="h-screen">
-          <div className="pb-20">
+        <ScrollArea className="h-svh">
+          <div className="py-20">
             <EditorContent editor={editor} className="simple-editor-content" />
           </div>
         </ScrollArea>
