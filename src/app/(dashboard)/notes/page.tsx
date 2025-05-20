@@ -4,27 +4,52 @@ import { CreateNoteButton } from "@/components/notes/create-note/create-note-but
 import { NotesList } from "@/components/notes/notes-list";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getUserNotes } from "@/rpc/notes";
 import { QueryKeys } from "@/rpc/query-keys";
 import { useQuery } from "@tanstack/react-query";
+import { SearchIcon } from "lucide-react";
+import { useMemo, useState } from "react";
 
 export default function NotesPage() {
+  const [searchText, setSearchText] = useState<string | null>(null);
+
   const { data: notesData, isPending } = useQuery({
     queryKey: [QueryKeys.GET_NOTES],
     queryFn: () => getUserNotes(),
   });
 
-  const myNotes = notesData?.map((note) => ({
+  const filteredNotes = useMemo(() => {
+    if (!notesData) return [];
+
+    if (searchText) {
+      return notesData.filter((note) =>
+        note.title.toLowerCase().includes(searchText.toLowerCase())
+      );
+    }
+    return notesData;
+  }, [searchText, notesData]);
+
+  const myNotes = filteredNotes.map((note) => ({
     ...note,
     createdAt: new Date(note.createdAt),
     updatedAt: note.updatedAt ? new Date(note.updatedAt) : null,
   }));
+
   return (
     <div className="flex flex-col gap-2">
       <PageHeader title="Notes" description="">
         <div className="flex items-center space-x-3">
-          <Input placeholder="Search notes" />
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <SearchIcon className="size-4 text-muted-foreground" />
+            </div>
+            <Input
+              placeholder="Search notes"
+              className="w-100 border border-dashed h-8 pl-10"
+              value={searchText || ""}
+              onChange={(e) => setSearchText(e.target.value)}
+            />
+          </div>
           <CreateNoteButton />
         </div>
       </PageHeader>
