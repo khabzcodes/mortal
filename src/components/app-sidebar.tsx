@@ -127,10 +127,8 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { data: workspaces, isPending: loadingWorkspace } =
-    useListOrganizations();
-  const { data: activeWorkspace, isPending: loadingActiveWorkspace } =
-    useActiveOrganization();
+  const { data: workspaces } = useListOrganizations();
+  const { data: activeWorkspace } = useActiveOrganization();
   return (
     <Sidebar collapsible="icon" {...props} className="border-r border-dashed">
       <SidebarHeader>
