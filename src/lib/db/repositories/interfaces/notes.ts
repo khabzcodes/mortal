@@ -6,5 +6,9 @@ export type NotesRepository = {
   insertNote(
     note: Omit<Note, "id" | "content" | "createdAt" | "updatedAt">
   ): Promise<Note>;
-  updateNoteContent(id: string, content: string): Promise<Note | null>;
+  updateNoteContent(
+    id: string,
+    content: string,
+    lastUpdatedById: string
+  ): Promise<Note | null>;
 };

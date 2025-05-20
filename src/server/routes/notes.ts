@@ -103,7 +103,11 @@ export const notes = new Hono<{
         const noteId = c.req.param("id");
         const { content } = c.req.valid("json");
 
-        const note = await notesRepository.updateNoteContent(noteId, content);
+        const note = await notesRepository.updateNoteContent(
+          noteId,
+          content,
+          member.id
+        );
 
         if (!note) {
           return c.json({ message: "Note not found" }, 404);

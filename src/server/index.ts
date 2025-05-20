@@ -1,6 +1,5 @@
 import { Hono } from "hono";
 import { notes } from "./routes/notes";
-import { noteActivityMiddleware } from "./middlewares/activity";
 import { activities } from "./routes/activities";
 import { auth } from "@/lib/auth";
 
@@ -31,8 +30,6 @@ app.use("*", async (c, next) => {
   c.set("member", member as typeof auth.$Infer.Member);
   return next();
 });
-
-// noteActivityMiddleware()(app);
 
 const routes = app.route("/notes", notes).route("/activities", activities);
 

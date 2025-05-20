@@ -25,11 +25,12 @@ export const notesRepository: NotesRepository = {
       .returning();
     return newNote;
   },
-  updateNoteContent: async (id, content) => {
+  updateNoteContent: async (id, content, lastUpdatedById) => {
     const [updatedNote] = await db
       .update(notes)
       .set({
         content,
+        lastUpdatedById,
       })
       .where(eq(notes.id, id))
       .returning();
