@@ -131,15 +131,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props} className="border-r border-dashed">
       <SidebarHeader>
-        <SidebarMenuButton
-          size="lg"
-          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-        >
-          <div className="bg-card flex aspect-square size-8 items-center justify-center rounded-xl dark:text-white border border-dashed">
-            <Notebook className="size-4" />
-          </div>
-          <span className="truncate font-medium">{siteConfig.name}</span>
-        </SidebarMenuButton>
+        <TeamSwitcher
+          teams={[
+            {
+              name: "Design Engineering",
+              logo: Frame,
+              plan: "Pro",
+            },
+          ]}
+        />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={dashboardConfig.navItems} />

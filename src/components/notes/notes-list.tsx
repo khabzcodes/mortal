@@ -9,7 +9,7 @@ interface NoteListProps {
 
 export const NotesList = ({ notes }: NoteListProps) => {
   return (
-    <div className="grid gap-2 sm:grid-cols-3">
+    <div className="grid gap-2 sm:grid-cols-4">
       {notes?.map((note, idx) => (
         <NoteCard
           key={idx}

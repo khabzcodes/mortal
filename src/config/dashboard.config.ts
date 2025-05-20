@@ -12,5 +12,10 @@ export const dashboardConfig: SidebarConfig = {
       url: "/notes",
       icon: "stickyNotes",
     },
+    {
+      title: "Trash",
+      url: "/trash",
+      icon: "trash",
+    },
   ],
 };
