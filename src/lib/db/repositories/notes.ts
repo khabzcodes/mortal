@@ -5,16 +5,9 @@ import { notes } from "../schemas/notes";
 import { nanoid } from "nanoid";
 
 export const notesRepository: NotesRepository = {
-  selectNotesByUserId: async (userId) => {
+  selectNotesByOrganizationId: async (organizationId) => {
     return await db.query.notes.findMany({
-      where: (n) => eq(n.userId, userId),
-      orderBy: (n) => [desc(n.createdAt)],
-    });
-  },
-  selectFavoriteNotesByUserId: async (userId) => {
-    return await db.query.notes.findMany({
-      where: (n) => eq(n.userId, userId) && eq(n.isFavorite, true),
-      limit: 6,
+      where: (n) => eq(n.organizationId, organizationId),
       orderBy: (n) => [desc(n.createdAt)],
     });
   },
@@ -37,16 +30,6 @@ export const notesRepository: NotesRepository = {
       .update(notes)
       .set({
         content,
-      })
-      .where(eq(notes.id, id))
-      .returning();
-    return updatedNote;
-  },
-  toggleNoteFavorite: async (id, isFavorite) => {
-    const [updatedNote] = await db
-      .update(notes)
-      .set({
-        isFavorite,
       })
       .where(eq(notes.id, id))
       .returning();

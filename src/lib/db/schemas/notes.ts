@@ -1,6 +1,7 @@
 import { boolean, json, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
-import { user } from "./auth-schema";
+import { member, organization } from "./auth-schema";
+import { relations } from "drizzle-orm";
 
 export const notes = pgTable("notes", {
   id: text("id").notNull().primaryKey().default(nanoid(12)),
@@ -8,14 +9,32 @@ export const notes = pgTable("notes", {
   description: text("description").notNull(),
   content: text("content"),
   tags: json("tags").$type<string[]>(),
-  isFavorite: boolean("is_favorite").notNull().default(false),
-  userId: text("user_id")
+  organizationId: text("organization_id")
     .notNull()
-    .references(() => user.id),
+    .references(() => organization.id),
+  createdById: text("created_by_id")
+    .notNull()
+    .references(() => member.id),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
     () => new Date()
   ),
+  lastUpdatedById: text("last_updated_by_id").references(() => member.id),
 });
+
+export const notesRelations = relations(notes, ({ one }) => ({
+  createdBy: one(member, {
+    fields: [notes.createdById],
+    references: [member.id],
+  }),
+  lastUpdatedBy: one(member, {
+    fields: [notes.lastUpdatedById],
+    references: [member.id],
+  }),
+  organization: one(organization, {
+    fields: [notes.organizationId],
+    references: [organization.id],
+  }),
+}));

@@ -120,6 +120,13 @@
       "when": 1747766969160,
       "tag": "0016_organizations",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1747770215360,
+      "tag": "0017_modify_notes",
+      "breakpoints": true
     }
   ]
 }

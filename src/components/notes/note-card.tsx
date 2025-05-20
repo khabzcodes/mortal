@@ -22,7 +22,6 @@ import dayjs from "dayjs";
 import { JSONContent } from "@tiptap/react";
 import { Icons } from "../icons";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toggleNoteFavorite } from "@/rpc/notes";
 import { QueryKeys } from "@/rpc/query-keys";
 
 dayjs.extend(relativeTime);
@@ -32,7 +31,6 @@ type NoteCardProps = {
     id: string;
     title: string;
     description: string;
-    isFavorite: boolean;
     content: string | null;
     tags: string[];
     createdAt: Date;
@@ -41,35 +39,13 @@ type NoteCardProps = {
 };
 
 export const NoteCard = ({
-  note: {
-    id,
-    title,
-    description,
-    isFavorite,
-    content,
-    tags,
-    createdAt,
-    updatedAt,
-  },
+  note: { id, title, description, content, tags, createdAt, updatedAt },
 }: NoteCardProps) => {
   const jsonContent: JSONContent = content ? JSON.parse(content) : null;
 
   const completedTaskCount = completeTask(jsonContent);
   const totalTaskCount = countTasks(jsonContent);
 
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation({
-    mutationFn: (favorite: boolean) => toggleNoteFavorite(id, favorite),
-    onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: [QueryKeys.GET_NOTES],
-      });
-      queryClient.invalidateQueries({
-        queryKey: [QueryKeys.GET_USER_ACTIVITY_SUMMARY],
-      });
-    },
-  });
   return (
     <Card className="shadow-lg bg-card/50 backdrop-blur-sm rounded-none border border-dashed">
       <CardHeader className="flex flex-row items-start justify-between space-y-0">
@@ -92,9 +68,7 @@ export const NoteCard = ({
                 Go to editor
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              {isFavorite ? "Remove from favorites" : "Add to favorites"}
-            </DropdownMenuItem>
+            <DropdownMenuItem>Pin note</DropdownMenuItem>
             <DropdownMenuItem>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -128,24 +102,6 @@ export const NoteCard = ({
               <span className="text-xs">Tasks</span>
             </div>
           )}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            onClick={(e) => {
-              e.stopPropagation();
-              mutation.mutate(!isFavorite);
-            }}
-          >
-            <Star
-              className={`h-4 w-4 ${
-                isFavorite ? "fill-accent text-accent" : ""
-              }`}
-            />
-            <span className="sr-only">
-              {isFavorite ? "Remove from favorites" : "Add to favorites"}
-            </span>
-          </Button>
         </div>
       </CardFooter>
     </Card>

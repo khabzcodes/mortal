@@ -8,19 +8,28 @@ import {
   updateContentValidation,
 } from "@/validations/notes";
 import { z, ZodError } from "zod";
-import { actions } from "@/lib/db/schemas/note-activities";
+import { auth } from "@/lib/auth";
 
 const logger = createLogger("NotesRoute");
 
-export const notes = new Hono()
+export const notes = new Hono<{
+  Variables: {
+    user: typeof auth.$Infer.Session.user | null;
+    session: typeof auth.$Infer.Session | null;
+    member: typeof auth.$Infer.Member | null;
+  };
+}>()
   .get("/", async (c) => {
     try {
-      const session = await getSession();
-      if (!session) {
+      const session = c.get("session");
+      const organizationId = session?.session?.activeOrganizationId;
+      if (!session || !organizationId) {
         return c.json({ message: "Unauthorized" }, 401);
       }
 
-      const notes = await notesRepository.selectNotesByUserId(session.user.id);
+      const notes = await notesRepository.selectNotesByOrganizationId(
+        organizationId
+      );
 
       return c.json({ data: notes }, 200);
     } catch (error) {
@@ -28,26 +37,9 @@ export const notes = new Hono()
       return c.json({ message: "Failed to fetch notes" }, 500);
     }
   })
-  .get("/favorites", async (c) => {
-    try {
-      const session = await getSession();
-      if (!session) {
-        return c.json({ message: "Unauthorized" }, 401);
-      }
-
-      const notes = await notesRepository.selectFavoriteNotesByUserId(
-        session.user.id
-      );
-
-      return c.json({ data: notes }, 200);
-    } catch (error) {
-      logger.error("Error fetching favorite notes", error);
-      return c.json({ message: "Failed to fetch favorite notes" }, 500);
-    }
-  })
   .get("/:id", async (c) => {
     try {
-      const session = await getSession();
+      const session = c.get("session");
       if (!session) {
         return c.json({ message: "Unauthorized" }, 401);
       }
@@ -55,7 +47,7 @@ export const notes = new Hono()
       const noteId = c.req.param("id");
       const note = await notesRepository.selectNoteById(noteId);
 
-      if (!note || note.userId !== session.user.id) {
+      if (!note) {
         return c.json({ message: "Note not found" }, 404);
       }
 
@@ -67,8 +59,9 @@ export const notes = new Hono()
   })
   .post("/", zValidator("json", createNoteValidation), async (c) => {
     try {
-      const session = await getSession();
-      if (!session) {
+      const session = c.get("session");
+      const member = c.get("member");
+      if (!session || !session.session.activeOrganizationId || !member) {
         return c.json({ message: "Unauthorized" }, 401);
       }
 
@@ -78,14 +71,14 @@ export const notes = new Hono()
         title,
         description,
         tags: tags || [],
-        userId: session.user.id,
+        organizationId: session.session.activeOrganizationId,
+        createdById: member.id,
+        lastUpdatedById: null,
       });
 
       if (!note) {
         return c.json({ message: "Failed to create note" }, 500);
       }
-
-      await c.trackActivity(note.id, session.user.id, "CREATE");
 
       return c.json({ data: note }, 201);
     } catch (error) {
@@ -101,8 +94,9 @@ export const notes = new Hono()
     zValidator("json", updateContentValidation),
     async (c) => {
       try {
-        const session = await getSession();
-        if (!session) {
+        const session = c.get("session");
+        const member = c.get("member");
+        if (!session || !session.session.activeOrganizationId || !member) {
           return c.json({ message: "Unauthorized" }, 401);
         }
 
@@ -111,11 +105,9 @@ export const notes = new Hono()
 
         const note = await notesRepository.updateNoteContent(noteId, content);
 
-        if (!note || note.userId !== session.user.id) {
+        if (!note) {
           return c.json({ message: "Note not found" }, 404);
         }
-
-        await c.trackActivity(note.id, session.user.id, "UPDATE");
 
         return c.json({ data: note }, 200);
       } catch (error) {
@@ -124,44 +116,6 @@ export const notes = new Hono()
           return c.json({ message: error.errors[0].message }, 400);
         }
         return c.json({ message: "Failed to update note content" }, 500);
-      }
-    }
-  )
-  .put(
-    "/:id/favorite",
-    zValidator("json", z.object({ isFavorite: z.boolean() })),
-    async (c) => {
-      try {
-        const session = await getSession();
-        if (!session) {
-          return c.json({ message: "Unauthorized" }, 401);
-        }
-
-        const noteId = c.req.param("id");
-        const { isFavorite } = c.req.valid("json");
-
-        const note = await notesRepository.toggleNoteFavorite(
-          noteId,
-          isFavorite
-        );
-
-        if (!note || note.userId !== session.user.id) {
-          return c.json({ message: "Note not found" }, 404);
-        }
-
-        await c.trackActivity(
-          note.id,
-          session.user.id,
-          isFavorite ? "ADD_TO_FAVORITES" : "REMOVE_FROM_FAVORITES"
-        );
-
-        return c.json({ data: note }, 200);
-      } catch (error) {
-        logger.error("Error toggling note favorite", error);
-        if (error instanceof ZodError) {
-          return c.json({ message: error.errors[0].message }, 400);
-        }
-        return c.json({ message: "Failed to toggle note favorite" }, 500);
       }
     }
   );

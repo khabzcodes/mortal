@@ -17,7 +17,6 @@ export const NotesList = ({ notes }: NoteListProps) => {
             id: note.id,
             title: note.title,
             description: note.description,
-            isFavorite: note.isFavorite,
             content: note.content,
             tags: note.tags || [],
             createdAt: new Date(note.createdAt),
