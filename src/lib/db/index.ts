@@ -7,6 +7,7 @@ import {
   noteActivities,
   noteActivitiesRelations,
 } from "./schemas/note-activities";
+import { contributions, contributionsRelations } from "./schemas/contributors";
 
 const sql = postgres(env.DATABASE_URL, {
   max: 10, // Connection pool size
@@ -23,5 +24,7 @@ export const db = drizzle(sql, {
     notes,
     noteActivities,
     noteActivitiesRelations,
+    contributions,
+    contributionsRelations,
   },
 });

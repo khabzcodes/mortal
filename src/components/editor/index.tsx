@@ -76,7 +76,7 @@ export function Editor({ note, onUpdate, onCreate }: EditorProps) {
         <ScrollArea className="h-svh">
           <div className="py-20">
             <EditorContent editor={editor} className="simple-editor-content">
-              <DefaultBubbleMenu editor={editor} />
+              <DefaultBubbleMenu editor={editor} showAiTools={true} />
             </EditorContent>
           </div>
         </ScrollArea>

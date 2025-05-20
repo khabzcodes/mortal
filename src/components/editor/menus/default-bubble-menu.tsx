@@ -5,6 +5,7 @@ import { NodeSelector } from "./selectors/node-selector";
 import { Separator } from "@/components/ui/separator";
 import { TextStylesSelector } from "./selectors/text-styles-selector";
 import { TextAlignSelector } from "./selectors/text-align-selector";
+import { AiSelector } from "./selectors/ai-selector";
 
 export const DefaultBubbleMenu = ({
   editor,
@@ -38,6 +39,12 @@ export const DefaultBubbleMenu = ({
     >
       <ScrollArea className="max-w-[90vw] border border-dashed bg-popover shadow-xl">
         <div className="flex">
+          {showAiTools && (
+            <>
+              <AiSelector editor={editor} />
+              <Separator orientation="vertical" className="h-10" />
+            </>
+          )}
           <NodeSelector editor={editor} />
           <Separator orientation="vertical" className="h-10" />
           <TextStylesSelector editor={editor} />

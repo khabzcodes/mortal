@@ -11,14 +11,6 @@ export const env = createEnv({
     // Github
     GITHUB_CLIENT_ID: z.string().min(1),
     GITHUB_CLIENT_SECRET: z.string().min(1),
-    // Google
-    GOOGLE_CLIENT_ID: z.string().optional(),
-    GOOGLE_CLIENT_SECRET: z.string().optional(),
-    // Discord
-    DISCORD_CLIENT_ID: z.string().optional(),
-    DISCORD_CLIENT_SECRET: z.string().optional(),
-    // OpenAI
-    OPENAI_API_KEY: z.string().min(1),
   },
   client: {},
   experimental__runtimeEnv: {},

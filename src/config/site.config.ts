@@ -2,8 +2,7 @@ import { SiteConfig } from "@/types";
 
 export const siteConfig: SiteConfig = {
   name: "Kua",
-  title:
-    "Mortal - Powerful Next.js 15 Template with Better-Auth, Drizzle ORM, PostgreSQL, and Shadcn UI",
+  title: "Kua - An AI powered note-taking app with a modern",
   description:
     "Modern Next.js 15 stack with Better-Auth, Drizzle ORM, PostgreSQL, Shadcn UI, and Tailwind v4 for fast, secure web app development.",
   origin: "https://titan.rdsx.dev",
