@@ -5,6 +5,7 @@ import { organization } from "better-auth/plugins";
 import { db } from "./db";
 import { env } from "@/env";
 import * as schema from "@/lib/db/schemas/auth-schema";
+import { nanoid } from "nanoid";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -21,8 +22,13 @@ export const auth = betterAuth({
     user: {
       create: {
         after: async (user) => {
-          // Add custom logic here, e.g., send a welcome email
-          console.log("User created:", user);
+          await auth.api.createOrganization({
+            body: {
+              name: user.name ? `${user.name}'s Organization` : "Personal",
+              slug: `${nanoid(12)}`,
+              userId: user.id,
+            },
+          });
         },
       },
     },
