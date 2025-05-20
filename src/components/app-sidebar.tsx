@@ -18,7 +18,7 @@ import {
 import { NavMain } from "@/components/nav-main";
 import { NavProjects } from "@/components/nav-projects";
 import { NavUser } from "@/components/nav-user";
-import { TeamSwitcher } from "@/components/team-switcher";
+import { WorkspaceSwitcher } from "@/components/workspace-switcher";
 import {
   Sidebar,
   SidebarContent,
@@ -27,10 +27,9 @@ import {
   SidebarMenuButton,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { Button } from "./ui/button";
-import Link from "next/link";
-import { siteConfig } from "@/config/site.config";
 import { dashboardConfig } from "@/config/dashboard.config";
+import { useActiveOrganization, useListOrganizations } from "@/lib/auth-client";
+import { Skeleton } from "./ui/skeleton";
 
 // This is sample data.
 const data = {
@@ -128,18 +127,30 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data: workspaces, isPending: loadingWorkspace } =
+    useListOrganizations();
+  const { data: activeWorkspace, isPending: loadingActiveWorkspace } =
+    useActiveOrganization();
   return (
     <Sidebar collapsible="icon" {...props} className="border-r border-dashed">
       <SidebarHeader>
-        <TeamSwitcher
-          teams={[
-            {
-              name: "Design Engineering",
-              logo: Frame,
-              plan: "Pro",
-            },
-          ]}
-        />
+        {workspaces && activeWorkspace ? (
+          <WorkspaceSwitcher
+            workspaces={
+              workspaces.map((workspace) => ({
+                id: workspace.id,
+                name: workspace.name,
+                plan: "Free plan",
+              })) || []
+            }
+            activeWorkspaceId={activeWorkspace.id}
+          />
+        ) : (
+          <div className="flex items-center justify-between px-2 gap-2">
+            <Skeleton className="h-9 w-9 rounded-xl" />
+            <Skeleton className="h-9 w-full rounded-xl" />
+          </div>
+        )}
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={dashboardConfig.navItems} />

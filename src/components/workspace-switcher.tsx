@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ChevronsUpDown, Plus } from "lucide-react";
+import { ChevronsUpDown, FrameIcon, Plus } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -19,19 +19,23 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
-export function TeamSwitcher({
-  teams,
+export function WorkspaceSwitcher({
+  workspaces,
+  activeWorkspaceId,
 }: {
-  teams: {
+  workspaces: {
+    id: string;
     name: string;
-    logo: React.ElementType;
     plan: string;
   }[];
+  activeWorkspaceId: string;
 }) {
   const { isMobile } = useSidebar();
-  const [activeTeam, setActiveTeam] = React.useState(teams[0]);
+  const [activeWorkspace, setActiveWorkspace] = React.useState(
+    workspaces.find((workspace) => workspace.id === activeWorkspaceId)
+  );
 
-  if (!activeTeam) {
+  if (!activeWorkspace) {
     return null;
   }
 
@@ -45,11 +49,13 @@ export function TeamSwitcher({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <div className="bg-green-500 text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-xl">
-                <activeTeam.logo className="size-4" />
+                <FrameIcon className="size-4" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{activeTeam.name}</span>
-                <span className="truncate text-xs">{activeTeam.plan}</span>
+                <span className="truncate font-medium">
+                  {activeWorkspace.name}
+                </span>
+                <span className="truncate text-xs">{activeWorkspace.plan}</span>
               </div>
               <ChevronsUpDown className="ml-auto" />
             </SidebarMenuButton>
@@ -61,19 +67,16 @@ export function TeamSwitcher({
             sideOffset={4}
           >
             <DropdownMenuLabel className="text-muted-foreground text-xs">
-              Teams
+              Workspaces
             </DropdownMenuLabel>
-            {teams.map((team, index) => (
+            {workspaces.map((workspace, idx) => (
               <DropdownMenuItem
-                key={team.name}
-                onClick={() => setActiveTeam(team)}
+                key={workspace.name}
+                onClick={() => setActiveWorkspace(workspace)}
                 className="gap-2 p-2"
               >
-                <div className="flex size-6 items-center justify-center rounded-md border">
-                  <team.logo className="size-3.5 shrink-0" />
-                </div>
-                {team.name}
-                <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
+                <span className="truncate">{workspace.name}</span>
+                <DropdownMenuShortcut>⌘{idx + 1}</DropdownMenuShortcut>
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
