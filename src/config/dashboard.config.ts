@@ -13,6 +13,11 @@ export const dashboardConfig: SidebarConfig = {
       icon: "stickyNotes",
     },
     {
+      title: "Settings",
+      url: "/settings",
+      icon: "settings",
+    },
+    {
       title: "Trash",
       url: "/trash",
       icon: "trash",

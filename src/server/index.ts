@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { notes } from "./routes/notes";
 import { activities } from "./routes/activities";
 import { auth } from "@/lib/auth";
+import { members } from "./routes/members";
 
 export const app = new Hono<{
   Variables: {
@@ -31,6 +32,9 @@ app.use("*", async (c, next) => {
   return next();
 });
 
-const routes = app.route("/notes", notes).route("/activities", activities);
+const routes = app
+  .route("/notes", notes)
+  .route("/activities", activities)
+  .route("/members", members);
 
 export type AppTypes = typeof routes;
