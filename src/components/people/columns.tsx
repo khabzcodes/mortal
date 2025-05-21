@@ -8,6 +8,7 @@ export type Person = {
   image: string | undefined;
   email: string;
   name: string;
+  role: string;
 };
 
 export const columns: ColumnDef<Person>[] = [
@@ -45,6 +46,21 @@ export const columns: ColumnDef<Person>[] = [
       const email = row.original.email;
 
       return <span className="text-sm font-medium leading-tight">{email}</span>;
+    },
+  },
+  {
+    accessorKey: "role",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Role" />
+    ),
+    cell: ({ row }) => {
+      const role = row.original.role;
+
+      return (
+        <span className="text-sm font-medium leading-tight capitalize">
+          {role}
+        </span>
+      );
     },
   },
 ];
