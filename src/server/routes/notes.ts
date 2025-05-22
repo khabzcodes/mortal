@@ -9,6 +9,8 @@ import {
 } from "@/validations/notes";
 import { z, ZodError } from "zod";
 import { auth } from "@/lib/auth";
+import { contributorsRepository } from "@/lib/db/repositories/contributors";
+import { nanoid } from "nanoid";
 
 const logger = createLogger("NotesRoute");
 
@@ -103,6 +105,11 @@ export const notes = new Hono<{
         const noteId = c.req.param("id");
         const { content } = c.req.valid("json");
 
+        const noteExists = await notesRepository.selectNoteById(noteId);
+        if (!noteExists) {
+          return c.json({ message: "Note not found" }, 404);
+        }
+
         const note = await notesRepository.updateNoteContent(
           noteId,
           content,
@@ -111,6 +118,18 @@ export const notes = new Hono<{
 
         if (!note) {
           return c.json({ message: "Note not found" }, 404);
+        }
+
+        const isContributor = noteExists.contributors.some(
+          (contributor) => contributor.user.id === session.user.id
+        );
+
+        if (!isContributor) {
+          await contributorsRepository.insertContributor({
+            id: nanoid(12),
+            noteId: note.id,
+            userId: session.user.id,
+          });
         }
 
         return c.json({ data: note }, 200);
