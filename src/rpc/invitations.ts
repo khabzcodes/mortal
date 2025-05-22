@@ -26,3 +26,14 @@ export const createInvitation = async (
   const { data: invitation } = await response.json();
   return invitation;
 };
+
+export const getInvitation = async (id: string) => {
+  const response = await route[":id"].$get({ param: { id } });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Failed to fetch invitation");
+  }
+
+  const { data: invitation } = await response.json();
+  return invitation;
+};

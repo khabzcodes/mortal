@@ -1,6 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "..";
-import { invitation } from "../schemas/auth-schema";
+import { invitation, organization } from "../schemas/auth-schema";
 import { InvitationRepository } from "./interfaces/invitations";
 
 export const invitationRepository: InvitationRepository = {
@@ -23,6 +23,15 @@ export const invitationRepository: InvitationRepository = {
           eq(invitation.organizationId, organizationId)
         )
       );
+
+    return invite;
+  },
+  selectInvitationById: async (id: string) => {
+    const [invite] = await db
+      .select()
+      .from(invitation)
+      .where(eq(invitation.id, id))
+      .innerJoin(organization, eq(organization.id, invitation.organizationId));
 
     return invite;
   },

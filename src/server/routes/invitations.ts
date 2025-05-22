@@ -34,6 +34,29 @@ export const invitations = new Hono<{
       return c.json({ message: "Failed to fetch invitations" }, 500);
     }
   })
+  .get("/:id", async (c) => {
+    try {
+      const id = c.req.param("id");
+      const session = c.get("session");
+      if (!session || !session.session.userId) {
+        return c.json({ message: "Unauthorized" }, 401);
+      }
+
+      const response = await invitationRepository.selectInvitationById(id);
+      if (!response) {
+        return c.json({ message: "Invitation not found" }, 404);
+      }
+
+      if (response.invitation.email !== session.user.email) {
+        return c.json({ message: "Unauthorized" }, 401);
+      }
+
+      return c.json({ data: response }, 200);
+    } catch (error) {
+      logger.error("Error fetching invitation", error);
+      return c.json({ message: "Failed to fetch invitation" }, 500);
+    }
+  })
   .post("/", zValidator("json", createInvitationSchema), async (c) => {
     try {
       const { email, role } = c.req.valid("json");
