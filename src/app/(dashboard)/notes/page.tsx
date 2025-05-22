@@ -33,6 +33,17 @@ export default function NotesPage() {
     ...note,
     createdAt: new Date(note.createdAt),
     updatedAt: note.updatedAt ? new Date(note.updatedAt) : null,
+    contributors: note.contributors.map((contributor) => ({
+      ...contributor,
+      createdAt: contributor.createdAt
+        ? new Date(contributor.createdAt)
+        : undefined,
+      user: {
+        ...contributor.user,
+        createdAt: new Date(contributor.user.createdAt),
+        updatedAt: new Date(contributor.user.updatedAt),
+      },
+    })),
   }));
 
   return (
