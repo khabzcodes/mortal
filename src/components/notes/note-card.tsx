@@ -21,8 +21,6 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";
 import { JSONContent } from "@tiptap/react";
 import { Icons } from "../icons";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { QueryKeys } from "@/rpc/query-keys";
 
 dayjs.extend(relativeTime);
 

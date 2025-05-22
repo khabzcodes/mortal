@@ -6,4 +6,9 @@ export type InvitationRepository = {
   selectInvitationsByOrganizationId(
     organizationId: string
   ): Promise<Invitation[]>;
+  selectInvitationByEmailAndOrganizationId(
+    email: string,
+    organizationId: string
+  ): Promise<Invitation | null>;
+  insertInvitation(data: Invitation): Promise<Invitation | null>;
 };

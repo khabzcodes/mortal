@@ -10,8 +10,12 @@ import { columns as invitationCols } from "@/components/invitations/columns";
 import { Skeleton } from "../ui/skeleton";
 import { getWorkspaceInvitations } from "@/rpc/invitations";
 import { InvitationsDataTable } from "../invitations/invitations-table";
+import { useState } from "react";
+import { InviteMemberModal } from "../invitations/invite-member-modal";
 
 export const PeopleComponent = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   const { data: members } = useQuery({
     queryKey: [QueryKeys.GET_ORGANIZATION_MEMBERS],
     queryFn: () => getWorkspaceMembers(),
@@ -30,7 +34,7 @@ export const PeopleComponent = () => {
             Only people with permission to invite members can add new members.
           </span>
         </div>
-        <Button size="sm">
+        <Button size="sm" onClick={() => setIsOpen(true)}>
           <Icons.addSquare />
           Add Members
         </Button>
@@ -77,6 +81,7 @@ export const PeopleComponent = () => {
           <Skeleton className="h-60 w-full" />
         </div>
       )}
+      <InviteMemberModal isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 };

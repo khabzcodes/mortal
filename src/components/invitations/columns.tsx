@@ -1,6 +1,10 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "../shared/datatable-column-header";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 type Invitation = {
   id: string;
@@ -55,13 +59,15 @@ export const columns: ColumnDef<Invitation>[] = [
   {
     accessorKey: "expiresAt",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Expires At" />
+      <DataTableColumnHeader column={column} title="Expires In" />
     ),
     cell: ({ row }) => {
       const expiresAt = row.original.expiresAt;
 
       return (
-        <span className="text-sm font-medium leading-tight">{expiresAt}</span>
+        <span className="text-sm font-medium leading-tight">
+          {dayjs().to(expiresAt, true)}
+        </span>
       );
     },
   },
