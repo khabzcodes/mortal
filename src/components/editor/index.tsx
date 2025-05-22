@@ -75,8 +75,11 @@ export function Editor({ note, onUpdate, onCreate }: EditorProps) {
     <EditorContext.Provider value={{ editor }}>
       <div className="content-wrapper">
         <ScrollArea className="h-svh">
-          <div className="py-20">
-            <EditorContent editor={editor} className="simple-editor-content">
+          <div className="py-4">
+            <EditorContent
+              editor={editor}
+              className="prose dark:prose-invert focus:outline-none max-w-full z-0 px-32"
+            >
               <DefaultBubbleMenu editor={editor} showAiTools={true} />
               <CodeBlockLanguageMenu editor={editor} />
             </EditorContent>

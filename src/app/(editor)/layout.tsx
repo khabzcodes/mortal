@@ -1,4 +1,4 @@
-// import "@/styles/prosemirror.css";
+import "@/styles/prosemirror.css";
 // import "katex/dist/katex.min.css";
 import "@/styles/_keyframe-animations.scss";
 import "@/styles/_variables.scss";
