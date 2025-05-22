@@ -1,10 +1,10 @@
 import { SiteConfig } from "@/types";
 
 export const siteConfig: SiteConfig = {
-  name: "Kua",
-  title: "Kua - An AI powered note-taking app with a modern",
-  description:
-    "Modern Next.js 15 stack with Better-Auth, Drizzle ORM, PostgreSQL, Shadcn UI, and Tailwind v4 for fast, secure web app development.",
+  name: "Nodify",
+  title:
+    "Nodify - The AI workspace where you achieve more without losing control of your data.",
+  description: "Bring projects, wikis, and teams together with AI",
   origin: "https://titan.rdsx.dev",
   keywords: [
     "Next.js 15",
@@ -15,15 +15,14 @@ export const siteConfig: SiteConfig = {
     "Tailwind CSS V4",
     "Shadcn UI",
     "TypeScript",
-    "Full-Stack Template",
   ],
   og: "https://titan.rdsx.dev/og.png",
   creator: {
-    name: "rds_agi",
-    url: "https://rdsx.dev",
+    name: "khabzcodes",
+    url: "https://x.com/khabubundivhu",
   },
   socials: {
-    github: "https://github.com/rudrodip/titan",
-    x: "https://x.com/rds_agi",
+    github: "https://github.com/khabzcodes",
+    x: "https://x.com/khabubundivhu",
   },
 };
