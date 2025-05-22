@@ -18,6 +18,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { organization } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export function WorkspaceSwitcher({
   workspaces,
@@ -31,6 +33,7 @@ export function WorkspaceSwitcher({
   activeWorkspaceId: string;
 }) {
   const { isMobile } = useSidebar();
+  const router = useRouter();
   const [activeWorkspace, setActiveWorkspace] = React.useState(
     workspaces.find((workspace) => workspace.id === activeWorkspaceId)
   );
@@ -38,6 +41,19 @@ export function WorkspaceSwitcher({
   if (!activeWorkspace) {
     return null;
   }
+
+  const onSwitchWorkspace = async (workspaceId: string) => {
+    await organization.setActive(
+      {
+        organizationId: workspaceId,
+      },
+      {
+        onSuccess: () => {
+          window.location.reload();
+        },
+      }
+    );
+  };
 
   return (
     <SidebarMenu>
@@ -72,7 +88,11 @@ export function WorkspaceSwitcher({
             {workspaces.map((workspace, idx) => (
               <DropdownMenuItem
                 key={workspace.name}
-                onClick={() => setActiveWorkspace(workspace)}
+                onClick={() => {
+                  if (activeWorkspace.id !== workspace.id) {
+                    onSwitchWorkspace(workspace.id);
+                  }
+                }}
                 className="gap-2 p-2"
               >
                 <span className="truncate">{workspace.name}</span>
