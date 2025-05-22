@@ -23,6 +23,7 @@ import { getSuggestion } from "./extensions/slash-command/suggestion";
 import { defaultExtensions } from "./extensions/default-extensions";
 import { toast } from "sonner";
 import { DefaultBubbleMenu } from "./menus/default-bubble-menu";
+import { CodeBlockLanguageMenu } from "./menus/codeblock-language-menu";
 
 type EditorProps = {
   note: Note;
@@ -77,6 +78,7 @@ export function Editor({ note, onUpdate, onCreate }: EditorProps) {
           <div className="py-20">
             <EditorContent editor={editor} className="simple-editor-content">
               <DefaultBubbleMenu editor={editor} showAiTools={true} />
+              <CodeBlockLanguageMenu editor={editor} />
             </EditorContent>
           </div>
         </ScrollArea>
