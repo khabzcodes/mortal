@@ -21,6 +21,8 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";
 import { JSONContent } from "@tiptap/react";
 import { Icons } from "../icons";
+import { ContributorWithUser } from "@/types/contributors";
+import { AvatarCircles } from "../ui/avatar-circles";
 
 dayjs.extend(relativeTime);
 
@@ -31,13 +33,23 @@ type NoteCardProps = {
     description: string;
     content: string | null;
     tags: string[];
+    contributors: ContributorWithUser[];
     createdAt: Date;
     updatedAt: Date | null;
   };
 };
 
 export const NoteCard = ({
-  note: { id, title, description, content, tags, createdAt, updatedAt },
+  note: {
+    id,
+    title,
+    description,
+    content,
+    tags,
+    contributors,
+    createdAt,
+    updatedAt,
+  },
 }: NoteCardProps) => {
   const jsonContent: JSONContent = content ? JSON.parse(content) : null;
 
@@ -98,6 +110,16 @@ export const NoteCard = ({
                 {completedTaskCount}/{totalTaskCount}
               </span>
               <span className="text-xs">Tasks</span>
+            </div>
+          )}
+          {contributors.length > 0 && (
+            <div className="flex items-center">
+              <AvatarCircles
+                users={contributors.map((contributor) => ({
+                  name: contributor.user.name,
+                  image: contributor.user.image || undefined,
+                }))}
+              />
             </div>
           )}
         </div>

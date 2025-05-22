@@ -1,10 +1,10 @@
 "use client";
 
 import { NoteCard } from "./note-card";
-import { Note } from "@/types/notes";
+import { Note, NoteWithContributors } from "@/types/notes";
 
 interface NoteListProps {
-  notes: Note[];
+  notes: NoteWithContributors[];
 }
 
 export const NotesList = ({ notes }: NoteListProps) => {
@@ -18,6 +18,7 @@ export const NotesList = ({ notes }: NoteListProps) => {
             title: note.title,
             description: note.description,
             content: note.content,
+            contributors: note.contributors,
             tags: note.tags || [],
             createdAt: new Date(note.createdAt),
             updatedAt: note.updatedAt ? new Date(note.updatedAt) : null,
