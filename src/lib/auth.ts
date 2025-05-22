@@ -18,6 +18,9 @@ export const auth = betterAuth({
       clientSecret: env.GITHUB_CLIENT_SECRET,
     },
   },
+  emailAndPassword: {
+    enabled: true,
+  },
   databaseHooks: {
     user: {
       create: {

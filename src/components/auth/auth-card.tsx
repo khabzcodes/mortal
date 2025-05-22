@@ -15,6 +15,8 @@ import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { Icons } from "@/components/icons";
 import Link from "next/link";
+import { SignInForm } from "./sign-in-form";
+import { SignUpForm } from "./sign-up-form";
 
 export default function AuthCard({
   title,
@@ -43,6 +45,12 @@ export default function AuthCard({
               "justify-between flex-col"
             )}
           >
+            {mode === "sign-in" ? <SignInForm /> : <SignUpForm />}
+            <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border w-full">
+              <span className="relative z-10 px-2 text-muted-foreground">
+                Or continue with
+              </span>
+            </div>
             <SignInButton
               title="Sign in with Github"
               provider="github"
