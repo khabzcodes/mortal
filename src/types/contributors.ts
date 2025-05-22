@@ -1,9 +1,7 @@
-import {
-  contributionsRelations,
-  contributions,
-} from "@/lib/db/schemas/contributors";
+import { contributors } from "@/lib/db/schemas/contributors";
+import { UserSelect } from "./members";
 
-export type SelectContributor =
-  typeof contributionsRelations.table.$inferSelect;
-
-export type InsertContributor = typeof contributions.$inferInsert;
+export type InsertContributor = typeof contributors.$inferInsert;
+export type ContributorWithUser = InsertContributor & {
+  user: UserSelect;
+};

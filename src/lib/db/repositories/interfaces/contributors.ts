@@ -1,7 +1,5 @@
-import { InsertContributor, SelectContributor } from "@/types/contributors";
+import { InsertContributor } from "@/types/contributors";
 
 export type ContributorsRepository = {
-  insertContributor(
-    data: Omit<InsertContributor, "id" | "createdAt">
-  ): Promise<InsertContributor>;
+  insertContributor(data: InsertContributor): Promise<InsertContributor>;
 };

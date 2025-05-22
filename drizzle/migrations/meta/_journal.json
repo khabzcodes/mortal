@@ -127,6 +127,20 @@
       "when": 1747770215360,
       "tag": "0017_modify_notes",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1747922175736,
+      "tag": "0018_modify_contributors",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1747924082384,
+      "tag": "0019_rename_contributors",
+      "breakpoints": true
     }
   ]
 }

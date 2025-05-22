@@ -2,6 +2,7 @@ import { boolean, json, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 import { member, organization } from "./auth-schema";
 import { relations } from "drizzle-orm";
+import { contributors } from "./contributors";
 
 export const notes = pgTable("notes", {
   id: text("id").notNull().primaryKey().default(nanoid(12)),
@@ -24,7 +25,7 @@ export const notes = pgTable("notes", {
   lastUpdatedById: text("last_updated_by_id").references(() => member.id),
 });
 
-export const notesRelations = relations(notes, ({ one }) => ({
+export const notesRelations = relations(notes, ({ one, many }) => ({
   createdBy: one(member, {
     fields: [notes.createdById],
     references: [member.id],
@@ -37,4 +38,5 @@ export const notesRelations = relations(notes, ({ one }) => ({
     fields: [notes.organizationId],
     references: [organization.id],
   }),
+  contributors: many(contributors),
 }));

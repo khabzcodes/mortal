@@ -7,12 +7,28 @@ import { nanoid } from "nanoid";
 export const notesRepository: NotesRepository = {
   selectNotesByOrganizationId: async (organizationId) => {
     return await db.query.notes.findMany({
-      where: (n) => eq(n.organizationId, organizationId),
-      orderBy: (n) => [desc(n.createdAt)],
+      where: eq(notes.organizationId, organizationId),
+      with: {
+        contributors: {
+          with: {
+            user: true,
+          },
+        },
+      },
+      orderBy: [desc(notes.createdAt)],
     });
   },
   selectNoteById: async (id) => {
-    const [note] = await db.select().from(notes).where(eq(notes.id, id));
+    const note = await db.query.notes.findFirst({
+      where: (n) => eq(n.id, id),
+      with: {
+        contributors: {
+          with: {
+            user: true,
+          },
+        },
+      },
+    });
     return note;
   },
   insertNote: async (note) => {
