@@ -6,6 +6,7 @@ import { db } from "./db";
 import { env } from "@/env";
 import * as schema from "@/lib/db/schemas/auth-schema";
 import { nanoid } from "nanoid";
+import { eq } from "drizzle-orm";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -32,6 +33,30 @@ export const auth = betterAuth({
               userId: user.id,
             },
           });
+        },
+      },
+    },
+    session: {
+      create: {
+        after: async (session) => {
+          const [dbSession] = await db
+            .select()
+            .from(schema.session)
+            .where((s) => eq(s.userId, session.userId));
+          if (dbSession && !dbSession.activeOrganizationId) {
+            const [member] = await db
+              .select()
+              .from(schema.member)
+              .where((o) => eq(o.userId, session.userId));
+            if (member) {
+              await db
+                .update(schema.session)
+                .set({
+                  activeOrganizationId: member.organizationId,
+                })
+                .where(eq(schema.session.id, session.id));
+            }
+          }
         },
       },
     },
