@@ -24,14 +24,21 @@ import { defaultExtensions } from "./extensions/default-extensions";
 import { toast } from "sonner";
 import { DefaultBubbleMenu } from "./menus/default-bubble-menu";
 import { CodeBlockLanguageMenu } from "./menus/codeblock-language-menu";
+import { RealtimeCursors } from "./realtime-cursors";
+import { useCursorVisibility } from "@/hooks/use-cursor-visibility";
 
 type EditorProps = {
   note: Note;
+  user: {
+    id: string;
+    name: string;
+  };
   onUpdate: (editor: EditorInstance) => void;
   onCreate: (editor: EditorInstance) => void;
 };
 
-export function Editor({ note, onUpdate, onCreate }: EditorProps) {
+export function Editor({ note, onUpdate, onCreate, user }: EditorProps) {
+  const editorContainerRef = React.useRef<HTMLDivElement>(null);
   const editor = useEditor(
     {
       editorProps: {
@@ -71,6 +78,16 @@ export function Editor({ note, onUpdate, onCreate }: EditorProps) {
     [note.content]
   );
 
+  // Calculate estimated toolbar height - adjust based on your actual UI
+  const toolbarHeight = 40;
+
+  // Use the cursor visibility hook to ensure cursor is always visible
+  // const rect = useCursorVisibility({
+  //   editor,
+  //   overlayHeight: toolbarHeight,
+  //   elementRef: editorContainerRef,
+  // });
+
   return (
     <EditorContext.Provider value={{ editor }}>
       <div className="content-wrapper">
@@ -82,6 +99,11 @@ export function Editor({ note, onUpdate, onCreate }: EditorProps) {
             >
               <DefaultBubbleMenu editor={editor} showAiTools={true} />
               <CodeBlockLanguageMenu editor={editor} />
+              <RealtimeCursors
+                roomName={note.id}
+                username={user.name}
+                userId={user.id}
+              />
             </EditorContent>
           </div>
         </ScrollArea>

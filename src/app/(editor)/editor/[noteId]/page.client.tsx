@@ -13,6 +13,7 @@ import {
 import { useState } from "react";
 import { Editor as EditorInstance } from "@tiptap/core";
 import { EditorHeader } from "@/components/editor/header";
+import { useSession } from "@/lib/auth-client";
 
 type EditorClientProps = {
   noteId: string;
@@ -20,6 +21,8 @@ type EditorClientProps = {
 export const EditorClient = ({ noteId }: EditorClientProps) => {
   const [editor, setEditor] = useState<EditorInstance | null>(null);
   const queryClient = useQueryClient();
+
+  const { data: session } = useSession();
 
   const { data, isPending, error } = useQuery({
     queryKey: [QueryKeys.GET_NODE_BY_ID, noteId],
@@ -35,7 +38,7 @@ export const EditorClient = ({ noteId }: EditorClientProps) => {
     },
   });
 
-  if (isPending) return <div>Loading...</div>;
+  if (isPending || !session?.user) return <div>Loading...</div>;
 
   if (!data) {
     return <NotFound />;
@@ -78,6 +81,10 @@ export const EditorClient = ({ noteId }: EditorClientProps) => {
             note={formattedNote}
             onUpdate={setEditor}
             onCreate={setEditor}
+            user={{
+              id: session.user.id,
+              name: session.user.name,
+            }}
           />
         </ResizablePanel>
         <ResizableHandle withHandle />
