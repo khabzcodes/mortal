@@ -57,6 +57,12 @@ export const auth = betterAuth({
                 .where(eq(schema.session.id, session.id));
             }
           }
+          await db
+            .update(schema.session)
+            .set({
+              activeOrganizationId: dbSession?.activeOrganizationId,
+            })
+            .where(eq(schema.session.id, session.id));
         },
       },
     },
