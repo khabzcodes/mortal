@@ -28,7 +28,7 @@ export const auth = betterAuth({
         after: async (user) => {
           await auth.api.createOrganization({
             body: {
-              name: user.name ? `${user.name}'s Organization` : "Personal",
+              name: user.name ? `${user.name}'s Workspace` : "Personal",
               slug: `${nanoid(12)}`,
               userId: user.id,
             },
