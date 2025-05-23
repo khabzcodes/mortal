@@ -25,7 +25,6 @@ import { toast } from "sonner";
 import { DefaultBubbleMenu } from "./menus/default-bubble-menu";
 import { CodeBlockLanguageMenu } from "./menus/codeblock-language-menu";
 import { RealtimeCursors } from "./realtime-cursors";
-import { useCursorVisibility } from "@/hooks/use-cursor-visibility";
 
 type EditorProps = {
   note: Note;
@@ -77,16 +76,6 @@ export function Editor({ note, onUpdate, onCreate, user }: EditorProps) {
     },
     [note.content]
   );
-
-  // Calculate estimated toolbar height - adjust based on your actual UI
-  const toolbarHeight = 40;
-
-  // Use the cursor visibility hook to ensure cursor is always visible
-  // const rect = useCursorVisibility({
-  //   editor,
-  //   overlayHeight: toolbarHeight,
-  //   elementRef: editorContainerRef,
-  // });
 
   return (
     <EditorContext.Provider value={{ editor }}>
