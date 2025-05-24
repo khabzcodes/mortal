@@ -1,5 +1,4 @@
-import { useSession } from "@/lib/auth-client";
-import { getUser } from "@/lib/auth-utils";
+import { getSession } from "@/lib/auth-client";
 import { createLogger } from "@/lib/logger";
 import { useEffect, useState } from "react";
 
@@ -9,13 +8,13 @@ export const useCurrentUserImage = () => {
   const [image, setImage] = useState<string | null>(null);
   useEffect(() => {
     const fetchUserImage = async () => {
-      const user = await getUser();
-      if (!user) {
+      const { data, error } = await getSession();
+      if (error && !data) {
         logger.error("No session found");
         return;
       }
 
-      setImage(user.image ?? null);
+      setImage(data?.user.image ?? null);
     };
     fetchUserImage();
   }, []);

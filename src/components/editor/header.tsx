@@ -46,6 +46,7 @@ export const EditorHeader = ({
         </span>
       </div>
       <div className="flex items-center gap-2">
+        <RealtimeAvatarStack roomId={noteId} />
         <div className="flex items-center gap-2">
           <Tooltip>
             <TooltipTrigger asChild>
@@ -107,8 +108,7 @@ export const EditorHeader = ({
             </Link>
           </Button>
         ))}
-
-      <RealtimeAvatarStack roomId={noteId} />
+      <UserProfile className="border-dashed size-10 md:size-14" />
       <ThemeToggler className="border-dashed size-10 md:size-14" />
     </div>
   );

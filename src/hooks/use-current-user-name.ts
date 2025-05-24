@@ -1,5 +1,4 @@
-import { useSession } from "@/lib/auth-client";
-import { getUser } from "@/lib/auth-utils";
+import { getSession } from "@/lib/auth-client";
 import { createLogger } from "@/lib/logger";
 import { useEffect, useState } from "react";
 
@@ -10,13 +9,13 @@ export const useCurrentUserName = () => {
 
   useEffect(() => {
     const fetchUserName = async () => {
-      const user = await getUser();
-      if (!user?.name) {
+      const { data, error } = await getSession();
+      if (!data || error) {
         logger.error("No session found");
         return;
       }
 
-      setName(user.name ?? "?");
+      setName(data.user.name ?? "?");
     };
     fetchUserName();
   }, []);
