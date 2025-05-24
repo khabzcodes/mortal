@@ -27,6 +27,7 @@ import { CodeBlockLanguageMenu } from "./menus/codeblock-language-menu";
 import { RealtimeCursors } from "./realtime-cursors";
 import { useEffect, useRef } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { TableOptionsMenu } from "./menus/table-options-menu";
 
 type EditorProps = {
   note: Note;
@@ -144,6 +145,7 @@ export function Editor({ note, onUpdate, onCreate, user }: EditorProps) {
             >
               <DefaultBubbleMenu editor={editor} showAiTools={true} />
               <CodeBlockLanguageMenu editor={editor} />
+              <TableOptionsMenu editor={editor} />
               <RealtimeCursors
                 roomName={`cursor-note-${note.id}`}
                 username={user.name}
