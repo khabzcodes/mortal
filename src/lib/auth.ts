@@ -13,11 +13,7 @@ export const auth = betterAuth({
     provider: "pg",
     schema,
   }),
-  trustedOrigins: ["https://nodifyhq.vercel.app", "http://localhost:3000"],
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? "https://nodifyhq.vercel.app"
-      : "http://localhost:3000",
+  trustedOrigins: ["http://192.168.1.100:3000"],
   session: {
     cookieCache: {
       enabled: true,
