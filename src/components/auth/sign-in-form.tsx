@@ -40,6 +40,7 @@ export const SignInForm = () => {
           router.push("/dashboard");
         },
         onError: (error) => {
+          console.error("Sign in error:", error);
           setLoading(false);
           toast.error(error.error.message);
         },
