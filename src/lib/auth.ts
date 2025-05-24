@@ -13,7 +13,6 @@ export const auth = betterAuth({
     provider: "pg",
     schema,
   }),
-  trustedOrigins: ["http://192.168.1.100:3000"],
   session: {
     cookieCache: {
       enabled: true,
