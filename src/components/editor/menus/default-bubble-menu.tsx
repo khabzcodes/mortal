@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { TextStylesSelector } from "./selectors/text-styles-selector";
 import { TextAlignSelector } from "./selectors/text-align-selector";
 import { AiSelector } from "./selectors/ai-selector";
+import { MathSelector } from "./selectors/math-selector";
 
 export const DefaultBubbleMenu = ({
   editor,
@@ -42,13 +43,15 @@ export const DefaultBubbleMenu = ({
           {showAiTools && (
             <>
               <AiSelector editor={editor} />
-              <Separator orientation="vertical" className="h-10" />
+              <Separator orientation="vertical" />
             </>
           )}
           <NodeSelector editor={editor} />
-          <Separator orientation="vertical" className="h-10" />
+          <Separator orientation="vertical" />
+          <MathSelector editor={editor} />
+          <Separator orientation="vertical" />
           <TextStylesSelector editor={editor} />
-          <Separator orientation="vertical" className="h-10" />
+          <Separator orientation="vertical" />
           <TextAlignSelector editor={editor} />
         </div>
         <ScrollBar orientation="horizontal" />
