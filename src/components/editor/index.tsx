@@ -74,7 +74,7 @@ export function Editor({ note, onUpdate, onCreate, user }: EditorProps) {
       immediatelyRender: true,
       shouldRerenderOnTransaction: false,
     },
-    [note.content]
+    [note.content, note.id, onUpdate, onCreate]
   );
 
   return (
@@ -89,7 +89,7 @@ export function Editor({ note, onUpdate, onCreate, user }: EditorProps) {
               <DefaultBubbleMenu editor={editor} showAiTools={true} />
               <CodeBlockLanguageMenu editor={editor} />
               <RealtimeCursors
-                roomName={note.id}
+                roomName={`cursor-note-${note.id}`}
                 username={user.name}
                 userId={user.id}
               />

@@ -46,7 +46,7 @@ export const EditorHeader = ({
         </span>
       </div>
       <div className="flex items-center gap-2">
-        <RealtimeAvatarStack roomId={noteId} />
+        <RealtimeAvatarStack roomId={`active-users-${noteId}`} />
         <div className="flex items-center gap-2">
           <Tooltip>
             <TooltipTrigger asChild>
