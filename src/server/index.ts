@@ -13,7 +13,7 @@ export const app = new Hono<{
   };
 }>().basePath("/api/rpc");
 
-app.on(["GET", "POST", "PUT", "DELETE", "PATCH"], "/api/rpc", async (c) => {
+app.on(["GET", "POST", "PUT", "DELETE", "PATCH"], "/api/rpc/*", async (c) => {
   return auth.handler(c.req.raw);
 });
 
