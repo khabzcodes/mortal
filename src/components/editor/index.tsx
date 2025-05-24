@@ -25,6 +25,8 @@ import { toast } from "sonner";
 import { DefaultBubbleMenu } from "./menus/default-bubble-menu";
 import { CodeBlockLanguageMenu } from "./menus/codeblock-language-menu";
 import { RealtimeCursors } from "./realtime-cursors";
+import { useEffect, useRef } from "react";
+import { createClient } from "@/lib/supabase/client";
 
 type EditorProps = {
   note: Note;
@@ -36,8 +38,27 @@ type EditorProps = {
   onCreate: (editor: EditorInstance) => void;
 };
 
+const supabase = createClient();
+
 export function Editor({ note, onUpdate, onCreate, user }: EditorProps) {
-  const editorContainerRef = React.useRef<HTMLDivElement>(null);
+  const channelRef = useRef<any>(null);
+
+  // Initialize the channel once
+  useEffect(() => {
+    if (!note.id) return;
+
+    channelRef.current = supabase.channel(`realtime:note-${note.id}`);
+    // Subscribe to the channel
+    channelRef.current.subscribe();
+
+    return () => {
+      // Clean up by unsubscribing
+      if (channelRef.current) {
+        channelRef.current.unsubscribe();
+      }
+    };
+  }, [note.id]);
+
   const editor = useEditor(
     {
       editorProps: {
@@ -66,6 +87,16 @@ export function Editor({ note, onUpdate, onCreate, user }: EditorProps) {
       ],
       onUpdate: ({ editor }) => {
         onUpdate(editor);
+
+        // Use the existing channel reference to send updates
+        if (channelRef.current) {
+          const html = editor.getHTML();
+          channelRef.current.send({
+            type: "broadcast",
+            event: "doc-update",
+            payload: { html },
+          });
+        }
       },
       onCreate: ({ editor }) => {
         onCreate(editor);
@@ -76,6 +107,31 @@ export function Editor({ note, onUpdate, onCreate, user }: EditorProps) {
     },
     [note.content, note.id, onUpdate, onCreate]
   );
+
+  useEffect(() => {
+    if (!note.id || !editor || !channelRef.current) return;
+
+    // Set up listener on the existing channel
+    const handleDocUpdate = ({ payload }: any) => {
+      if (editor && payload.html !== editor.getHTML()) {
+        editor.commands.setContent(payload.html, false);
+      }
+    };
+
+    const subscription = channelRef.current.on(
+      "broadcast",
+      { event: "doc-update" },
+      handleDocUpdate
+    );
+
+    return () => {
+      // Remove listener when component unmounts or dependencies change
+      if (channelRef.current) {
+        // Use removeChannel or unsubscribe instead of off
+        channelRef.current.unsubscribe();
+      }
+    };
+  }, [editor, note.id]);
 
   return (
     <EditorContext.Provider value={{ editor }}>
