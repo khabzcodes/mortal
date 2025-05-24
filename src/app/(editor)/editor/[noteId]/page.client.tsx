@@ -65,6 +65,7 @@ export const EditorClient = ({ noteId }: EditorClientProps) => {
   return (
     <div className="flex flex-col h-screen">
       <EditorHeader
+        noteId={noteId}
         title={formattedNote.title}
         description={formattedNote.description}
         lastSyncedAt={

@@ -9,10 +9,12 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Icons } from "../icons";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { RealtimeAvatarStack } from "./realtime-avatar-stack";
 
 dayjs.extend(relativeTime);
 
 type EditorHeaderProps = {
+  noteId: string;
   title: string;
   description: string;
   lastSyncedAt: Date;
@@ -21,6 +23,7 @@ type EditorHeaderProps = {
 };
 
 export const EditorHeader = ({
+  noteId,
   title,
   description,
   lastSyncedAt,
@@ -104,7 +107,8 @@ export const EditorHeader = ({
             </Link>
           </Button>
         ))}
-      <UserProfile className="border-dashed size-10 md:size-14" />
+
+      <RealtimeAvatarStack roomId={noteId} />
       <ThemeToggler className="border-dashed size-10 md:size-14" />
     </div>
   );

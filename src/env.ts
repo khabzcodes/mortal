@@ -11,7 +11,6 @@ export const env = createEnv({
     // Github
     GITHUB_CLIENT_ID: z.string().min(1),
     GITHUB_CLIENT_SECRET: z.string().min(1),
-    // Supabase
   },
   client: {
     NEXT_PUBLIC_SUPABASE_URL: z.string().min(1),
