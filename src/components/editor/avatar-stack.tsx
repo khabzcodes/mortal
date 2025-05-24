@@ -49,7 +49,7 @@ const AvatarStack = ({
       {shownAvatars.map(({ name, image }, index) => (
         <Tooltip key={`${name}-${image}-${index}`}>
           <TooltipTrigger asChild>
-            <Avatar className="hover:z-10">
+            <Avatar className="hover:z-10 border border-amber-300">
               <AvatarImage src={image} />
               <AvatarFallback>
                 {name
