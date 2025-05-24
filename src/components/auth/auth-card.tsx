@@ -122,6 +122,10 @@ const SignInButton = ({
             onRequest: (ctx) => {
               setLoading(true);
             },
+            onError: (error) => {
+              console.error("Sign in error:", error);
+              setLoading(false);
+            },
           }
         );
       }}
