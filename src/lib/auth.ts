@@ -24,8 +24,9 @@ export const auth = betterAuth({
   },
   socialProviders: {
     github: {
-      clientId: env.GITHUB_CLIENT_ID,
-      clientSecret: env.GITHUB_CLIENT_SECRET,
+      clientId: env.GITHUB_CLIENT_ID || process.env.GITHUB_CLIENT_ID!,
+      clientSecret:
+        env.GITHUB_CLIENT_SECRET || process.env.GITHUB_CLIENT_SECRET!,
     },
   },
   emailAndPassword: {
