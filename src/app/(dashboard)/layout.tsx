@@ -1,17 +1,24 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import { AppLayout } from "@/components/layout/dashboard";
 import ThemeToggler from "@/components/theme/toggler";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { getSession } from "@/lib/auth-utils";
+import { redirect } from "next/navigation";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getSession();
+  console.log("DashboardLayout data", session);
+
+  if (!session?.session.activeOrganizationId) {
+    redirect("/workspaces");
+  }
   return (
     <SidebarProvider>
       <AppSidebar />

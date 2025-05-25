@@ -24,9 +24,8 @@ export const auth = betterAuth({
   },
   socialProviders: {
     github: {
-      clientId: env.GITHUB_CLIENT_ID || process.env.GITHUB_CLIENT_ID!,
-      clientSecret:
-        env.GITHUB_CLIENT_SECRET || process.env.GITHUB_CLIENT_SECRET!,
+      clientId: env.GITHUB_CLIENT_ID,
+      clientSecret: env.GITHUB_CLIENT_SECRET,
     },
   },
   emailAndPassword: {
@@ -47,36 +46,43 @@ export const auth = betterAuth({
         },
       },
     },
-    session: {
-      create: {
-        after: async (session) => {
-          const [dbSession] = await db
-            .select()
-            .from(schema.session)
-            .where((s) => eq(s.userId, session.userId));
-          if (dbSession && !dbSession.activeOrganizationId) {
-            const [member] = await db
-              .select()
-              .from(schema.member)
-              .where((o) => eq(o.userId, session.userId));
-            if (member) {
-              await db
-                .update(schema.session)
-                .set({
-                  activeOrganizationId: member.organizationId,
-                })
-                .where(eq(schema.session.id, session.id));
-            }
-          }
-          await db
-            .update(schema.session)
-            .set({
-              activeOrganizationId: dbSession?.activeOrganizationId,
-            })
-            .where(eq(schema.session.id, session.id));
-        },
-      },
-    },
+    // session: {
+    //   create: {
+    //     after: async (session) => {
+    //       const [dbSession] = await db
+    //         .select()
+    //         .from(schema.session)
+    //         .where((s) => eq(s.userId, session.userId));
+
+    //       if (!dbSession.activeOrganizationId) {
+    //         const [member] = await db
+    //           .select()
+    //           .from(schema.member)
+    //           .where((o) => eq(o.userId, session.userId));
+    //         if (member) {
+    //           const [organization] = await db
+    //             .select()
+    //             .from(schema.organization)
+    //             .where((o) => eq(o.id, member.organizationId));
+    //           if (organization) {
+    //             await db
+    //               .update(schema.session)
+    //               .set({
+    //                 activeOrganizationId: organization.id,
+    //               })
+    //               .where(eq(schema.session.id, session.id));
+    //           }
+    //         }
+    //       }
+    //       await db
+    //         .update(schema.session)
+    //         .set({
+    //           activeOrganizationId: dbSession?.activeOrganizationId,
+    //         })
+    //         .where(eq(schema.session.id, session.id));
+    //     },
+    //   },
+    // },
   },
   plugins: [
     nextCookies(),
