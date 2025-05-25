@@ -14,7 +14,6 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const session = await getSession();
-  console.log("DashboardLayout data", session);
 
   if (!session?.session.activeOrganizationId) {
     redirect("/workspaces");
