@@ -11,6 +11,7 @@ import {
   UnderlineIcon,
 } from "lucide-react";
 import { LinkSelector } from "./link-selector";
+import { TextColorSelector } from "./text-color-selector";
 
 interface SelectorResult {
   isBold: boolean;
@@ -99,6 +100,7 @@ export const TextStylesSelector = ({ editor }: { editor: Editor }) => {
         );
       })}
       <LinkSelector editor={editor} />
+      <TextColorSelector editor={editor} />
     </>
   );
 };

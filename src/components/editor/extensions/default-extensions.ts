@@ -6,7 +6,7 @@ import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import { TaskItem } from "@tiptap/extension-task-item";
 import { TaskList } from "@tiptap/extension-task-list";
-import Table, { createColGroup } from "@tiptap/extension-table";
+import Table from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
@@ -25,6 +25,7 @@ import { AiWriter } from "../extensions/ai-writer/ai-writer";
 import { CustomCodeBlock } from "../extensions/code-block";
 import { Mathematics } from "../extensions/mathematics";
 import { common, createLowlight } from "lowlight";
+import Color from "@tiptap/extension-color";
 
 const TiptapStarterKit = StarterKit.configure({
   bulletList: {
@@ -73,6 +74,9 @@ const typography = Typography;
 
 const bulletList = BulletList;
 const orderedList = OrderedList;
+const color = Color.configure({
+  types: ["textStyle"],
+});
 
 const TiptapHeading = Heading.extend({
   renderHTML({ node, HTMLAttributes }) {
@@ -222,4 +226,5 @@ export const defaultExtensions = [
   typography,
   bulletList,
   orderedList,
+  color,
 ];
