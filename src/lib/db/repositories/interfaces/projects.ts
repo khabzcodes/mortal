@@ -7,4 +7,5 @@ export type ProjectsRepository = {
   selectProjectsCountByOrganizationId: (
     organizationId: string
   ) => Promise<number>;
+  selectProjectById: (id: string) => Promise<Project | null>;
 };

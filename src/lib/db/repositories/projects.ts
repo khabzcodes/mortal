@@ -16,4 +16,11 @@ export const projectsRepository: ProjectsRepository = {
 
     return result.count;
   },
+  selectProjectById: async (id) => {
+    const [project] = await db
+      .select()
+      .from(projects)
+      .where((n) => eq(n.id, id));
+    return project;
+  },
 };
