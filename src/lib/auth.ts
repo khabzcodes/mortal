@@ -11,6 +11,10 @@ export const auth = betterAuth({
     provider: "pg",
     schema,
   }),
+  baseUrl:
+    process.env.NODE_ENV !== "production"
+      ? "http://localhost:3000"
+      : "https://nodifyhq.vercel.app",
   session: {
     cookieCache: {
       enabled: true,
