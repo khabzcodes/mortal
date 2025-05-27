@@ -3,6 +3,7 @@
 import {
   Folder,
   Forward,
+  Loader,
   MoreHorizontal,
   Trash2,
   type LucideIcon,
@@ -25,6 +26,10 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Icons } from "./icons";
+import { useMutation } from "@tanstack/react-query";
+import { createProject } from "@/rpc/projects";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export function NavProjects({
   projects,
@@ -36,13 +41,32 @@ export function NavProjects({
   }[];
 }) {
   const { isMobile } = useSidebar();
+  const { push } = useRouter();
+
+  const mutation = useMutation({
+    mutationFn: () => createProject(),
+    onSuccess: (data) => {
+      toast.success(`Project "${data.name}" created successfully!`);
+      push(`/projects/${data.id}`);
+    },
+    onError: (error) => {
+      toast.error(`Failed to create project: ${error.message}`);
+    },
+  });
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel className="flex items-center justify-between">
-        Folders
+        Projects
         <span className="text-muted-foreground">
-          <Icons.addSquare className="size-4" />
+          {!mutation.isPending ? (
+            <Icons.addSquare
+              className="size-4 cursor-pointer"
+              onClick={() => mutation.mutate()}
+            />
+          ) : (
+            <Loader className="size-4 animate-spin" />
+          )}
         </span>
       </SidebarGroupLabel>
       <SidebarMenu>

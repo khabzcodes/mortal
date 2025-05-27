@@ -4,6 +4,7 @@ import { activities } from "./routes/activities";
 import { auth } from "@/lib/auth";
 import { members } from "./routes/members";
 import { invitations } from "./routes/invitations";
+import { projects } from "./routes/projects";
 
 export const app = new Hono<{
   Variables: {
@@ -37,6 +38,7 @@ const routes = app
   .route("/notes", notes)
   .route("/activities", activities)
   .route("/members", members)
-  .route("/invitations", invitations);
+  .route("/invitations", invitations)
+  .route("/projects", projects);
 
 export type AppTypes = typeof routes;
