@@ -51,11 +51,11 @@ export const ProjectHeader = ({ project }: { project: ProjectHeaderProps }) => {
         )}
       </div>
       <div className="flex items-center gap-2">
-        <Button size="sm">
+        <Button size="sm" className="w-32">
           <Icons.share className="h-4 w-4" />
           Share
         </Button>
-        <Button size="sm" variant="outline" className="border-dashed">
+        <Button size="sm" variant="outline" className="border-dashed w-32">
           <Icons.idea className="h-4 w-4" />
           Ask AI
         </Button>

@@ -2,6 +2,8 @@ import { auth } from "@/lib/auth";
 import { projectsRepository } from "@/lib/db/repositories/projects";
 import { createLogger } from "@/lib/logger";
 import { Project } from "@/types/projects";
+import { getProjectsSchema } from "@/validations/projects";
+import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { nanoid } from "nanoid";
 
@@ -39,6 +41,26 @@ export const projects = new Hono<{
     } catch (error) {
       logger.error("Error creating project", error);
       return c.json({ message: "Failed to create project" }, 500);
+    }
+  })
+  .get("/", async (c) => {
+    try {
+      const session = c.get("session");
+      if (!session || !session.session.activeOrganizationId) {
+        return c.json({ message: "Unauthorized" }, 401);
+      }
+
+      // const { limit } = c.req.valid("json");
+
+      const projects = await projectsRepository.selectProjectsByOrganizationId(
+        session.session.activeOrganizationId,
+        4
+      );
+
+      return c.json({ data: projects }, 200);
+    } catch (error) {
+      logger.error("Error fetching projects", error);
+      return c.json({ message: "Failed to fetch projects" }, 500);
     }
   })
   .get("/:id", async (c) => {

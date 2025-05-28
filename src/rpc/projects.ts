@@ -23,3 +23,15 @@ export const getProject = async (id: string) => {
   const { data } = await response.json();
   return data;
 };
+
+export const getProjects = async (limit?: number) => {
+  const response = await route.$get();
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Failed to fetch projects");
+  }
+
+  const { data } = await response.json();
+  return data;
+};

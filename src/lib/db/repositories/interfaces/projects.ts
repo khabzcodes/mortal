@@ -8,4 +8,8 @@ export type ProjectsRepository = {
     organizationId: string
   ) => Promise<number>;
   selectProjectById: (id: string) => Promise<Project | null>;
+  selectProjectsByOrganizationId: (
+    organizationId: string,
+    limit: number | null
+  ) => Promise<Project[]>;
 };

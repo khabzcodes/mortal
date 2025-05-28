@@ -188,6 +188,9 @@ importers:
       drizzle-orm:
         specifier: ^0.43.1
         version: 0.43.1(@neondatabase/serverless@1.0.0)(@opentelemetry/api@1.9.0)(@types/pg@8.15.2)(kysely@0.28.2)(pg@8.16.0)(postgres@3.4.5)
+      frimousse:
+        specifier: ^0.2.0
+        version: 0.2.0(react@19.1.0)
       highlight.js:
         specifier: ^11.11.1
         version: 11.11.1
@@ -2315,6 +2318,11 @@ packages:
   fill-range@7.1.1:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
     engines: {node: '>=8'}
+
+  frimousse@0.2.0:
+    resolution: {integrity: sha512-viSrsVQWKR4Q7xzC0lkx3Wu9i1+IHrth0QXn0nlIIJXpltwUnjkGXSTuoW7WHI5aJ4z49WR8E/pyQizFjlNtTA==}
+    peerDependencies:
+      react: ^18 || ^19
 
   get-nonce@1.0.1:
     resolution: {integrity: sha512-FJhYRoDaiatfEkUK8HKlicmu/3SGFD51q3itKDGoSTysQJBnfOcxU5GxnhE1E6soB76MbT0MBtnKJuXyAx+96Q==}
@@ -4951,6 +4959,10 @@ snapshots:
     dependencies:
       to-regex-range: 5.0.1
     optional: true
+
+  frimousse@0.2.0(react@19.1.0):
+    dependencies:
+      react: 19.1.0
 
   get-nonce@1.0.1: {}
 

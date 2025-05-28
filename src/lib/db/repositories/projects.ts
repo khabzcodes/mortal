@@ -1,4 +1,4 @@
-import { count, eq } from "drizzle-orm";
+import { count, desc, eq } from "drizzle-orm";
 import { db } from "..";
 import { projects } from "../schemas/projects";
 import { ProjectsRepository } from "./interfaces/projects";
@@ -22,5 +22,14 @@ export const projectsRepository: ProjectsRepository = {
       .from(projects)
       .where((n) => eq(n.id, id));
     return project;
+  },
+  selectProjectsByOrganizationId: async (organizationId, limit) => {
+    const results = await db
+      .select()
+      .from(projects)
+      .where((n) => eq(n.organizationId, organizationId))
+      .orderBy(desc(projects.createdAt));
+
+    return results;
   },
 };

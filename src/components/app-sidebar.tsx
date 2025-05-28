@@ -1,19 +1,6 @@
 "use client";
 
 import * as React from "react";
-import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  Notebook,
-  PieChart,
-  Settings2,
-  SquareTerminal,
-} from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
 import { NavProjects } from "@/components/nav-projects";
@@ -24,107 +11,11 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarMenuButton,
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { dashboardConfig } from "@/config/dashboard.config";
 import { useActiveOrganization, useListOrganizations } from "@/lib/auth-client";
 import { Skeleton } from "./ui/skeleton";
-
-// This is sample data.
-const data = {
-  navMain: [
-    {
-      title: "Home",
-      url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-      items: [],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
-};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data: workspaces } = useListOrganizations();
@@ -152,7 +43,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={dashboardConfig.navItems} />
-        <NavProjects projects={data.projects} />
+        <NavProjects />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />
