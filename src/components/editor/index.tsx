@@ -30,7 +30,10 @@ import { createClient } from "@/lib/supabase/client";
 import { TableOptionsMenu } from "./menus/table-options-menu";
 
 type EditorProps = {
-  note: Note;
+  source: {
+    id: string;
+    content: string | undefined | null;
+  };
   user: {
     id: string;
     name: string;
@@ -43,7 +46,7 @@ type EditorProps = {
 const supabase = createClient();
 
 export function Editor({
-  note,
+  source,
   enableRealtime,
   onUpdate,
   onCreate,
@@ -52,9 +55,9 @@ export function Editor({
   const channelRef = useRef<any>(null);
 
   useEffect(() => {
-    if (!note.id && enableRealtime) return;
+    if (!source.id || !enableRealtime) return;
 
-    channelRef.current = supabase.channel(`realtime:note-${note.id}`);
+    channelRef.current = supabase.channel(`realtime:note-${source.id}`);
     channelRef.current.subscribe();
 
     return () => {
@@ -62,7 +65,7 @@ export function Editor({
         channelRef.current.unsubscribe();
       }
     };
-  }, [note.id, enableRealtime]);
+  }, [source.id, enableRealtime]);
 
   const editor = useEditor(
     {
@@ -105,15 +108,15 @@ export function Editor({
       onCreate: ({ editor }) => {
         onCreate(editor);
       },
-      content: note.content ? JSON.parse(note.content!) : note.content,
+      content: source.content ? JSON.parse(source.content!) : source.content,
       immediatelyRender: true,
       shouldRerenderOnTransaction: false,
     },
-    [note.content, note.id, onUpdate, onCreate]
+    [source.content, source.id, enableRealtime, onUpdate, onCreate]
   );
 
   useEffect(() => {
-    if (!note.id || !editor || !channelRef.current) return;
+    if (!source.id || !editor || !channelRef.current || !enableRealtime) return;
 
     const handleDocUpdate = ({ payload }: any) => {
       if (editor && payload.html !== editor.getHTML()) {
@@ -132,25 +135,27 @@ export function Editor({
         channelRef.current.unsubscribe();
       }
     };
-  }, [editor, note.id]);
+  }, [editor, source.id, enableRealtime]);
 
   return (
     <EditorContext.Provider value={{ editor }}>
       <div className="content-wrapper">
-        <ScrollArea className="h-svh">
+        <ScrollArea className="h-[90vh] p-4">
           <div className="py-4">
             <EditorContent
               editor={editor}
-              className="prose dark:prose-invert focus:outline-none max-w-full z-0 px-32"
+              className="prose dark:prose-invert focus:outline-none max-w-full"
             >
               <DefaultBubbleMenu editor={editor} showAiTools={true} />
               <CodeBlockLanguageMenu editor={editor} />
               <TableOptionsMenu editor={editor} />
-              <RealtimeCursors
-                roomName={`cursor-note-${note.id}`}
-                username={user.name}
-                userId={user.id}
-              />
+              {enableRealtime && (
+                <RealtimeCursors
+                  roomName={`cursor-note-${source.id}`}
+                  username={user.name}
+                  userId={user.id}
+                />
+              )}
             </EditorContent>
           </div>
         </ScrollArea>
