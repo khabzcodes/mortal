@@ -1,4 +1,5 @@
 import { baseRpcUrl } from "@/rpc/config";
+import { UpdateProjectInputValidation } from "@/validations/projects";
 
 const route = baseRpcUrl.projects;
 
@@ -34,4 +35,18 @@ export const getProjects = async (limit?: number) => {
 
   const { data } = await response.json();
   return data;
+};
+
+export const updateProject = async (
+  id: string,
+  data: UpdateProjectInputValidation
+) => {
+  const response = await route[":id"].$put({ param: { id }, json: data });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Failed to update project");
+  }
+
+  const { data: project } = await response.json();
+  return project;
 };

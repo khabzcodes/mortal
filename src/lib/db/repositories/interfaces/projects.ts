@@ -12,4 +12,8 @@ export type ProjectsRepository = {
     organizationId: string,
     limit: number | null
   ) => Promise<Project[]>;
+  updateProject: (
+    id: string,
+    data: Partial<Project>
+  ) => Promise<Project | null>;
 };
