@@ -86,6 +86,7 @@ export const EditorClient = ({ noteId }: EditorClientProps) => {
               id: session.user.id,
               name: session.user.name,
             }}
+            enableRealtime={true}
           />
         </ResizablePanel>
         <ResizableHandle withHandle />

@@ -35,30 +35,34 @@ type EditorProps = {
     id: string;
     name: string;
   };
+  enableRealtime?: boolean;
   onUpdate: (editor: EditorInstance) => void;
   onCreate: (editor: EditorInstance) => void;
 };
 
 const supabase = createClient();
 
-export function Editor({ note, onUpdate, onCreate, user }: EditorProps) {
+export function Editor({
+  note,
+  enableRealtime,
+  onUpdate,
+  onCreate,
+  user,
+}: EditorProps) {
   const channelRef = useRef<any>(null);
 
-  // Initialize the channel once
   useEffect(() => {
-    if (!note.id) return;
+    if (!note.id && enableRealtime) return;
 
     channelRef.current = supabase.channel(`realtime:note-${note.id}`);
-    // Subscribe to the channel
     channelRef.current.subscribe();
 
     return () => {
-      // Clean up by unsubscribing
-      if (channelRef.current) {
+      if (channelRef.current && enableRealtime) {
         channelRef.current.unsubscribe();
       }
     };
-  }, [note.id]);
+  }, [note.id, enableRealtime]);
 
   const editor = useEditor(
     {
@@ -89,8 +93,7 @@ export function Editor({ note, onUpdate, onCreate, user }: EditorProps) {
       onUpdate: ({ editor }) => {
         onUpdate(editor);
 
-        // Use the existing channel reference to send updates
-        if (channelRef.current) {
+        if (channelRef.current && enableRealtime) {
           const html = editor.getHTML();
           channelRef.current.send({
             type: "broadcast",
@@ -112,23 +115,20 @@ export function Editor({ note, onUpdate, onCreate, user }: EditorProps) {
   useEffect(() => {
     if (!note.id || !editor || !channelRef.current) return;
 
-    // Set up listener on the existing channel
     const handleDocUpdate = ({ payload }: any) => {
       if (editor && payload.html !== editor.getHTML()) {
         editor.commands.setContent(payload.html, false);
       }
     };
 
-    const subscription = channelRef.current.on(
+    channelRef.current.on(
       "broadcast",
       { event: "doc-update" },
       handleDocUpdate
     );
 
     return () => {
-      // Remove listener when component unmounts or dependencies change
       if (channelRef.current) {
-        // Use removeChannel or unsubscribe instead of off
         channelRef.current.unsubscribe();
       }
     };
