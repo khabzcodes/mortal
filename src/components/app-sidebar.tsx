@@ -14,11 +14,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { dashboardConfig } from "@/config/dashboard.config";
-import {
-  organization,
-  useActiveOrganization,
-  useListOrganizations,
-} from "@/lib/auth-client";
+import { organization } from "@/lib/auth-client";
 import { Skeleton } from "./ui/skeleton";
 import { Organization } from "better-auth/plugins";
 
