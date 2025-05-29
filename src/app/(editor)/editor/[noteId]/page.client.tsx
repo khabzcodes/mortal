@@ -79,14 +79,16 @@ export const EditorClient = ({ noteId }: EditorClientProps) => {
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel defaultSize={80}>
           <Editor
-            note={formattedNote}
+            source={{
+              id: formattedNote.id,
+              content: formattedNote.content,
+            }}
             onUpdate={setEditor}
             onCreate={setEditor}
             user={{
               id: session.user.id,
               name: session.user.name,
             }}
-            enableRealtime={true}
           />
         </ResizablePanel>
         <ResizableHandle withHandle />

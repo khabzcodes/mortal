@@ -38,34 +38,27 @@ type EditorProps = {
     id: string;
     name: string;
   };
-  enableRealtime?: boolean;
   onUpdate: (editor: EditorInstance) => void;
   onCreate: (editor: EditorInstance) => void;
 };
 
 const supabase = createClient();
 
-export function Editor({
-  source,
-  enableRealtime,
-  onUpdate,
-  onCreate,
-  user,
-}: EditorProps) {
+export function Editor({ source, onUpdate, onCreate, user }: EditorProps) {
   const channelRef = useRef<any>(null);
 
   useEffect(() => {
-    if (!source.id || !enableRealtime) return;
+    if (!source.id) return;
 
     channelRef.current = supabase.channel(`realtime:note-${source.id}`);
     channelRef.current.subscribe();
 
     return () => {
-      if (channelRef.current && enableRealtime) {
+      if (channelRef.current) {
         channelRef.current.unsubscribe();
       }
     };
-  }, [source.id, enableRealtime]);
+  }, [source.id]);
 
   const editor = useEditor(
     {
@@ -96,7 +89,7 @@ export function Editor({
       onUpdate: ({ editor }) => {
         onUpdate(editor);
 
-        if (channelRef.current && enableRealtime) {
+        if (channelRef.current) {
           const html = editor.getHTML();
           channelRef.current.send({
             type: "broadcast",
@@ -112,11 +105,11 @@ export function Editor({
       immediatelyRender: true,
       shouldRerenderOnTransaction: false,
     },
-    [source.content, source.id, enableRealtime, onUpdate, onCreate]
+    [source.content, source.id, onUpdate, onCreate]
   );
 
   useEffect(() => {
-    if (!source.id || !editor || !channelRef.current || !enableRealtime) return;
+    if (!source.id || !editor || !channelRef.current) return;
 
     const handleDocUpdate = ({ payload }: any) => {
       if (editor && payload.html !== editor.getHTML()) {
@@ -135,7 +128,7 @@ export function Editor({
         channelRef.current.unsubscribe();
       }
     };
-  }, [editor, source.id, enableRealtime]);
+  }, [editor, source.id]);
 
   return (
     <EditorContext.Provider value={{ editor }}>
@@ -149,13 +142,11 @@ export function Editor({
               <DefaultBubbleMenu editor={editor} showAiTools={true} />
               <CodeBlockLanguageMenu editor={editor} />
               <TableOptionsMenu editor={editor} />
-              {enableRealtime && (
-                <RealtimeCursors
-                  roomName={`cursor-note-${source.id}`}
-                  username={user.name}
-                  userId={user.id}
-                />
-              )}
+              <RealtimeCursors
+                roomName={`cursor-note-${source.id}`}
+                username={user.name}
+                userId={user.id}
+              />
             </EditorContent>
           </div>
         </ScrollArea>
