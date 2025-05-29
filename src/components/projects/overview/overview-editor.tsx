@@ -26,49 +26,50 @@ type OverviewEditorProps = {
   onCreate(editor: Editor): void;
 };
 
-export function OverviewEditor({ source }: OverviewEditorProps) {
-  const editor = useEditor(
-    {
-      editorProps: {
-        attributes: {
-          autocomplete: "off",
-          autocorrect: "off",
-          autocapitalize: "off",
-          "aria-label": "Main content area, start typing to enter text.",
-        },
+export function OverviewEditor({ source, onUpdate }: OverviewEditorProps) {
+  const editor = useEditor({
+    editorProps: {
+      attributes: {
+        autocomplete: "off",
+        autocorrect: "off",
+        autocapitalize: "off",
+        "aria-label": "Main content area, start typing to enter text.",
       },
-      extensions: [
-        ...defaultExtensions,
-        Placeholder.configure({
-          placeholder: "Type  /  for commands...",
-          emptyEditorClass: cn("is-editor-empty text-gray-400"),
-          emptyNodeClass: cn("is-empty text-gray-400"),
-        }),
-
-        Ai.configure({
-          onError: (error) => {
-            toast.error(error.message);
-          },
-        }),
-        SlashCommand.configure({
-          suggestion: getSuggestion({ ai: true }),
-        }),
-      ],
     },
-    []
-  );
+    extensions: [
+      ...defaultExtensions,
+      Placeholder.configure({
+        placeholder: "Type  /  for commands...",
+        emptyEditorClass: cn("is-editor-empty text-gray-400"),
+        emptyNodeClass: cn("is-empty text-gray-400"),
+      }),
+
+      Ai.configure({
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      }),
+      SlashCommand.configure({
+        suggestion: getSuggestion({ ai: true }),
+      }),
+    ],
+    onUpdate: ({ editor }) => {
+      onUpdate(editor);
+    },
+    content: source.content ? JSON.parse(source.content) : undefined,
+  });
 
   return (
     <EditorContext.Provider value={{ editor }}>
       <div className="content-wrapper">
         <ScrollArea className="h-[90vh] p-4">
-          <div className="py-4">
+          <div className="pt-2 pb-10">
             <EditorContent
               editor={editor}
               className="prose dark:prose-invert focus:outline-none max-w-full"
             >
               <DefaultBubbleMenu editor={editor} showAiTools={true} />
-              {/* <CodeBlockLanguageMenu editor={editor} /> */}
+              <CodeBlockLanguageMenu editor={editor} />
               <TableOptionsMenu editor={editor} />
             </EditorContent>
           </div>

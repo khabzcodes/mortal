@@ -76,6 +76,7 @@ export function NavProjects() {
               <SidebarMenuItem key={idx}>
                 <SidebarMenuButton asChild>
                   <Link
+                    rel="preload"
                     href={`/projects/${project.id}`}
                     className="flex items-center gap-2"
                   >
