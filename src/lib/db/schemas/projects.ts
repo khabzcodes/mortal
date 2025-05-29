@@ -8,6 +8,7 @@ export const projects = pgTable("projects", {
     .notNull()
     .references(() => organization.id),
   name: text("name").notNull(),
+  overview: text("overview"),
   createdById: text("created_by_id")
     .notNull()
     .references(() => user.id),

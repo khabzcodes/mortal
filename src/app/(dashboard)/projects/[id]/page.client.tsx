@@ -4,14 +4,15 @@ import { getProject } from "@/rpc/projects";
 import { QueryKeys } from "@/rpc/query-keys";
 import { useQuery } from "@tanstack/react-query";
 import { ProjectHeader } from "./_components/header.";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Icons } from "@/components/icons";
+import { OverviewEditor } from "@/components/projects/overview/overview-editor";
+import { ProjectOverview } from "@/components/projects/overview/overview";
 
 export const ProjectClientPage = ({ projectId }: { projectId: string }) => {
   const { data: project, isPending } = useQuery({
     queryKey: [QueryKeys.GET_PROJECT_BY_ID, projectId],
     queryFn: () => getProject(projectId),
-    refetchOnWindowFocus: false,
   });
 
   if (isPending) {
@@ -42,6 +43,12 @@ export const ProjectClientPage = ({ projectId }: { projectId: string }) => {
           </TabsTrigger>
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
+        <TabsContent value="overview">
+          <ProjectOverview
+            projectId={projectId}
+            overview={project?.overview ?? null}
+          />
+        </TabsContent>
       </Tabs>
     </div>
   );

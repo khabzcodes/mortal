@@ -12,8 +12,16 @@ import { common } from "lowlight";
 import { ChevronDownIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 
-export const CodeBlockLanguageMenu = ({ editor }: { editor: Editor }) => {
+export const CodeBlockLanguageMenu = ({
+  editor,
+}: {
+  editor: Editor | null;
+}) => {
   const [search, setSearch] = useState<string>("");
+
+  if (!editor) {
+    return null;
+  }
 
   const editorState = useEditorState({
     editor,

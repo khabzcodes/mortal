@@ -16,7 +16,6 @@ import { Ai } from "@/components/editor/extensions/ai";
 import "@/components/editor/simple-editor.scss";
 
 import { ScrollArea } from "../ui/scroll-area";
-import { Note } from "@/types/notes";
 import { cn } from "@/lib/utils";
 import { SlashCommand } from "./extensions/slash-command/slash-command";
 import { getSuggestion } from "./extensions/slash-command/suggestion";
@@ -30,7 +29,10 @@ import { createClient } from "@/lib/supabase/client";
 import { TableOptionsMenu } from "./menus/table-options-menu";
 
 type EditorProps = {
-  note: Note;
+  source: {
+    id: string;
+    content: string | undefined | null;
+  };
   user: {
     id: string;
     name: string;
@@ -41,24 +43,21 @@ type EditorProps = {
 
 const supabase = createClient();
 
-export function Editor({ note, onUpdate, onCreate, user }: EditorProps) {
+export function Editor({ source, onUpdate, onCreate, user }: EditorProps) {
   const channelRef = useRef<any>(null);
 
-  // Initialize the channel once
   useEffect(() => {
-    if (!note.id) return;
+    if (!source.id) return;
 
-    channelRef.current = supabase.channel(`realtime:note-${note.id}`);
-    // Subscribe to the channel
+    channelRef.current = supabase.channel(`realtime:note-${source.id}`);
     channelRef.current.subscribe();
 
     return () => {
-      // Clean up by unsubscribing
       if (channelRef.current) {
         channelRef.current.unsubscribe();
       }
     };
-  }, [note.id]);
+  }, [source.id]);
 
   const editor = useEditor(
     {
@@ -89,7 +88,6 @@ export function Editor({ note, onUpdate, onCreate, user }: EditorProps) {
       onUpdate: ({ editor }) => {
         onUpdate(editor);
 
-        // Use the existing channel reference to send updates
         if (channelRef.current) {
           const html = editor.getHTML();
           channelRef.current.send({
@@ -102,52 +100,49 @@ export function Editor({ note, onUpdate, onCreate, user }: EditorProps) {
       onCreate: ({ editor }) => {
         onCreate(editor);
       },
-      content: note.content ? JSON.parse(note.content!) : note.content,
-      immediatelyRender: true,
+      content: source.content ? JSON.parse(source.content!) : source.content,
+      immediatelyRender: false,
       shouldRerenderOnTransaction: false,
     },
-    [note.content, note.id, onUpdate, onCreate]
+    [source.content, source.id, onUpdate, onCreate]
   );
 
   useEffect(() => {
-    if (!note.id || !editor || !channelRef.current) return;
+    if (!source.id || !editor || !channelRef.current) return;
 
-    // Set up listener on the existing channel
     const handleDocUpdate = ({ payload }: any) => {
       if (editor && payload.html !== editor.getHTML()) {
         editor.commands.setContent(payload.html, false);
       }
     };
 
-    const subscription = channelRef.current.on(
+    channelRef.current.on(
       "broadcast",
       { event: "doc-update" },
       handleDocUpdate
     );
 
     return () => {
-      // Remove listener when component unmounts or dependencies change
       if (channelRef.current) {
-        // Use removeChannel or unsubscribe instead of off
         channelRef.current.unsubscribe();
       }
     };
-  }, [editor, note.id]);
+  }, [editor, source.id]);
 
   return (
     <EditorContext.Provider value={{ editor }}>
       <div className="content-wrapper">
-        <ScrollArea className="h-svh">
+        <ScrollArea className="h-[90vh] p-4">
           <div className="py-4">
             <EditorContent
               editor={editor}
-              className="prose dark:prose-invert focus:outline-none max-w-full z-0 px-32"
+              className="prose dark:prose-invert focus:outline-none max-w-full"
             >
               <DefaultBubbleMenu editor={editor} showAiTools={true} />
               <CodeBlockLanguageMenu editor={editor} />
               <TableOptionsMenu editor={editor} />
               <RealtimeCursors
-                roomName={`cursor-note-${note.id}`}
+                roomName={`cursor-note-${source.id}`}
                 username={user.name}
                 userId={user.id}
               />

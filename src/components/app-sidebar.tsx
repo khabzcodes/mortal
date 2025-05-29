@@ -14,16 +14,39 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { dashboardConfig } from "@/config/dashboard.config";
-import { useActiveOrganization, useListOrganizations } from "@/lib/auth-client";
+import { organization } from "@/lib/auth-client";
 import { Skeleton } from "./ui/skeleton";
+import { Organization } from "better-auth/plugins";
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { data: workspaces } = useListOrganizations();
-  const { data: activeWorkspace } = useActiveOrganization();
+type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
+  activeWorkspaceId: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    image: string | undefined | null;
+  };
+};
+
+export function AppSidebar({
+  activeWorkspaceId,
+  user,
+  ...props
+}: AppSidebarProps) {
+  const [workspaces, setWorkspaces] = React.useState<Organization[]>();
+  React.useEffect(() => {
+    const listWorkspaces = async () => {
+      const { data } = await organization.list();
+      if (data) {
+        setWorkspaces(data);
+      }
+    };
+    listWorkspaces();
+  }, []);
   return (
     <Sidebar collapsible="icon" {...props} className="border-r border-dashed">
       <SidebarHeader>
-        {workspaces && activeWorkspace ? (
+        {workspaces ? (
           <WorkspaceSwitcher
             workspaces={
               workspaces.map((workspace) => ({
@@ -32,7 +55,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 plan: "Free plan",
               })) || []
             }
-            activeWorkspaceId={activeWorkspace.id}
+            activeWorkspaceId={activeWorkspaceId}
           />
         ) : (
           <div className="flex items-center justify-between px-2 gap-2">
@@ -46,7 +69,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavProjects />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser />
+        <NavUser
+          user={{
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            image: user.image,
+          }}
+        />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

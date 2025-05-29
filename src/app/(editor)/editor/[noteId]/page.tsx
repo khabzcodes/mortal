@@ -1,6 +1,5 @@
 import { use } from "react";
 import { EditorClient } from "./page.client";
-import { EditorHeader } from "@/components/editor/header";
 
 export default function EditorPage({
   params,
