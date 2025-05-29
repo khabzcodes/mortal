@@ -26,27 +26,23 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useState } from "react";
-import { signOut, useSession } from "@/lib/auth-client";
+import { signOut } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-export function NavUser() {
+type NavUserProps = {
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    image?: string | undefined | null;
+  };
+};
+
+export function NavUser({ user }: NavUserProps) {
   const { isMobile } = useSidebar();
   const [signingOut, setSigningOut] = useState(false);
-  const { data: session, isPending } = useSession();
   const router = useRouter();
-
-  if (isPending) {
-    return (
-      <div className="size-10 md:size-14 aspect-square flex items-center justify-center p-3">
-        <div className="size-4 md:size-8 rounded-xl bg-muted/50 animate-pulse"></div>
-      </div>
-    );
-  }
-
-  if (!session) {
-    return null;
-  }
 
   return (
     <SidebarMenu>
@@ -58,22 +54,17 @@ export function NavUser() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-xl">
-                <AvatarImage
-                  src={session.user.image || undefined}
-                  alt={session.user.name}
-                />
+                <AvatarImage src={user.image ?? undefined} alt={user.name} />
                 <AvatarFallback className="rounded-lg">
-                  {session.user.name
+                  {user.name
                     .split(" ")
                     .map((n) => n[0])
                     .join("")}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">
-                  {session.user.name}
-                </span>
-                <span className="truncate text-xs">{session.user.email}</span>
+                <span className="truncate font-medium">{user.name}</span>
+                <span className="truncate text-xs">{user.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -87,22 +78,17 @@ export function NavUser() {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-xl">
-                  <AvatarImage
-                    src={session.user.image ?? undefined}
-                    alt={session.user.name}
-                  />
+                  <AvatarImage src={user.image ?? undefined} alt={user.name} />
                   <AvatarFallback className="rounded-lg">
-                    {session.user.name
+                    {user.name
                       .split(" ")
                       .map((n) => n[0])
                       .join("")}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">
-                    {session.user.name}
-                  </span>
-                  <span className="truncate text-xs">{session.user.email}</span>
+                  <span className="truncate font-medium">{user.name}</span>
+                  <span className="truncate text-xs">{user.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>

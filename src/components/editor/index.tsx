@@ -16,7 +16,6 @@ import { Ai } from "@/components/editor/extensions/ai";
 import "@/components/editor/simple-editor.scss";
 
 import { ScrollArea } from "../ui/scroll-area";
-import { Note } from "@/types/notes";
 import { cn } from "@/lib/utils";
 import { SlashCommand } from "./extensions/slash-command/slash-command";
 import { getSuggestion } from "./extensions/slash-command/suggestion";
@@ -102,7 +101,7 @@ export function Editor({ source, onUpdate, onCreate, user }: EditorProps) {
         onCreate(editor);
       },
       content: source.content ? JSON.parse(source.content!) : source.content,
-      immediatelyRender: true,
+      immediatelyRender: false,
       shouldRerenderOnTransaction: false,
     },
     [source.content, source.id, onUpdate, onCreate]
