@@ -7,6 +7,7 @@ import { Editor as EditorInstance } from "@tiptap/core";
 import NotFound from "@/app/not-found";
 import { Editor } from "@/components/editor";
 import { EditorHeader } from "@/components/editor/header";
+import { TextEditor } from "@/components/text-editor/text-editor";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { useSession } from "@/lib/auth-client";
 import { getNoteById, updateNoteContent } from "@/rpc/notes";
@@ -60,38 +61,8 @@ export const EditorClient = ({ noteId }: EditorClientProps) => {
   };
 
   return (
-    <div className="flex flex-col h-screen">
-      <EditorHeader
-        noteId={noteId}
-        title={formattedNote.title}
-        description={formattedNote.description}
-        lastSyncedAt={formattedNote.updatedAt ? formattedNote.updatedAt : formattedNote.createdAt}
-        onSave={handleUpdate}
-        isSaving={mutation.isPending}
-      />
-      <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel defaultSize={80}>
-          <Editor
-            source={{
-              id: formattedNote.id,
-              content: formattedNote.content,
-            }}
-            onUpdate={setEditor}
-            onCreate={setEditor}
-            user={{
-              id: session.user.id,
-              name: session.user.name,
-            }}
-          />
-        </ResizablePanel>
-        <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={20}>
-          <div className="flex flex-col items-center justify-center h-full">
-            <h2 className="text-lg font-semibold">Ask AI</h2>
-            <span className="text-sm text-gray-500"> (Coming soon)</span>
-          </div>
-        </ResizablePanel>
-      </ResizablePanelGroup>
-    </div>
+    <main className="min-h-full" id="editor">
+      <TextEditor className="w-full rounded-xl" />
+    </main>
   );
 };
