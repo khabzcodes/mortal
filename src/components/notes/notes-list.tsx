@@ -1,7 +1,7 @@
 "use client";
 
-import { NoteCard } from "./note-card";
 import { Note, NoteWithContributors } from "@/types/notes";
+import { NoteCard } from "./note-card";
 
 interface NoteListProps {
   notes: NoteWithContributors[];

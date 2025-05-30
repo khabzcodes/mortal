@@ -1,8 +1,10 @@
 "use client";
+
 import { ColumnDef } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "../shared/datatable-column-header";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+
+import { DataTableColumnHeader } from "../shared/datatable-column-header";
 
 dayjs.extend(relativeTime);
 
@@ -17,9 +19,7 @@ type Invitation = {
 export const columns: ColumnDef<Invitation>[] = [
   {
     accessorKey: "email",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Email" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
     cell: ({ row }) => {
       const email = row.original.email;
 
@@ -28,47 +28,29 @@ export const columns: ColumnDef<Invitation>[] = [
   },
   {
     accessorKey: "status",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
     cell: ({ row }) => {
       const status = row.original.status;
 
-      return (
-        <span className="text-sm font-medium leading-tight capitalize">
-          {status}
-        </span>
-      );
+      return <span className="text-sm font-medium leading-tight capitalize">{status}</span>;
     },
   },
   {
     accessorKey: "role",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Role" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Role" />,
     cell: ({ row }) => {
       const role = row.original.role;
 
-      return (
-        <span className="text-sm font-medium leading-tight capitalize">
-          {role}
-        </span>
-      );
+      return <span className="text-sm font-medium leading-tight capitalize">{role}</span>;
     },
   },
   {
     accessorKey: "expiresAt",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Expires In" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Expires In" />,
     cell: ({ row }) => {
       const expiresAt = row.original.expiresAt;
 
-      return (
-        <span className="text-sm font-medium leading-tight">
-          {dayjs().to(expiresAt, true)}
-        </span>
-      );
+      return <span className="text-sm font-medium leading-tight">{dayjs().to(expiresAt, true)}</span>;
     },
   },
 ];

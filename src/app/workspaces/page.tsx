@@ -1,10 +1,12 @@
 "use client";
+
+import { useRouter } from "next/navigation";
+import { ArrowRightIcon } from "lucide-react";
+
 import { Icons } from "@/components/icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { organization, useListOrganizations } from "@/lib/auth-client";
-import { ArrowRightIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 export default function WorkspacesPage() {
   const { data, isPending } = useListOrganizations();
@@ -36,19 +38,13 @@ export default function WorkspacesPage() {
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">Workspaces</h1>
           <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              className="rounded-none border-dashed"
-            >
+            <Button variant="outline" size="sm" className="rounded-none border-dashed">
               <Icons.addSquare />
               Create Workspace
             </Button>
           </div>
         </div>
-        <p className="mt-4 text-muted-foreground">
-          This is the workspaces page. You can manage your workspaces here.
-        </p>
+        <p className="mt-4 text-muted-foreground">This is the workspaces page. You can manage your workspaces here.</p>
         <div className="mt-4 space-y-2">
           {data?.length ? (
             data.map((org) => (
@@ -61,9 +57,7 @@ export default function WorkspacesPage() {
                   <div className="flex items-center gap-2">
                     <Avatar className="h-8 w-8 rounded-xl">
                       <AvatarImage src={org.logo ?? undefined} alt={org.name} />
-                      <AvatarFallback className="rounded-lg">
-                        {org.name[0].toUpperCase()}
-                      </AvatarFallback>
+                      <AvatarFallback className="rounded-lg">{org.name[0].toUpperCase()}</AvatarFallback>
                     </Avatar>
                     <h2 className="text-lg font-semibold">{org.name}</h2>
                   </div>

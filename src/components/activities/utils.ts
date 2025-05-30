@@ -1,9 +1,7 @@
 import { actions } from "@/lib/db/schemas/note-activities";
 import { NoteActivityInsert } from "@/types/activity";
 
-export const getActivityDescription = (
-  type: (typeof actions.enumValues)[number]
-) => {
+export const getActivityDescription = (type: (typeof actions.enumValues)[number]) => {
   switch (type) {
     case "CREATE":
       return "Created";

@@ -1,4 +1,9 @@
 "use client";
+
+import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { SearchIcon } from "lucide-react";
+
 import { PageHeader } from "@/components/layout/dashboard/page-header";
 import { CreateNoteButton } from "@/components/notes/create-note/create-note-button";
 import { NotesList } from "@/components/notes/notes-list";
@@ -6,9 +11,6 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getUserNotes } from "@/rpc/notes";
 import { QueryKeys } from "@/rpc/query-keys";
-import { useQuery } from "@tanstack/react-query";
-import { SearchIcon } from "lucide-react";
-import { useMemo, useState } from "react";
 
 export default function NotesPage() {
   const [searchText, setSearchText] = useState<string | null>(null);
@@ -22,9 +24,7 @@ export default function NotesPage() {
     if (!notesData) return [];
 
     if (searchText) {
-      return notesData.filter((note) =>
-        note.title.toLowerCase().includes(searchText.toLowerCase())
-      );
+      return notesData.filter((note) => note.title.toLowerCase().includes(searchText.toLowerCase()));
     }
     return notesData;
   }, [searchText, notesData]);
@@ -35,9 +35,7 @@ export default function NotesPage() {
     updatedAt: note.updatedAt ? new Date(note.updatedAt) : null,
     contributors: note.contributors.map((contributor) => ({
       ...contributor,
-      createdAt: contributor.createdAt
-        ? new Date(contributor.createdAt)
-        : undefined,
+      createdAt: contributor.createdAt ? new Date(contributor.createdAt) : undefined,
       user: {
         ...contributor.user,
         createdAt: new Date(contributor.user.createdAt),

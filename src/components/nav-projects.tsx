@@ -1,6 +1,11 @@
 "use client";
 
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
+import { toast } from "sonner";
+
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -9,13 +14,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Icons } from "./icons";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { createProject, getProjects } from "@/rpc/projects";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { QueryKeys } from "@/rpc/query-keys";
-import Link from "next/link";
+import { Icons } from "./icons";
 import { Skeleton } from "./ui/skeleton";
 
 export function NavProjects() {
@@ -44,10 +45,7 @@ export function NavProjects() {
         Projects
         <span className="text-muted-foreground">
           {!mutation.isPending ? (
-            <Icons.addSquare
-              className="size-4 cursor-pointer"
-              onClick={() => mutation.mutate()}
-            />
+            <Icons.addSquare className="size-4 cursor-pointer" onClick={() => mutation.mutate()} />
           ) : (
             <Loader className="size-4 animate-spin" />
           )}
@@ -59,10 +57,7 @@ export function NavProjects() {
             {Array.from({ length: 4 }).map((_, idx) => (
               <SidebarMenuItem key={idx}>
                 <SidebarMenuButton asChild>
-                  <Link
-                    href="#"
-                    className="flex items-center gap-2cursor-not-allowed"
-                  >
+                  <Link href="#" className="flex items-center gap-2cursor-not-allowed">
                     <Skeleton className="h-8 w-8 rounded" />
                     <Skeleton className="h-8 w-full rounded" />
                   </Link>
@@ -75,11 +70,7 @@ export function NavProjects() {
             {projects?.map((project, idx) => (
               <SidebarMenuItem key={idx}>
                 <SidebarMenuButton asChild>
-                  <Link
-                    rel="preload"
-                    href={`/projects/${project.id}`}
-                    className="flex items-center gap-2"
-                  >
+                  <Link rel="preload" href={`/projects/${project.id}`} className="flex items-center gap-2">
                     <Icons.folder className="text-sidebar-foreground" />
                     <span>{project.name}</span>
                   </Link>

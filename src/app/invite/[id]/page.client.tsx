@@ -1,13 +1,12 @@
-import { organization } from "@/lib/auth-client";
 import { useEffect } from "react";
+
+import { organization } from "@/lib/auth-client";
 
 interface AcceptInviteClientProps {
   invitationId: string;
 }
 
-export const AcceptInviteClient = ({
-  invitationId,
-}: AcceptInviteClientProps) => {
+export const AcceptInviteClient = ({ invitationId }: AcceptInviteClientProps) => {
   useEffect(() => {
     const acceptInvite = async () => {
       const invite = organization.getInvitation({

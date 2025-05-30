@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
+import { REALTIME_SUBSCRIBE_STATES } from "@supabase/supabase-js";
+
+import { createClient } from "@/lib/supabase/client";
 import { useCurrentUserImage } from "./use-current-user-image";
 import { useCurrentUserName } from "./use-current-user-name";
-import { createClient } from "@/lib/supabase/client";
-import { REALTIME_SUBSCRIBE_STATES } from "@supabase/supabase-js";
 
 const supabase = createClient();
 

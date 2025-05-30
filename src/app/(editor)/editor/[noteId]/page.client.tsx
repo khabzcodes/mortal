@@ -1,19 +1,16 @@
 "use client";
 
+import { useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Editor as EditorInstance } from "@tiptap/core";
+
 import NotFound from "@/app/not-found";
 import { Editor } from "@/components/editor";
+import { EditorHeader } from "@/components/editor/header";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import { useSession } from "@/lib/auth-client";
 import { getNoteById, updateNoteContent } from "@/rpc/notes";
 import { QueryKeys } from "@/rpc/query-keys";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
-import { useState } from "react";
-import { Editor as EditorInstance } from "@tiptap/core";
-import { EditorHeader } from "@/components/editor/header";
-import { useSession } from "@/lib/auth-client";
 
 type EditorClientProps = {
   noteId: string;
@@ -68,11 +65,7 @@ export const EditorClient = ({ noteId }: EditorClientProps) => {
         noteId={noteId}
         title={formattedNote.title}
         description={formattedNote.description}
-        lastSyncedAt={
-          formattedNote.updatedAt
-            ? formattedNote.updatedAt
-            : formattedNote.createdAt
-        }
+        lastSyncedAt={formattedNote.updatedAt ? formattedNote.updatedAt : formattedNote.createdAt}
         onSave={handleUpdate}
         isSaving={mutation.isPending}
       />

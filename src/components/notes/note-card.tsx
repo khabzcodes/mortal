@@ -1,28 +1,22 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import Link from "next/link";
+import { JSONContent } from "@tiptap/react";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import { Clock, MoreHorizontal, Star, Tag } from "lucide-react";
+
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Star, Tag, Clock } from "lucide-react";
-import { Button } from "../ui/button";
 import { formatDate } from "@/lib/utils";
-import { Badge } from "../ui/badge";
-import Link from "next/link";
-import relativeTime from "dayjs/plugin/relativeTime";
-import dayjs from "dayjs";
-import { JSONContent } from "@tiptap/react";
-import { Icons } from "../icons";
 import { ContributorWithUser } from "@/types/contributors";
+import { Icons } from "../icons";
 import { AvatarCircles } from "../ui/avatar-circles";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
 
 dayjs.extend(relativeTime);
 
@@ -40,16 +34,7 @@ type NoteCardProps = {
 };
 
 export const NoteCard = ({
-  note: {
-    id,
-    title,
-    description,
-    content,
-    tags,
-    contributors,
-    createdAt,
-    updatedAt,
-  },
+  note: { id, title, description, content, tags, contributors, createdAt, updatedAt },
 }: NoteCardProps) => {
   const jsonContent: JSONContent = content ? JSON.parse(content) : null;
 
@@ -61,9 +46,7 @@ export const NoteCard = ({
       <CardHeader className="flex flex-row items-start justify-between space-y-0">
         <div>
           <CardTitle className="text-lg font-bold">{title}</CardTitle>
-          <CardDescription className="line-clamp-2 mt-1">
-            {description.substring(0, 100)}
-          </CardDescription>
+          <CardDescription className="line-clamp-2 mt-1">{description.substring(0, 100)}</CardDescription>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -96,11 +79,7 @@ export const NoteCard = ({
       <CardFooter className="flex items-center justify-between border-t border-dashed p-4 text-xs text-muted-foreground max-h-5">
         <div className="flex items-center">
           <Clock className="mr-1 h-3 w-3" />
-          <span>
-            {updatedAt
-              ? dayjs().to(dayjs(updatedAt))
-              : dayjs().to(dayjs(createdAt))}
-          </span>
+          <span>{updatedAt ? dayjs().to(dayjs(updatedAt)) : dayjs().to(dayjs(createdAt))}</span>
         </div>
         <div className="flex items-center gap-2">
           {totalTaskCount > 0 && (

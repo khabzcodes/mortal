@@ -1,21 +1,25 @@
+import Placeholder from "@tiptap/extension-placeholder";
+import { Editor, EditorContent, EditorContext, useEditor } from "@tiptap/react";
+
 import { defaultExtensions } from "@/components/editor/extensions/default-extensions";
 import { CodeBlockLanguageMenu } from "@/components/editor/menus/codeblock-language-menu";
 import { DefaultBubbleMenu } from "@/components/editor/menus/default-bubble-menu";
 import { TableOptionsMenu } from "@/components/editor/menus/table-options-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { EditorContent, EditorContext, useEditor, Editor } from "@tiptap/react";
 
-import Placeholder from "@tiptap/extension-placeholder";
 import "@/components/tiptap-node/list-node/list-node.scss";
 import "@/components/tiptap-node/image-node/image-node.scss";
 import "@/components/tiptap-node/paragraph-node/paragraph-node.scss";
 
 import { Ai } from "@/components/editor/extensions/ai";
+
 import "@/components/editor/simple-editor.scss";
+
+import { toast } from "sonner";
+
 import { SlashCommand } from "@/components/editor/extensions/slash-command/slash-command";
 import { getSuggestion } from "@/components/editor/extensions/slash-command/suggestion";
-import { toast } from "sonner";
 
 type OverviewEditorProps = {
   source: {
@@ -64,10 +68,7 @@ export function OverviewEditor({ source, onUpdate }: OverviewEditorProps) {
       <div className="content-wrapper">
         <ScrollArea className="h-[90vh] p-4">
           <div className="pt-2 pb-10">
-            <EditorContent
-              editor={editor}
-              className="prose dark:prose-invert focus:outline-none max-w-full"
-            >
+            <EditorContent editor={editor} className="prose dark:prose-invert focus:outline-none max-w-full">
               <DefaultBubbleMenu editor={editor} showAiTools={true} />
               <CodeBlockLanguageMenu editor={editor} />
               <TableOptionsMenu editor={editor} />

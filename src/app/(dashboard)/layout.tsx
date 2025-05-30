@@ -1,18 +1,11 @@
-import { AppSidebar } from "@/components/app-sidebar";
-import ThemeToggler from "@/components/theme/toggler";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
-import { getSession } from "@/lib/auth-utils";
 import { redirect } from "next/navigation";
 
-export default async function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+import { AppSidebar } from "@/components/app-sidebar";
+import ThemeToggler from "@/components/theme/toggler";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { getSession } from "@/lib/auth-utils";
+
+export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await getSession();
 
   if (!session?.session.activeOrganizationId) {

@@ -15,22 +15,13 @@ interface AvatarCirclesProps {
   }[];
 }
 
-export const AvatarCircles = ({
-  numPeople,
-  className,
-  users,
-}: AvatarCirclesProps) => {
+export const AvatarCircles = ({ numPeople, className, users }: AvatarCirclesProps) => {
   return (
     <div className={cn("z-10 flex -space-x-4 rtl:space-x-reverse", className)}>
       {users.map((user, idx) => {
         if (user.image) {
           return (
-            <a
-              key={idx}
-              href={user.image}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a key={idx} href={user.image} target="_blank" rel="noopener noreferrer">
               <img
                 key={idx}
                 className="h-10 w-10 rounded-full border-2 border-white dark:border-gray-800"
@@ -43,12 +34,7 @@ export const AvatarCircles = ({
           );
         } else {
           return (
-            <a
-              key={idx}
-              href={user.image}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a key={idx} href={user.image} target="_blank" rel="noopener noreferrer">
               <div className="h-10 w-10 rounded-full border-2 border-white bg-gray-200 dark:border-gray-800 dark:bg-gray-700">
                 <span className="flex h-full items-center justify-center text-xs font-medium text-gray-500 dark:text-gray-300">
                   {user.name.charAt(0).toUpperCase()}

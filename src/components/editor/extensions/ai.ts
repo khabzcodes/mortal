@@ -1,4 +1,5 @@
 import { Extension } from "@tiptap/core";
+
 import { requestCompletion } from "../utils/request-completion";
 
 interface AiTextOptions {
@@ -96,10 +97,7 @@ export const Ai = Extension.create<AiOptions, AiStorage>({
 
               if (insert) {
                 const range = editor.$pos(insert.from).range;
-                cm.focus()
-                  .deleteRange(range)
-                  .insertContentAt(range.from, prompt)
-                  .aiReset();
+                cm.focus().deleteRange(range).insertContentAt(range.from, prompt).aiReset();
               }
 
               cm.run();

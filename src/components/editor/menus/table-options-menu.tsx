@@ -1,23 +1,10 @@
-import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
 import { Editor, FloatingMenu } from "@tiptap/react";
-import {
-  Columns,
-  MoreHorizontal,
-  RectangleHorizontal,
-  Rows,
-} from "lucide-react";
+import { Columns, MoreHorizontal, RectangleHorizontal, Rows } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 export const TableOptionsMenu = ({ editor }: { editor: Editor | null }) => {
   if (!editor) {
@@ -68,11 +55,7 @@ export const TableOptionsMenu = ({ editor }: { editor: Editor | null }) => {
           <Tooltip>
             <PopoverTrigger asChild>
               <TooltipTrigger asChild>
-                <Button
-                  className="drop-shadow-lg"
-                  variant="outline"
-                  size="icon"
-                >
+                <Button className="drop-shadow-lg" variant="outline" size="icon">
                   <Columns className="size-5" />
                 </Button>
               </TooltipTrigger>
@@ -119,11 +102,7 @@ export const TableOptionsMenu = ({ editor }: { editor: Editor | null }) => {
           <Tooltip>
             <PopoverTrigger asChild>
               <TooltipTrigger asChild>
-                <Button
-                  className="drop-shadow-lg"
-                  variant="outline"
-                  size="icon"
-                >
+                <Button className="drop-shadow-lg" variant="outline" size="icon">
                   <Rows className="size-5" />
                 </Button>
               </TooltipTrigger>
@@ -170,11 +149,7 @@ export const TableOptionsMenu = ({ editor }: { editor: Editor | null }) => {
           <Tooltip>
             <PopoverTrigger asChild>
               <TooltipTrigger asChild>
-                <Button
-                  className="drop-shadow-lg"
-                  variant="outline"
-                  size="icon"
-                >
+                <Button className="drop-shadow-lg" variant="outline" size="icon">
                   <RectangleHorizontal className="size-5" />
                 </Button>
               </TooltipTrigger>
@@ -221,11 +196,7 @@ export const TableOptionsMenu = ({ editor }: { editor: Editor | null }) => {
           <Tooltip>
             <PopoverTrigger asChild>
               <TooltipTrigger asChild>
-                <Button
-                  className="drop-shadow-lg"
-                  variant="outline"
-                  size="icon"
-                >
+                <Button className="drop-shadow-lg" variant="outline" size="icon">
                   <MoreHorizontal className="size-5" />
                 </Button>
               </TooltipTrigger>

@@ -1,9 +1,3 @@
-import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Editor } from "@tiptap/core";
 import {
   ArrowDownNarrowWideIcon,
@@ -14,6 +8,9 @@ import {
   RefreshCcwDotIcon,
   SparklesIcon,
 } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 const items = [
   {
@@ -71,9 +68,7 @@ export const AiSelector = ({ editor }: { editor: Editor }) => {
         {items.map((item, i) => {
           return (
             <div key={i} className="flex flex-col">
-              <h6 className="text-muted-foreground font-medium text-xs p-2">
-                {item.group}
-              </h6>
+              <h6 className="text-muted-foreground font-medium text-xs p-2">{item.group}</h6>
               {item.commands.map((c, j) => {
                 return (
                   <div

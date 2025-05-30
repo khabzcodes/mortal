@@ -1,26 +1,21 @@
 import { useState } from "react";
-import { OverviewEditor } from "./overview-editor";
-import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
-import { updateProjectOverview } from "@/rpc/projects";
 import { toast } from "sonner";
+
+import { Button } from "@/components/ui/button";
+import { updateProjectOverview } from "@/rpc/projects";
+import { OverviewEditor } from "./overview-editor";
 
 type ProjectOverviewProps = {
   projectId: string;
   overview: string | undefined | null;
 };
-export const ProjectOverview = ({
-  projectId,
-  overview,
-}: ProjectOverviewProps) => {
-  const [overviewState, setOverviewState] = useState<string | undefined | null>(
-    overview
-  );
+export const ProjectOverview = ({ projectId, overview }: ProjectOverviewProps) => {
+  const [overviewState, setOverviewState] = useState<string | undefined | null>(overview);
   const [hasChanges, setHasChanges] = useState(false);
 
   const mutation = useMutation({
-    mutationFn: () =>
-      updateProjectOverview(projectId, { overview: overviewState }),
+    mutationFn: () => updateProjectOverview(projectId, { overview: overviewState }),
     onSuccess: () => {
       toast.success("Project overview updated successfully!");
       setHasChanges(false);
@@ -58,9 +53,7 @@ export const ProjectOverview = ({
       />
       {hasChanges && (
         <div className="absolute bottom-20 right-4 border-1 border-dashed p-4 shadow-2xl">
-          <p className="text-sm text-muted-foreground">
-            Do you want to save your changes?
-          </p>
+          <p className="text-sm text-muted-foreground">Do you want to save your changes?</p>
           <div className="flex justify-end gap-2 mt-2">
             <Button
               disabled={mutation.isPending}
@@ -71,11 +64,7 @@ export const ProjectOverview = ({
             >
               Save
             </Button>
-            <Button
-              disabled={mutation.isPending}
-              size="sm"
-              onClick={() => setHasChanges(false)}
-            >
+            <Button disabled={mutation.isPending} size="sm" onClick={() => setHasChanges(false)}>
               Cancel
             </Button>
           </div>

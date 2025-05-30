@@ -1,8 +1,9 @@
 "use client";
 
+import { useState } from "react";
+
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import { CreateNoteDialog } from "./create-note-dialog";
 
 export const CreateNoteButton = () => {
@@ -10,12 +11,7 @@ export const CreateNoteButton = () => {
 
   return (
     <>
-      <Button
-        size="sm"
-        variant="outline"
-        className="border-r border-dashed"
-        onClick={() => setIsOpen(true)}
-      >
+      <Button size="sm" variant="outline" className="border-r border-dashed" onClick={() => setIsOpen(true)}>
         <Icons.addSquare />
         Add new note
       </Button>

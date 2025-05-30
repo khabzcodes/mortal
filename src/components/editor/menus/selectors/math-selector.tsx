@@ -1,7 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { Editor } from "@tiptap/core";
 import { useEditorState } from "@tiptap/react";
+
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export const MathSelector = ({ editor }: { editor: Editor }) => {
   const editorState = useEditorState({

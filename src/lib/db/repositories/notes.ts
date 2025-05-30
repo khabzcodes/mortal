@@ -1,8 +1,9 @@
-import { NotesRepository } from "@/lib/db/repositories/interfaces/notes";
-import { db } from "@/lib/db";
-import { eq, desc } from "drizzle-orm";
-import { notes } from "../schemas/notes";
+import { desc, eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
+
+import { db } from "@/lib/db";
+import { NotesRepository } from "@/lib/db/repositories/interfaces/notes";
+import { notes } from "../schemas/notes";
 
 export const notesRepository: NotesRepository = {
   selectNotesByOrganizationId: async (organizationId) => {

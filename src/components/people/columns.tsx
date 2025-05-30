@@ -1,5 +1,7 @@
 "use client";
+
 import { ColumnDef } from "@tanstack/react-table";
+
 import { DataTableColumnHeader } from "../shared/datatable-column-header";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
@@ -14,9 +16,7 @@ export type Person = {
 export const columns: ColumnDef<Person>[] = [
   {
     accessorKey: "name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
     cell: ({ row }) => {
       const name = row.original.name;
       const image = row.original.image;
@@ -39,9 +39,7 @@ export const columns: ColumnDef<Person>[] = [
   },
   {
     accessorKey: "email",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Email" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
     cell: ({ row }) => {
       const email = row.original.email;
 
@@ -50,17 +48,11 @@ export const columns: ColumnDef<Person>[] = [
   },
   {
     accessorKey: "role",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Role" />
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Role" />,
     cell: ({ row }) => {
       const role = row.original.role;
 
-      return (
-        <span className="text-sm font-medium leading-tight capitalize">
-          {role}
-        </span>
-      );
+      return <span className="text-sm font-medium leading-tight capitalize">{role}</span>;
     },
   },
 ];

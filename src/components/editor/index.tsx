@@ -1,32 +1,30 @@
 "use client";
 
 import * as React from "react";
-import {
-  EditorContent,
-  EditorContext,
-  useEditor,
-  Editor as EditorInstance,
-} from "@tiptap/react";
 import Placeholder from "@tiptap/extension-placeholder";
+import { EditorContent, EditorContext, Editor as EditorInstance, useEditor } from "@tiptap/react";
+
 import "@/components/tiptap-node/list-node/list-node.scss";
 import "@/components/tiptap-node/image-node/image-node.scss";
 import "@/components/tiptap-node/paragraph-node/paragraph-node.scss";
 
 import { Ai } from "@/components/editor/extensions/ai";
+
 import "@/components/editor/simple-editor.scss";
 
-import { ScrollArea } from "../ui/scroll-area";
+import { useEffect, useRef } from "react";
+import { toast } from "sonner";
+
+import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
+import { ScrollArea } from "../ui/scroll-area";
+import { defaultExtensions } from "./extensions/default-extensions";
 import { SlashCommand } from "./extensions/slash-command/slash-command";
 import { getSuggestion } from "./extensions/slash-command/suggestion";
-import { defaultExtensions } from "./extensions/default-extensions";
-import { toast } from "sonner";
-import { DefaultBubbleMenu } from "./menus/default-bubble-menu";
 import { CodeBlockLanguageMenu } from "./menus/codeblock-language-menu";
-import { RealtimeCursors } from "./realtime-cursors";
-import { useEffect, useRef } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { DefaultBubbleMenu } from "./menus/default-bubble-menu";
 import { TableOptionsMenu } from "./menus/table-options-menu";
+import { RealtimeCursors } from "./realtime-cursors";
 
 type EditorProps = {
   source: {
@@ -116,11 +114,7 @@ export function Editor({ source, onUpdate, onCreate, user }: EditorProps) {
       }
     };
 
-    channelRef.current.on(
-      "broadcast",
-      { event: "doc-update" },
-      handleDocUpdate
-    );
+    channelRef.current.on("broadcast", { event: "doc-update" }, handleDocUpdate);
 
     return () => {
       if (channelRef.current) {
@@ -134,18 +128,11 @@ export function Editor({ source, onUpdate, onCreate, user }: EditorProps) {
       <div className="content-wrapper">
         <ScrollArea className="h-[90vh] p-4">
           <div className="py-4">
-            <EditorContent
-              editor={editor}
-              className="prose dark:prose-invert focus:outline-none max-w-full"
-            >
+            <EditorContent editor={editor} className="prose dark:prose-invert focus:outline-none max-w-full">
               <DefaultBubbleMenu editor={editor} showAiTools={true} />
               <CodeBlockLanguageMenu editor={editor} />
               <TableOptionsMenu editor={editor} />
-              <RealtimeCursors
-                roomName={`cursor-note-${source.id}`}
-                username={user.name}
-                userId={user.id}
-              />
+              <RealtimeCursors roomName={`cursor-note-${source.id}`} username={user.name} userId={user.id} />
             </EditorContent>
           </div>
         </ScrollArea>

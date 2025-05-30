@@ -1,5 +1,6 @@
 import { mergeAttributes, Node } from "@tiptap/core";
 import { ReactNodeViewRenderer } from "@tiptap/react";
+
 import AiWriterView from "./ai-writer-view";
 
 export interface AiWriterOptions {
@@ -48,10 +49,7 @@ export const AiWriter = Node.create<AiWriterOptions>({
   },
 
   renderHTML({ HTMLAttributes }) {
-    return [
-      "div",
-      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
-    ];
+    return ["div", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes)];
   },
 
   addNodeView() {

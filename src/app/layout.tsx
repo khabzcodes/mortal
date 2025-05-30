@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
-import {
-  Manrope,
-  JetBrains_Mono,
-  Inter,
-  Space_Grotesk,
-} from "next/font/google";
+import { Inter, JetBrains_Mono, Manrope, Space_Grotesk } from "next/font/google";
+
 import "@/styles/globals.css";
+
+import RootProviders from "@/components/providers";
 import { siteConfig } from "@/config/site.config";
 import { cn } from "@/lib/utils";
-import RootProviders from "@/components/providers";
 
 // const fontSans = Manrope({
 //   variable: "--font-sans",
@@ -77,12 +74,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          spaceGrotesk.className
-        )}
-      >
+      <body className={cn("min-h-screen bg-background font-sans antialiased", spaceGrotesk.className)}>
         <RootProviders>{children}</RootProviders>
       </body>
     </html>

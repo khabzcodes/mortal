@@ -1,10 +1,3 @@
-import { Icons } from "@/components/icons";
-import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Editor } from "@tiptap/core";
 import { useEditorState } from "@tiptap/react";
 import {
@@ -18,6 +11,10 @@ import {
   LucideIcon,
   QuoteIcon,
 } from "lucide-react";
+
+import { Icons } from "@/components/icons";
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface SelectorResult {
   isParagraph: boolean;
@@ -40,30 +37,25 @@ const items: MenuItem[] = [
   {
     name: "Text",
     icon: LetterTextIcon,
-    onClick: (editor) =>
-      editor.chain().focus().toggleNode("paragraph", "paragraph").run(),
-    isActive: (state) =>
-      state.isParagraph && !state.isBulletList && !state.isOrderedList,
+    onClick: (editor) => editor.chain().focus().toggleNode("paragraph", "paragraph").run(),
+    isActive: (state) => state.isParagraph && !state.isBulletList && !state.isOrderedList,
   },
   {
     name: "Heading 1",
     icon: Heading1,
-    onClick: (editor) =>
-      editor.chain().focus().toggleHeading({ level: 1 }).run(),
+    onClick: (editor) => editor.chain().focus().toggleHeading({ level: 1 }).run(),
     isActive: (state) => state.isHeading1,
   },
   {
     name: "Heading 2",
     icon: Heading2,
-    onClick: (editor) =>
-      editor.chain().focus().toggleHeading({ level: 2 }).run(),
+    onClick: (editor) => editor.chain().focus().toggleHeading({ level: 2 }).run(),
     isActive: (state) => state.isHeading2,
   },
   {
     name: "Heading 3",
     icon: Heading3,
-    onClick: (editor) =>
-      editor.chain().focus().toggleHeading({ level: 3 }).run(),
+    onClick: (editor) => editor.chain().focus().toggleHeading({ level: 3 }).run(),
     isActive: (state) => state.isHeading3,
   },
   // {
@@ -87,13 +79,7 @@ const items: MenuItem[] = [
   {
     name: "Quote",
     icon: QuoteIcon,
-    onClick: (editor) =>
-      editor
-        .chain()
-        .focus()
-        .toggleNode("paragraph", "paragraph")
-        .toggleBlockquote()
-        .run(),
+    onClick: (editor) => editor.chain().focus().toggleNode("paragraph", "paragraph").toggleBlockquote().run(),
     isActive: (state) => state.isBlockquote,
   },
   // {
@@ -120,8 +106,7 @@ export const NodeSelector = ({ editor }: { editor: Editor }) => {
 
   const activeItems = items.filter((item) => item.isActive(editorState));
 
-  const name =
-    activeItems.length > 1 ? "Multiple" : activeItems.pop()?.name ?? "Text";
+  const name = activeItems.length > 1 ? "Multiple" : (activeItems.pop()?.name ?? "Text");
 
   return (
     <Popover>
@@ -142,9 +127,7 @@ export const NodeSelector = ({ editor }: { editor: Editor }) => {
               <item.icon className="size-3.5 me-2" />
               <span>{item.name}</span>
               <div className="flex-1"></div>
-              {item.isActive(editorState) && (
-                <Icons.checkMarkCircle className="size-3.5 ms-4" />
-              )}
+              {item.isActive(editorState) && <Icons.checkMarkCircle className="size-3.5 ms-4" />}
             </div>
           );
         })}

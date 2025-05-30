@@ -1,5 +1,6 @@
 import { mergeAttributes, Node } from "@tiptap/core";
 import { ReactNodeViewRenderer } from "@tiptap/react";
+
 import AiCompletionView from "./ai-placeholder-view";
 
 export interface AiPlaceholderOptions {
@@ -53,10 +54,7 @@ export const AiPlaceholder = Node.create<AiPlaceholderOptions>({
   },
 
   renderHTML({ HTMLAttributes }) {
-    return [
-      "span",
-      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
-    ];
+    return ["span", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes)];
   },
 
   addNodeView() {

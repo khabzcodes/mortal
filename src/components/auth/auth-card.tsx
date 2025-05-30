@@ -1,20 +1,14 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardFooter,
-} from "@/components/ui/card";
 import { useState } from "react";
+import Link from "next/link";
+import { Loader2 } from "lucide-react";
+
+import { Icons } from "@/components/icons";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { signIn } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
-import { Loader2 } from "lucide-react";
-import { Icons } from "@/components/icons";
-import Link from "next/link";
 import { SignInForm } from "./sign-in-form";
 import { SignUpForm } from "./sign-up-form";
 
@@ -33,23 +27,14 @@ export default function AuthCard({
     <Card className="max-w-md w-full rounded-none border-dashed">
       <CardHeader>
         <CardTitle className="text-lg md:text-xl">{title}</CardTitle>
-        <CardDescription className="text-xs md:text-sm">
-          {description}
-        </CardDescription>
+        <CardDescription className="text-xs md:text-sm">{description}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
-          <div
-            className={cn(
-              "w-full gap-2 flex items-center",
-              "justify-between flex-col"
-            )}
-          >
+          <div className={cn("w-full gap-2 flex items-center", "justify-between flex-col")}>
             {mode === "sign-in" ? <SignInForm /> : <SignUpForm />}
             <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border w-full">
-              <span className="relative z-10 px-2 text-muted-foreground">
-                Or continue with
-              </span>
+              <span className="relative z-10 px-2 text-muted-foreground">Or continue with</span>
             </div>
             <SignInButton
               title="Sign in with Github"
@@ -67,20 +52,14 @@ export default function AuthCard({
           {mode === "sign-in" ? (
             <>
               Don't have an account?{" "}
-              <Link
-                href="/sign-up"
-                className="text-primary font-medium hover:underline"
-              >
+              <Link href="/sign-up" className="text-primary font-medium hover:underline">
                 Sign up
               </Link>
             </>
           ) : (
             <>
               Already have an account?{" "}
-              <Link
-                href="/sign-in"
-                className="text-primary font-medium hover:underline"
-              >
+              <Link href="/sign-in" className="text-primary font-medium hover:underline">
                 Sign in
               </Link>
             </>

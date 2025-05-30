@@ -1,11 +1,12 @@
-import { auth } from "@/lib/auth";
-import { invitationRepository } from "@/lib/db/repositories/invitations";
-import { createLogger } from "@/lib/logger";
-import { createInvitationSchema } from "@/validations/invitations";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { nanoid } from "nanoid";
 import { ZodError } from "zod";
+
+import { auth } from "@/lib/auth";
+import { invitationRepository } from "@/lib/db/repositories/invitations";
+import { createLogger } from "@/lib/logger";
+import { createInvitationSchema } from "@/validations/invitations";
 
 const logger = createLogger("InvitationsRoute");
 
@@ -23,10 +24,9 @@ export const invitations = new Hono<{
         return c.json({ message: "Unauthorized" }, 401);
       }
 
-      const invitations =
-        await invitationRepository.selectInvitationsByOrganizationId(
-          session.session.activeOrganizationId
-        );
+      const invitations = await invitationRepository.selectInvitationsByOrganizationId(
+        session.session.activeOrganizationId
+      );
 
       return c.json({ data: invitations }, 200);
     } catch (error) {
@@ -71,16 +71,12 @@ export const invitations = new Hono<{
         return c.json({ message: "Unauthorized" }, 401);
       }
 
-      const inviteExists =
-        await invitationRepository.selectInvitationByEmailAndOrganizationId(
-          email,
-          session.session.activeOrganizationId
-        );
+      const inviteExists = await invitationRepository.selectInvitationByEmailAndOrganizationId(
+        email,
+        session.session.activeOrganizationId
+      );
       if (inviteExists) {
-        return c.json(
-          { message: "Invitation already exists for this email" },
-          400
-        );
+        return c.json({ message: "Invitation already exists for this email" }, 400);
       }
 
       const invitation = await invitationRepository.insertInvitation({

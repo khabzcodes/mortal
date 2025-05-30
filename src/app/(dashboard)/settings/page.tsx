@@ -5,10 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export default function SettingsPage() {
   return (
     <div className="flex flex-col gap-2">
-      <PageHeader
-        title="Settings"
-        description="Manage your account and workspace settings."
-      />
+      <PageHeader title="Settings" description="Manage your account and workspace settings." />
       <Tabs defaultValue="account" className="w-full">
         <TabsList className="w-full">
           <TabsTrigger value="account">Account</TabsTrigger>

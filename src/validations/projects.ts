@@ -22,6 +22,4 @@ export const updateProjectOverviewSchema = z.object({
 });
 
 export type UpdateProjectInputValidation = z.infer<typeof updateProjectSchema>;
-export type UpdateProjectOverviewInputValidation = z.infer<
-  typeof updateProjectOverviewSchema
->;
+export type UpdateProjectOverviewInputValidation = z.infer<typeof updateProjectOverviewSchema>;

@@ -1,20 +1,15 @@
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Editor, isTextSelection } from "@tiptap/core";
 import { BubbleMenu } from "@tiptap/react";
-import { NodeSelector } from "./selectors/node-selector";
+
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { TextStylesSelector } from "./selectors/text-styles-selector";
-import { TextAlignSelector } from "./selectors/text-align-selector";
 import { AiSelector } from "./selectors/ai-selector";
 import { MathSelector } from "./selectors/math-selector";
+import { NodeSelector } from "./selectors/node-selector";
+import { TextAlignSelector } from "./selectors/text-align-selector";
+import { TextStylesSelector } from "./selectors/text-styles-selector";
 
-export const DefaultBubbleMenu = ({
-  editor,
-  showAiTools,
-}: {
-  editor: Editor | null;
-  showAiTools?: boolean;
-}) => {
+export const DefaultBubbleMenu = ({ editor, showAiTools }: { editor: Editor | null; showAiTools?: boolean }) => {
   if (!editor) return null;
 
   return (

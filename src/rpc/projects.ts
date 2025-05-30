@@ -1,8 +1,5 @@
 import { baseRpcUrl } from "@/rpc/config";
-import {
-  UpdateProjectInputValidation,
-  UpdateProjectOverviewInputValidation,
-} from "@/validations/projects";
+import { UpdateProjectInputValidation, UpdateProjectOverviewInputValidation } from "@/validations/projects";
 
 const route = baseRpcUrl.projects;
 
@@ -40,10 +37,7 @@ export const getProjects = async (limit?: number) => {
   return data;
 };
 
-export const updateProject = async (
-  id: string,
-  data: UpdateProjectInputValidation
-) => {
+export const updateProject = async (id: string, data: UpdateProjectInputValidation) => {
   const response = await route[":id"].$put({ param: { id }, json: data });
   if (!response.ok) {
     const error = await response.json();
@@ -54,10 +48,7 @@ export const updateProject = async (
   return project;
 };
 
-export const updateProjectOverview = async (
-  id: string,
-  data: UpdateProjectOverviewInputValidation
-) => {
+export const updateProjectOverview = async (id: string, data: UpdateProjectOverviewInputValidation) => {
   const response = await route[":id"].overview.$put({
     param: { id },
     json: data,

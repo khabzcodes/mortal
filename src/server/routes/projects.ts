@@ -1,15 +1,12 @@
+import { zValidator } from "@hono/zod-validator";
+import { Hono } from "hono";
+import { nanoid } from "nanoid";
+
 import { auth } from "@/lib/auth";
 import { projectsRepository } from "@/lib/db/repositories/projects";
 import { createLogger } from "@/lib/logger";
 import { Project } from "@/types/projects";
-import {
-  getProjectsSchema,
-  updateProjectOverviewSchema,
-  updateProjectSchema,
-} from "@/validations/projects";
-import { zValidator } from "@hono/zod-validator";
-import { Hono } from "hono";
-import { nanoid } from "nanoid";
+import { getProjectsSchema, updateProjectOverviewSchema, updateProjectSchema } from "@/validations/projects";
 
 const logger = createLogger("ProjectsRoute");
 
@@ -27,10 +24,9 @@ export const projects = new Hono<{
         return c.json({ message: "Unauthorized" }, 401);
       }
 
-      const projectsCount =
-        await projectsRepository.selectProjectsCountByOrganizationId(
-          session.session.activeOrganizationId
-        );
+      const projectsCount = await projectsRepository.selectProjectsCountByOrganizationId(
+        session.session.activeOrganizationId
+      );
 
       const projectData: Project = {
         id: `proj_${nanoid(24)}`,
@@ -56,10 +52,7 @@ export const projects = new Hono<{
 
       // const { limit } = c.req.valid("json");
 
-      const projects = await projectsRepository.selectProjectsByOrganizationId(
-        session.session.activeOrganizationId,
-        4
-      );
+      const projects = await projectsRepository.selectProjectsByOrganizationId(session.session.activeOrganizationId, 4);
 
       return c.json({ data: projects }, 200);
     } catch (error) {
@@ -76,10 +69,7 @@ export const projects = new Hono<{
       const projectId = c.req.param("id");
 
       const project = await projectsRepository.selectProjectById(projectId);
-      if (
-        !project ||
-        project.organizationId !== session.session.activeOrganizationId
-      ) {
+      if (!project || project.organizationId !== session.session.activeOrganizationId) {
         return c.json({ message: "Project not found" }, 404);
       }
 
@@ -99,10 +89,7 @@ export const projects = new Hono<{
       const projectId = c.req.param("id");
       const { name } = c.req.valid("json");
       const project = await projectsRepository.selectProjectById(projectId);
-      if (
-        !project ||
-        project.organizationId !== session.session.activeOrganizationId
-      ) {
+      if (!project || project.organizationId !== session.session.activeOrganizationId) {
         return c.json({ message: "Project not found" }, 404);
       }
 
@@ -119,40 +106,30 @@ export const projects = new Hono<{
       return c.json({ message: "Failed to update project" }, 500);
     }
   })
-  .put(
-    "/:id/overview",
-    zValidator("json", updateProjectOverviewSchema),
-    async (c) => {
-      try {
-        const session = c.get("session");
-        if (!session || !session.session.activeOrganizationId) {
-          return c.json({ message: "Unauthorized" }, 401);
-        }
+  .put("/:id/overview", zValidator("json", updateProjectOverviewSchema), async (c) => {
+    try {
+      const session = c.get("session");
+      if (!session || !session.session.activeOrganizationId) {
+        return c.json({ message: "Unauthorized" }, 401);
+      }
 
-        const projectId = c.req.param("id");
-        const { overview } = c.req.valid("json");
+      const projectId = c.req.param("id");
+      const { overview } = c.req.valid("json");
 
-        const project = await projectsRepository.selectProjectById(projectId);
-        if (
-          !project ||
-          project.organizationId !== session.session.activeOrganizationId
-        ) {
-          return c.json({ message: "Project not found" }, 404);
-        }
+      const project = await projectsRepository.selectProjectById(projectId);
+      if (!project || project.organizationId !== session.session.activeOrganizationId) {
+        return c.json({ message: "Project not found" }, 404);
+      }
 
-        const updatedProject = await projectsRepository.updateProject(
-          projectId,
-          { overview }
-        );
+      const updatedProject = await projectsRepository.updateProject(projectId, { overview });
 
-        if (!updatedProject) {
-          return c.json({ message: "Failed to update project overview" }, 500);
-        }
-
-        return c.json({ data: updatedProject }, 200);
-      } catch (error) {
-        logger.error("Error updating project overview", error);
+      if (!updatedProject) {
         return c.json({ message: "Failed to update project overview" }, 500);
       }
+
+      return c.json({ data: updatedProject }, 200);
+    } catch (error) {
+      logger.error("Error updating project overview", error);
+      return c.json({ message: "Failed to update project overview" }, 500);
     }
-  );
+  });

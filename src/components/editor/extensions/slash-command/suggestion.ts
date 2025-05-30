@@ -1,4 +1,3 @@
-import { SlashCommandNodeAttrs } from "./slash-command";
 import { ReactRenderer } from "@tiptap/react";
 import { SuggestionOptions } from "@tiptap/suggestion";
 import {
@@ -16,16 +15,11 @@ import {
   TextQuoteIcon,
 } from "lucide-react";
 import tippy, { Instance } from "tippy.js";
-import SuggestionList, {
-  CommandSuggestionItem,
-  SuggestionListHandle,
-  SuggestionListProps,
-} from "./suggestion-list";
 
-type SuggestionType = Omit<
-  SuggestionOptions<CommandSuggestionItem, SlashCommandNodeAttrs>,
-  "editor"
->;
+import { SlashCommandNodeAttrs } from "./slash-command";
+import SuggestionList, { CommandSuggestionItem, SuggestionListHandle, SuggestionListProps } from "./suggestion-list";
+
+type SuggestionType = Omit<SuggestionOptions<CommandSuggestionItem, SlashCommandNodeAttrs>, "editor">;
 
 const list: CommandSuggestionItem[] = [
   {
@@ -34,12 +28,7 @@ const list: CommandSuggestionItem[] = [
     keywords: ["p", "paragraph"],
     icon: LetterTextIcon,
     command: ({ editor, range }) => {
-      editor
-        .chain()
-        .focus()
-        .deleteRange(range)
-        .toggleNode("paragraph", "paragraph")
-        .run();
+      editor.chain().focus().deleteRange(range).toggleNode("paragraph", "paragraph").run();
     },
   },
   {
@@ -48,12 +37,7 @@ const list: CommandSuggestionItem[] = [
     keywords: ["title", "big", "large", "heading"],
     icon: Heading1Icon,
     command: ({ editor, range }) => {
-      editor
-        .chain()
-        .focus()
-        .deleteRange(range)
-        .setNode("heading", { level: 1 })
-        .run();
+      editor.chain().focus().deleteRange(range).setNode("heading", { level: 1 }).run();
     },
   },
   {
@@ -62,12 +46,7 @@ const list: CommandSuggestionItem[] = [
     keywords: ["subtitle", "medium", "heading"],
     icon: Heading2Icon,
     command: ({ editor, range }) => {
-      editor
-        .chain()
-        .focus()
-        .deleteRange(range)
-        .setNode("heading", { level: 2 })
-        .run();
+      editor.chain().focus().deleteRange(range).setNode("heading", { level: 2 }).run();
     },
   },
   {
@@ -76,12 +55,7 @@ const list: CommandSuggestionItem[] = [
     keywords: ["subtitle", "small", "heading"],
     icon: Heading3Icon,
     command: ({ editor, range }) => {
-      editor
-        .chain()
-        .focus()
-        .deleteRange(range)
-        .setNode("heading", { level: 3 })
-        .run();
+      editor.chain().focus().deleteRange(range).setNode("heading", { level: 3 }).run();
     },
   },
   {
@@ -108,13 +82,7 @@ const list: CommandSuggestionItem[] = [
     keywords: ["blockquote"],
     icon: TextQuoteIcon,
     command: ({ editor, range }) =>
-      editor
-        .chain()
-        .focus()
-        .deleteRange(range)
-        .toggleNode("paragraph", "paragraph")
-        .toggleBlockquote()
-        .run(),
+      editor.chain().focus().deleteRange(range).toggleNode("paragraph", "paragraph").toggleBlockquote().run(),
   },
   {
     title: "Code",
@@ -122,20 +90,14 @@ const list: CommandSuggestionItem[] = [
     keywords: ["codeblock"],
     icon: CodeIcon,
     command: ({ editor, range }) =>
-      editor
-        .chain()
-        .focus()
-        .deleteRange(range)
-        .toggleCodeBlock({ language: "bash" })
-        .run(),
+      editor.chain().focus().deleteRange(range).toggleCodeBlock({ language: "bash" }).run(),
   },
   {
     title: "Table",
     description: "Capture a table.",
     keywords: ["table"],
     icon: TableIcon,
-    command: ({ editor, range }) =>
-      editor.chain().focus().deleteRange(range).insertTable().run(),
+    command: ({ editor, range }) => editor.chain().focus().deleteRange(range).insertTable().run(),
   },
   {
     title: "Youtube",
@@ -170,8 +132,7 @@ const list: CommandSuggestionItem[] = [
     description: "Create a horizontal divider.",
     keywords: ["divider"],
     icon: DivideIcon,
-    command: ({ editor, range }) =>
-      editor.chain().focus().deleteRange(range).setHorizontalRule().run(),
+    command: ({ editor, range }) => editor.chain().focus().deleteRange(range).setHorizontalRule().run(),
   },
 ];
 

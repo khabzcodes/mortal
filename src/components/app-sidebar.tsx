@@ -1,22 +1,16 @@
 "use client";
 
 import * as React from "react";
+import { Organization } from "better-auth/plugins";
 
 import { NavMain } from "@/components/nav-main";
 import { NavProjects } from "@/components/nav-projects";
 import { NavUser } from "@/components/nav-user";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
 import { WorkspaceSwitcher } from "@/components/workspace-switcher";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarRail,
-} from "@/components/ui/sidebar";
 import { dashboardConfig } from "@/config/dashboard.config";
 import { organization } from "@/lib/auth-client";
 import { Skeleton } from "./ui/skeleton";
-import { Organization } from "better-auth/plugins";
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   activeWorkspaceId: string;
@@ -28,11 +22,7 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   };
 };
 
-export function AppSidebar({
-  activeWorkspaceId,
-  user,
-  ...props
-}: AppSidebarProps) {
+export function AppSidebar({ activeWorkspaceId, user, ...props }: AppSidebarProps) {
   const [workspaces, setWorkspaces] = React.useState<Organization[]>();
   React.useEffect(() => {
     const listWorkspaces = async () => {

@@ -1,12 +1,9 @@
-import { cn } from "@/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 const avatarStackVariants = cva("flex -space-x-4 -space-y-4", {
   variants: {
@@ -27,13 +24,7 @@ export interface AvatarStackProps
   maxAvatarsAmount?: number;
 }
 
-const AvatarStack = ({
-  className,
-  orientation,
-  avatars,
-  maxAvatarsAmount = 3,
-  ...props
-}: AvatarStackProps) => {
+const AvatarStack = ({ className, orientation, avatars, maxAvatarsAmount = 3, ...props }: AvatarStackProps) => {
   const shownAvatars = avatars.slice(0, maxAvatarsAmount);
   const hiddenAvatars = avatars.slice(maxAvatarsAmount);
 
@@ -70,9 +61,7 @@ const AvatarStack = ({
         <Tooltip key="hidden-avatars">
           <TooltipTrigger asChild>
             <Avatar>
-              <AvatarFallback>
-                +{avatars.length - shownAvatars.length}
-              </AvatarFallback>
+              <AvatarFallback>+{avatars.length - shownAvatars.length}</AvatarFallback>
             </Avatar>
           </TooltipTrigger>
           <TooltipContent>

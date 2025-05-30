@@ -1,7 +1,8 @@
+import { Hono } from "hono";
+
 import { auth } from "@/lib/auth";
 import { membersRepository } from "@/lib/db/repositories/members";
 import { createLogger } from "@/lib/logger";
-import { Hono } from "hono";
 
 const logger = createLogger("MembersRoute");
 
@@ -18,9 +19,7 @@ export const members = new Hono<{
       return c.json({ message: "Unauthorized" }, 401);
     }
 
-    const members = await membersRepository.selectMembersByOrganizationId(
-      session.session.activeOrganizationId
-    );
+    const members = await membersRepository.selectMembersByOrganizationId(session.session.activeOrganizationId);
 
     return c.json({ data: members }, 200);
   } catch (error) {

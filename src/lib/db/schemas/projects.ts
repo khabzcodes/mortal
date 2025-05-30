@@ -1,4 +1,5 @@
 import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+
 import { organization, user } from "./auth-schema";
 
 export const projects = pgTable("projects", {
@@ -12,7 +13,5 @@ export const projects = pgTable("projects", {
   createdById: text("created_by_id")
     .notNull()
     .references(() => user.id),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });

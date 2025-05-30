@@ -1,6 +1,7 @@
-import { createClient } from "@/lib/supabase/client";
-import { RealtimeChannel } from "@supabase/supabase-js";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { RealtimeChannel } from "@supabase/supabase-js";
+
+import { createClient } from "@/lib/supabase/client";
 
 /**
  * Throttle a callback to a certain delay, It will only call the callback if the delay has passed, with the arguments
@@ -39,8 +40,7 @@ const useThrottleCallback = <Params extends unknown[], Return>(
 
 const supabase = createClient();
 
-const generateRandomColor = () =>
-  `hsl(${Math.floor(Math.random() * 360)}, 100%, 70%)`;
+const generateRandomColor = () => `hsl(${Math.floor(Math.random() * 360)}, 100%, 70%)`;
 
 const EVENT_NAME = "realtime-cursor-move";
 
@@ -69,9 +69,7 @@ export const useRealtimeCursors = ({
   throttleMs: number;
 }) => {
   const [color] = useState(generateRandomColor());
-  const [cursors, setCursors] = useState<Record<string, CursorEventPayload>>(
-    {}
-  );
+  const [cursors, setCursors] = useState<Record<string, CursorEventPayload>>({});
 
   const channelRef = useRef<RealtimeChannel | null>(null);
 
@@ -108,26 +106,22 @@ export const useRealtimeCursors = ({
     channelRef.current = channel;
 
     channel
-      .on(
-        "broadcast",
-        { event: EVENT_NAME },
-        (data: { payload: CursorEventPayload }) => {
-          const { user } = data.payload;
-          // Don't render your own cursor
-          if (user.id === userId) return;
+      .on("broadcast", { event: EVENT_NAME }, (data: { payload: CursorEventPayload }) => {
+        const { user } = data.payload;
+        // Don't render your own cursor
+        if (user.id === userId) return;
 
-          setCursors((prev) => {
-            if (prev[userId]) {
-              delete prev[userId];
-            }
+        setCursors((prev) => {
+          if (prev[userId]) {
+            delete prev[userId];
+          }
 
-            return {
-              ...prev,
-              [user.id]: data.payload,
-            };
-          });
-        }
-      )
+          return {
+            ...prev,
+            [user.id]: data.payload,
+          };
+        });
+      })
       .subscribe();
 
     return () => {

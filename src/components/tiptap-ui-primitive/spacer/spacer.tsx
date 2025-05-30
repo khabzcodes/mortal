@@ -1,19 +1,16 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-type SpacerOrientation = "horizontal" | "vertical"
+type SpacerOrientation = "horizontal" | "vertical";
 
 interface SpacerProps extends React.HTMLAttributes<HTMLDivElement> {
-  orientation?: SpacerOrientation
-  size?: string | number
+  orientation?: SpacerOrientation;
+  size?: string | number;
 }
 
 export const Spacer = React.forwardRef<HTMLDivElement, SpacerProps>(
-  (
-    { orientation = "horizontal", size, className = "", style = {}, ...props },
-    ref
-  ) => {
+  ({ orientation = "horizontal", size, className = "", style = {}, ...props }, ref) => {
     const computedStyle = {
       ...style,
       ...(orientation === "horizontal" && !size && { flex: 1 }),
@@ -21,12 +18,10 @@ export const Spacer = React.forwardRef<HTMLDivElement, SpacerProps>(
         width: orientation === "vertical" ? "1px" : size,
         height: orientation === "horizontal" ? "1px" : size,
       }),
-    }
+    };
 
-    return (
-      <div ref={ref} {...props} className={className} style={computedStyle} />
-    )
+    return <div ref={ref} {...props} className={className} style={computedStyle} />;
   }
-)
+);
 
-Spacer.displayName = "Spacer"
+Spacer.displayName = "Spacer";

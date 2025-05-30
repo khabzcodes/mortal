@@ -1,4 +1,5 @@
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+
 export const CustomCodeBlock = CodeBlockLowlight.extend({
   addKeyboardShortcuts() {
     return {

@@ -1,14 +1,16 @@
 "use client";
-import { useSession } from "@/lib/auth-client";
+
 import Link from "next/link";
-import { Button } from "../ui/button";
-import { ArrowUpRight, Loader } from "lucide-react";
-import { UserProfile } from "../user-profile";
-import ThemeToggler from "../theme/toggler";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { Icons } from "../icons";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { ArrowUpRight, Loader } from "lucide-react";
+
+import { useSession } from "@/lib/auth-client";
+import { Icons } from "../icons";
+import ThemeToggler from "../theme/toggler";
+import { Button } from "../ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { UserProfile } from "../user-profile";
 import { RealtimeAvatarStack } from "./realtime-avatar-stack";
 
 dayjs.extend(relativeTime);
@@ -22,28 +24,13 @@ type EditorHeaderProps = {
   isSaving: boolean;
 };
 
-export const EditorHeader = ({
-  noteId,
-  title,
-  description,
-  lastSyncedAt,
-  onSave,
-  isSaving,
-}: EditorHeaderProps) => {
+export const EditorHeader = ({ noteId, title, description, lastSyncedAt, onSave, isSaving }: EditorHeaderProps) => {
   const { data: session, isPending } = useSession();
   return (
-    <div
-      id="nav"
-      className="w-full flex items-center justify-end border-b border-dashed"
-    >
-      <div
-        id="brand"
-        className="flex-col font-mono flex-1 flex h-full px-3 border-dashed"
-      >
+    <div id="nav" className="w-full flex items-center justify-end border-b border-dashed">
+      <div id="brand" className="flex-col font-mono flex-1 flex h-full px-3 border-dashed">
         <span className="font-bold">{title}</span>
-        <span className="text-muted-foreground/70 text-xs truncate">
-          {description}
-        </span>
+        <span className="text-muted-foreground/70 text-xs truncate">{description}</span>
       </div>
       <div className="flex items-center gap-2">
         <RealtimeAvatarStack roomId={`active-users-${noteId}`} />
@@ -54,37 +41,21 @@ export const EditorHeader = ({
             </TooltipTrigger>
             <TooltipContent>
               <p>
-                Content is automatically saved every 5 minutes. You can manually
-                save to avoid losing any unsaved changes.
+                Content is automatically saved every 5 minutes. You can manually save to avoid losing any unsaved
+                changes.
               </p>
             </TooltipContent>
           </Tooltip>
-          <span className="text-xs">
-            Last Synced {dayjs().to(dayjs(lastSyncedAt))}
-          </span>
+          <span className="text-xs">Last Synced {dayjs().to(dayjs(lastSyncedAt))}</span>
         </div>
-        <Button
-          onClick={onSave}
-          disabled={isSaving}
-          size="sm"
-          variant="outline"
-          className="h-8 border border-dashed"
-        >
+        <Button onClick={onSave} disabled={isSaving} size="sm" variant="outline" className="h-8 border border-dashed">
           Save Changes {isSaving && <Loader className="animate-spin" />}
         </Button>
       </div>
       {!isPending &&
         (session ? (
-          <Button
-            className="h-full border-dashed"
-            size="lg"
-            variant="ghost"
-            asChild
-          >
-            <Link
-              href="/dashboard"
-              className="flex items-center gap-2 group/nav"
-            >
+          <Button className="h-full border-dashed" size="lg" variant="ghost" asChild>
+            <Link href="/dashboard" className="flex items-center gap-2 group/nav">
               <span>Dashboard</span>
               <div className="relative z-10 size-4 overflow-hidden flex items-center justify-center">
                 <ArrowUpRight className="-z-10 absolute opacity-100 scale-100 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 group-hover/nav:-translate-y-5 group-hover/nav:translate-x-5 group-hover/nav:opacity-0 group-hover/nav:scale-0 transition-all duration-200" />
@@ -93,12 +64,7 @@ export const EditorHeader = ({
             </Link>
           </Button>
         ) : (
-          <Button
-            className="h-full border-dashed"
-            size="lg"
-            variant="ghost"
-            asChild
-          >
+          <Button className="h-full border-dashed" size="lg" variant="ghost" asChild>
             <Link href="/sign-in" className="flex items-center gap-2 group/nav">
               <span>Sign In</span>
               <div className="relative z-10 size-4 overflow-hidden flex items-center justify-center">

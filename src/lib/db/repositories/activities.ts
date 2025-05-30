@@ -1,8 +1,9 @@
+import { desc, eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
+
 import { db } from "..";
 import { noteActivities } from "../schemas/note-activities";
 import { ActivitiesRepository } from "./interfaces/activities";
-import { desc, eq } from "drizzle-orm";
 
 export const activitiesRepository: ActivitiesRepository = {
   insertActivity: async (activity) => {

@@ -1,8 +1,9 @@
 import { NodeViewProps } from "@tiptap/core";
 import { NodeViewWrapper, useEditorState } from "@tiptap/react";
 import Markdown from "react-markdown";
-import { AiStorage } from "../ai";
+
 import { BounceSpinner } from "../../bounce-spinner";
+import { AiStorage } from "../ai";
 
 const AiPlaceholderView = ({ editor }: NodeViewProps) => {
   const { completion } = useEditorState({

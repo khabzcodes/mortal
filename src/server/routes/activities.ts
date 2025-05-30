@@ -1,7 +1,8 @@
+import { Hono } from "hono";
+
 import { getSession } from "@/lib/auth-utils";
 import { activitiesRepository } from "@/lib/db/repositories/activities";
 import { createLogger } from "@/lib/logger";
-import { Hono } from "hono";
 
 const logger = createLogger("ActivitiesRoute");
 
@@ -12,9 +13,7 @@ export const activities = new Hono().get("/summary", async (c) => {
       return c.json({ message: "Unauthorized" }, 401);
     }
 
-    const activities = await activitiesRepository.selectActivitySummaryByUserId(
-      session.user.id
-    );
+    const activities = await activitiesRepository.selectActivitySummaryByUserId(session.user.id);
 
     if (!activities) {
       return c.json({ message: "No activities found" }, 404);

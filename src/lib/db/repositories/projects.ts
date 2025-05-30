@@ -1,4 +1,5 @@
 import { count, desc, eq } from "drizzle-orm";
+
 import { db } from "..";
 import { projects } from "../schemas/projects";
 import { ProjectsRepository } from "./interfaces/projects";
@@ -33,11 +34,7 @@ export const projectsRepository: ProjectsRepository = {
     return results;
   },
   updateProject: async (id, data) => {
-    const [project] = await db
-      .update(projects)
-      .set(data)
-      .where(eq(projects.id, id))
-      .returning();
+    const [project] = await db.update(projects).set(data).where(eq(projects.id, id)).returning();
 
     return project;
   },

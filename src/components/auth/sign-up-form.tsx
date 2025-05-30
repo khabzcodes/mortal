@@ -1,20 +1,14 @@
-import { SignUpInputValidation, signUpSchema } from "@/validations/auth";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { signUp } from "@/lib/auth-client";
-import { toast } from "sonner";
 import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { signUp } from "@/lib/auth-client";
+import { SignUpInputValidation, signUpSchema } from "@/validations/auth";
 
 export const SignUpForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -37,9 +31,7 @@ export const SignUpForm = () => {
       },
       {
         onSuccess: () => {
-          toast.success(
-            "Account created successfully. Please check your email to verify your account."
-          );
+          toast.success("Account created successfully. Please check your email to verify your account.");
           form.reset();
           setLoading(false);
         },
@@ -52,10 +44,7 @@ export const SignUpForm = () => {
   };
   return (
     <Form {...form}>
-      <form
-        className="grid gap-4 w-full"
-        onSubmit={form.handleSubmit(onSubmit)}
-      >
+      <form className="grid gap-4 w-full" onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid gap-2">
           <FormField
             name="name"
@@ -79,12 +68,7 @@ export const SignUpForm = () => {
               <FormItem>
                 <FormLabel htmlFor="email">Email</FormLabel>
                 <FormControl>
-                  <Input
-                    {...field}
-                    placeholder="name@example.com"
-                    type="email"
-                    disabled={loading}
-                  />
+                  <Input {...field} placeholder="name@example.com" type="email" disabled={loading} />
                 </FormControl>
                 <FormMessage {...field} className="text-xs text-destructive" />
               </FormItem>

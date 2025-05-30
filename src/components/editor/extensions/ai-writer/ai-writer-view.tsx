@@ -1,13 +1,14 @@
+import { useRef } from "react";
+import { NodeViewProps } from "@tiptap/core";
+import { NodeViewWrapper, useEditorState } from "@tiptap/react";
+import { CheckIcon, LoaderCircleIcon } from "lucide-react";
+import Markdown from "react-markdown";
+
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
-import { NodeViewProps } from "@tiptap/core";
-import { NodeViewWrapper, useEditorState } from "@tiptap/react";
-import { CheckIcon, LoaderCircleIcon } from "lucide-react";
-import { useRef } from "react";
-import Markdown from "react-markdown";
 import { AiStorage } from "../ai";
 
 const AiWriterView = ({ editor, node, getPos }: NodeViewProps) => {
@@ -82,20 +83,9 @@ const AiWriterView = ({ editor, node, getPos }: NodeViewProps) => {
           }}
         >
           <Label className="mb-1">Prompt</Label>
-          <Textarea
-            ref={inputRef}
-            name="prompt"
-            placeholder="Enter your prompt"
-            rows={3}
-          />
+          <Textarea ref={inputRef} name="prompt" placeholder="Enter your prompt" rows={3} />
           <div className="flex items-center mt-4">
-            <Button
-              type="button"
-              variant="destructive"
-              className="me-2"
-              disabled={isLoading}
-              onClick={remove}
-            >
+            <Button type="button" variant="destructive" className="me-2" disabled={isLoading} onClick={remove}>
               Remove
             </Button>
             <div className="flex-1"></div>
@@ -112,9 +102,7 @@ const AiWriterView = ({ editor, node, getPos }: NodeViewProps) => {
               </Button>
             )}
             <Button type="submit" disabled={isLoading}>
-              {isLoading && (
-                <LoaderCircleIcon className="mr-2 h-4 w-4 animate-spin" />
-              )}
+              {isLoading && <LoaderCircleIcon className="mr-2 h-4 w-4 animate-spin" />}
               Generate
             </Button>
           </div>

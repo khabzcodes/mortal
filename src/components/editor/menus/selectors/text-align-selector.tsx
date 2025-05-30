@@ -1,19 +1,10 @@
-import { Icons } from "@/components/icons";
-import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Editor } from "@tiptap/core";
 import { useEditorState } from "@tiptap/react";
-import {
-  AlignCenterIcon,
-  AlignJustifyIcon,
-  AlignLeftIcon,
-  ChevronDownIcon,
-  LucideIcon,
-} from "lucide-react";
+import { AlignCenterIcon, AlignJustifyIcon, AlignLeftIcon, ChevronDownIcon, LucideIcon } from "lucide-react";
+
+import { Icons } from "@/components/icons";
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface SelectorResult {
   isLeft: boolean;
@@ -65,8 +56,7 @@ export const TextAlignSelector = ({ editor }: { editor: Editor }) => {
     }),
   });
 
-  const activeItem =
-    items.find((item) => item.isActive(editorState)) ?? items[0]!;
+  const activeItem = items.find((item) => item.isActive(editorState)) ?? items[0]!;
 
   return (
     <Popover>
@@ -87,9 +77,7 @@ export const TextAlignSelector = ({ editor }: { editor: Editor }) => {
               <item.icon className="size-4" />
               <span className="text-sm">{item.title}</span>
               <div className="flex-1" />
-              {item.isActive(editorState) && (
-                <Icons.checkMarkCircle className="size-3.5" />
-              )}
+              {item.isActive(editorState) && <Icons.checkMarkCircle className="size-3.5" />}
             </div>
           );
         })}

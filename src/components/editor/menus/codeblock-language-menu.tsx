@@ -1,27 +1,16 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
+import { useMemo, useState } from "react";
 import { Editor, FloatingMenu, useEditorState } from "@tiptap/react";
 import { common } from "lowlight";
 import { ChevronDownIcon } from "lucide-react";
-import { useMemo, useState } from "react";
 
-export const CodeBlockLanguageMenu = ({
-  editor,
-}: {
-  editor: Editor | null;
-}) => {
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
+
+export const CodeBlockLanguageMenu = ({ editor }: { editor: Editor }) => {
   const [search, setSearch] = useState<string>("");
-
-  if (!editor) {
-    return null;
-  }
 
   const editorState = useEditorState({
     editor,

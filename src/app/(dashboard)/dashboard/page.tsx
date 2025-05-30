@@ -1,7 +1,9 @@
 "use client";
-import { NotesList } from "@/components/notes/notes-list";
-import { ActivityFeed } from "@/components/activities/feed";
+
 import { useQuery } from "@tanstack/react-query";
+
+import { ActivityFeed } from "@/components/activities/feed";
+import { NotesList } from "@/components/notes/notes-list";
 import { QueryKeys } from "@/rpc/query-keys";
 
 export default function DashboardPage() {

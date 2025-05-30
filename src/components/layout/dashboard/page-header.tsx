@@ -3,11 +3,7 @@ type PageHeaderProps = React.PropsWithChildren<{
   description: string;
 }>;
 
-export const PageHeader = ({
-  title,
-  description,
-  children,
-}: PageHeaderProps) => {
+export const PageHeader = ({ title, description, children }: PageHeaderProps) => {
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-col gap-2">

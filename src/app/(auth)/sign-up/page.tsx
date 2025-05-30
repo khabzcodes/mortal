@@ -4,10 +4,6 @@ import AuthCard from "@/components/auth/auth-card";
 
 export default function SignUpPage() {
   return (
-    <AuthCard
-      title="Sign up"
-      description="Sign up to your account using your preferred provider"
-      mode="sign-up"
-    />
+    <AuthCard title="Sign up" description="Sign up to your account using your preferred provider" mode="sign-up" />
   );
 }

@@ -1,20 +1,19 @@
 import { betterAuth } from "better-auth";
-import { nextCookies } from "better-auth/next-js";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { nextCookies } from "better-auth/next-js";
 import { organization } from "better-auth/plugins";
-import { db } from "./db";
+import { nanoid } from "nanoid";
+
 import { env } from "@/env";
 import * as schema from "@/lib/db/schemas/auth-schema";
-import { nanoid } from "nanoid";
+import { db } from "./db";
+
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
     schema,
   }),
-  baseUrl:
-    process.env.NODE_ENV !== "production"
-      ? "http://localhost:3000"
-      : "https://nodifyhq.vercel.app",
+  baseUrl: process.env.NODE_ENV !== "production" ? "http://localhost:3000" : "https://nodifyhq.vercel.app",
   session: {
     cookieCache: {
       enabled: true,

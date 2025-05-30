@@ -1,7 +1,8 @@
-import { pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
-import { notes } from "./notes";
-import { user } from "./auth-schema";
 import { relations } from "drizzle-orm";
+import { pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+
+import { user } from "./auth-schema";
+import { notes } from "./notes";
 
 export const actions = pgEnum("actions", [
   "CREATE",
@@ -22,9 +23,7 @@ export const noteActivities = pgTable("note_activities", {
     .notNull()
     .references(() => user.id),
   action: actions("action").notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
 export const noteActivitiesRelations = relations(noteActivities, ({ one }) => ({

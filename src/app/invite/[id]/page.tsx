@@ -1,26 +1,19 @@
 "use client";
-import { use, useState } from "react";
-import { AcceptInviteClient } from "./page.client";
-import { useQuery } from "@tanstack/react-query";
-import { QueryKeys } from "@/rpc/query-keys";
-import { getInvitation } from "@/rpc/invitations";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { organization } from "@/lib/auth-client";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { Loader } from "lucide-react";
 
-export default function AcceptInvitePage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+import { use, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { Loader } from "lucide-react";
+import { toast } from "sonner";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { organization } from "@/lib/auth-client";
+import { getInvitation } from "@/rpc/invitations";
+import { QueryKeys } from "@/rpc/query-keys";
+import { AcceptInviteClient } from "./page.client";
+
+export default function AcceptInvitePage({ params }: { params: Promise<{ id: string }> }) {
   const [isAccepting, setIsAccepting] = useState<boolean>(false);
   const [isRejecting, setIsRejecting] = useState<boolean>(false);
 
@@ -75,18 +68,12 @@ export default function AcceptInvitePage({
       <Card className="w-full max-w-md border-dashed border-2 rounded-none shadow-none">
         <CardHeader className="border-b border-dashed pb-4">
           <div className="flex items-center space-x-2 text-center">
-            <span className="text-sm font-mono">
-              You have been invited to join {data.organization.name}
-            </span>
+            <span className="text-sm font-mono">You have been invited to join {data.organization.name}</span>
           </div>
         </CardHeader>
         <CardContent className="pt-3 pb-0 font-mono">
           <div className="grid grid-cols-1 gap-2">
-            <Button
-              type="button"
-              onClick={() => handleAccept()}
-              disabled={isAccepting || isRejecting}
-            >
+            <Button type="button" onClick={() => handleAccept()} disabled={isAccepting || isRejecting}>
               Accept Invitation
               {isAccepting && <Loader className="animate-spin" />}
             </Button>

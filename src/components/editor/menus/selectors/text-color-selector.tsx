@@ -1,13 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { Editor } from "@tiptap/core";
+
 import { Icons } from "@/components/icons";
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 const COLORS = [
   { name: "Black", value: "#000000" },
@@ -36,9 +33,7 @@ const COLORS = [
 ];
 
 export const TextColorSelector = ({ editor }: { editor: Editor }) => {
-  const [currentColor, setCurrentColor] = useState<string | null>(
-    editor.getAttributes("textStyle").color
-  );
+  const [currentColor, setCurrentColor] = useState<string | null>(editor.getAttributes("textStyle").color);
 
   useEffect(() => {
     const updateColor = () => {
@@ -56,11 +51,7 @@ export const TextColorSelector = ({ editor }: { editor: Editor }) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button
-          variant="ghost"
-          className={cn("w-9 h-9 p-0")}
-          title="Text color"
-        >
+        <Button variant="ghost" className={cn("w-9 h-9 p-0")} title="Text color">
           <div className="flex flex-col items-center justify-center w-full">
             <span className="sr-only">Text color</span>
             <Icons.textColor
@@ -83,9 +74,7 @@ export const TextColorSelector = ({ editor }: { editor: Editor }) => {
                 }}
                 className="rounded-xl h-6 w-6 p-0 flex items-center justify-center"
                 key={idx}
-                onClick={() =>
-                  editor.chain().focus().setColor(color.value).run()
-                }
+                onClick={() => editor.chain().focus().setColor(color.value).run()}
                 data-testid={`set${color.name.toLowerCase()}`}
               />
             ))}

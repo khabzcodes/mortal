@@ -1,54 +1,33 @@
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  CreateNoteInputValidation,
-  createNoteValidation,
-  tagSchema,
-} from "@/validations/notes";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { useMutation } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Icons } from "@/components/icons";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
-import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
-import { Icons } from "@/components/icons";
-import { Button } from "@/components/ui/button";
-import { useMutation } from "@tanstack/react-query";
 import { createNote } from "@/rpc/notes";
-import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { CreateNoteInputValidation, createNoteValidation, tagSchema } from "@/validations/notes";
 
 type CreateNoteDialogProps = {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
 };
 
-export const CreateNoteDialog = ({
-  isOpen,
-  onOpenChange,
-}: CreateNoteDialogProps) => {
+export const CreateNoteDialog = ({ isOpen, onOpenChange }: CreateNoteDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="border-r border-dashed">
         <DialogHeader>
           <DialogTitle>Create a new note</DialogTitle>
-          <DialogDescription>
-            Create a new note to keep track of your tasks and ideas.
-          </DialogDescription>
+          <DialogDescription>Create a new note to keep track of your tasks and ideas.</DialogDescription>
         </DialogHeader>
         <CreateNoteForm />
       </DialogContent>
@@ -125,12 +104,7 @@ const CreateNoteForm = () => {
               <FormItem>
                 <FormLabel htmlFor="title">Title</FormLabel>
                 <FormControl>
-                  <Input
-                    disabled={isLoading}
-                    placeholder="Title"
-                    {...field}
-                    className="border-r border-dashed"
-                  />
+                  <Input disabled={isLoading} placeholder="Title" {...field} className="border-r border-dashed" />
                 </FormControl>
                 <FormMessage {...field} className="text-xs" />
               </FormItem>

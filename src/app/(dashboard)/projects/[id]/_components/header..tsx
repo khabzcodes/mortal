@@ -1,12 +1,13 @@
+import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { updateProject } from "@/rpc/projects";
 import { QueryKeys } from "@/rpc/query-keys";
 import { UpdateProjectInputValidation } from "@/validations/projects";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
-import { toast } from "sonner";
 
 type ProjectHeaderProps = {
   id: string;
@@ -20,8 +21,7 @@ export const ProjectHeader = ({ project }: { project: ProjectHeaderProps }) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async (data: UpdateProjectInputValidation) =>
-      updateProject(project.id, data),
+    mutationFn: async (data: UpdateProjectInputValidation) => updateProject(project.id, data),
     onSuccess: (data) => {
       toast.success("Project name successfully updated.");
       setIsEdit(false);
@@ -53,11 +53,7 @@ export const ProjectHeader = ({ project }: { project: ProjectHeaderProps }) => {
               autoFocus
             />
             <Button
-              disabled={
-                mutation.isPending ||
-                projectName === project.name ||
-                projectName.trim() === ""
-              }
+              disabled={mutation.isPending || projectName === project.name || projectName.trim() === ""}
               size="icon"
               variant="outline"
               onClick={async (e) => {

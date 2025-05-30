@@ -14,9 +14,7 @@ export const getWorkspaceInvitations = async () => {
   return data;
 };
 
-export const createInvitation = async (
-  data: CreateInvitationInputValidation
-) => {
+export const createInvitation = async (data: CreateInvitationInputValidation) => {
   const response = await route.$post({ json: data });
   if (!response.ok) {
     const error = await response.json();

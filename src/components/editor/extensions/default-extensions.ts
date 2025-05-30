@@ -1,31 +1,32 @@
-import { cn } from "@/lib/utils";
 import { mergeAttributes } from "@tiptap/core";
+import { BulletList } from "@tiptap/extension-bullet-list";
 import CharacterCount from "@tiptap/extension-character-count";
+import Color from "@tiptap/extension-color";
 import Heading from "@tiptap/extension-heading";
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
-import { TaskItem } from "@tiptap/extension-task-item";
-import { TaskList } from "@tiptap/extension-task-list";
+import { OrderedList } from "@tiptap/extension-ordered-list";
 import Table from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
+import { TaskItem } from "@tiptap/extension-task-item";
+import { TaskList } from "@tiptap/extension-task-list";
 import TextAlign from "@tiptap/extension-text-align";
 import TextStyle from "@tiptap/extension-text-style";
+import { Typography } from "@tiptap/extension-typography";
 import Underline from "@tiptap/extension-underline";
 import Youtube from "@tiptap/extension-youtube";
-import { Typography } from "@tiptap/extension-typography";
-import { BulletList } from "@tiptap/extension-bullet-list";
-import { OrderedList } from "@tiptap/extension-ordered-list";
 import StarterKit from "@tiptap/starter-kit";
+import { common, createLowlight } from "lowlight";
 import GlobalDragHandle from "tiptap-extension-global-drag-handle";
 import { Markdown } from "tiptap-markdown";
+
+import { cn } from "@/lib/utils";
 import { AiPlaceholder } from "../extensions/ai-placeholder/ai-placeholder";
 import { AiWriter } from "../extensions/ai-writer/ai-writer";
 import { CustomCodeBlock } from "../extensions/code-block";
 import { Mathematics } from "../extensions/mathematics";
-import { common, createLowlight } from "lowlight";
-import Color from "@tiptap/extension-color";
 
 const TiptapStarterKit = StarterKit.configure({
   bulletList: {
@@ -83,11 +84,7 @@ const TiptapHeading = Heading.extend({
     const hasLevel = node.attrs.level;
     const level = hasLevel ? node.attrs.level : 1;
 
-    return [
-      `h${level}`,
-      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
-      0,
-    ];
+    return [`h${level}`, mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0];
   },
 });
 
@@ -106,9 +103,7 @@ const mathematics = Mathematics.configure({
 const lowlight = createLowlight(common);
 const codeBlock = CustomCodeBlock.configure({
   HTMLAttributes: {
-    class: cn(
-      "rounded !bg-gray-800 dark:!bg-gray-900 text-gray-200 border p-5 font-mono font-medium"
-    ),
+    class: cn("rounded !bg-gray-800 dark:!bg-gray-900 text-gray-200 border p-5 font-mono font-medium"),
     spellcheck: false,
   },
   defaultLanguage: "plaintext",
@@ -121,11 +116,7 @@ const TiptapTextAlign = TextAlign.configure({
 
 const TiptapTable = Table.extend({
   renderHTML({ node, HTMLAttributes }) {
-    return [
-      "table",
-      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
-      ["tbody", 0],
-    ];
+    return ["table", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), ["tbody", 0]];
   },
 }).configure({
   HTMLAttributes: {
@@ -137,9 +128,7 @@ const TiptapTable = Table.extend({
 
 const TiptapTableHeader = TableHeader.configure({
   HTMLAttributes: {
-    class: cn(
-      "bg-muted dark:bg-gray-900 border border-default p-2 text-start min-w-[150px] font-semibold"
-    ),
+    class: cn("bg-muted dark:bg-gray-900 border border-default p-2 text-start min-w-[150px] font-semibold"),
   },
 });
 
@@ -151,9 +140,7 @@ const TiptapTableCell = TableCell.configure({
 
 const TiptapLink = Link.configure({
   HTMLAttributes: {
-    class: cn(
-      "!text-foreground underline underline-offset-[3px] transition-colors cursor-pointer"
-    ),
+    class: cn("!text-foreground underline underline-offset-[3px] transition-colors cursor-pointer"),
   },
   openOnClick: false,
 });

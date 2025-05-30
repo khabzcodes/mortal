@@ -1,9 +1,10 @@
+import { Hono } from "hono";
+import { nanoid } from "nanoid";
+
 import { activitiesRepository } from "@/lib/db/repositories/activities";
 import { actions } from "@/lib/db/schemas/note-activities";
 import { createLogger } from "@/lib/logger";
 import { NoteActivity } from "@/types/activity";
-import { Hono } from "hono";
-import { nanoid } from "nanoid";
 
 const logger = createLogger("ActivityMiddleware");
 
@@ -17,11 +18,7 @@ interface ActivityOptions {
 export const noteActivityMiddleware = () => {
   return async <T extends Hono>(app: T) => {
     app.use("*", async (c, next) => {
-      c.trackActivity = async (
-        nodeId: string,
-        userId: string,
-        action: ActivityAction
-      ) => {
+      c.trackActivity = async (nodeId: string, userId: string, action: ActivityAction) => {
         const activityData: NoteActivity = {
           id: nanoid(12),
           noteId: nodeId,
@@ -32,9 +29,7 @@ export const noteActivityMiddleware = () => {
 
         const saveActivity = async () => {
           try {
-            const response = await activitiesRepository.insertActivity(
-              activityData
-            );
+            const response = await activitiesRepository.insertActivity(activityData);
             logger.info("Activity saved", { response });
           } catch (error) {
             logger.error("Error saving activity", { error });

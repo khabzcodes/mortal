@@ -1,17 +1,19 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
-import { Icons } from "../icons";
-import { Button } from "../ui/button";
-import { QueryKeys } from "@/rpc/query-keys";
-import { getWorkspaceMembers } from "@/rpc/members";
-import { PeopleDataTable } from "./people-table";
-import { columns } from "./columns";
-import { columns as invitationCols } from "@/components/invitations/columns";
-import { Skeleton } from "../ui/skeleton";
-import { getWorkspaceInvitations } from "@/rpc/invitations";
-import { InvitationsDataTable } from "../invitations/invitations-table";
+
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+
+import { columns as invitationCols } from "@/components/invitations/columns";
+import { getWorkspaceInvitations } from "@/rpc/invitations";
+import { getWorkspaceMembers } from "@/rpc/members";
+import { QueryKeys } from "@/rpc/query-keys";
+import { Icons } from "../icons";
+import { InvitationsDataTable } from "../invitations/invitations-table";
 import { InviteMemberModal } from "../invitations/invite-member-modal";
+import { Button } from "../ui/button";
+import { Skeleton } from "../ui/skeleton";
+import { columns } from "./columns";
+import { PeopleDataTable } from "./people-table";
 
 export const PeopleComponent = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -59,9 +61,7 @@ export const PeopleComponent = () => {
       <div className="flex items-center justify-between">
         <div className="flex flex-col">
           <h2>Invitations</h2>
-          <span className="text-xs text-muted-foreground">
-            Manage and track invitations to your workspace.
-          </span>
+          <span className="text-xs text-muted-foreground">Manage and track invitations to your workspace.</span>
         </div>
       </div>
       {invitations ? (

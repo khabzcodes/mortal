@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { ChevronsUpDown, FrameIcon, Plus } from "lucide-react";
 
 import {
@@ -12,14 +13,8 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar,
-} from "@/components/ui/sidebar";
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { organization } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
 
 export function WorkspaceSwitcher({
   workspaces,
@@ -68,9 +63,7 @@ export function WorkspaceSwitcher({
                 <FrameIcon className="size-4" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">
-                  {activeWorkspace.name}
-                </span>
+                <span className="truncate font-medium">{activeWorkspace.name}</span>
                 <span className="truncate text-xs">{activeWorkspace.plan}</span>
               </div>
               <ChevronsUpDown className="ml-auto" />
@@ -82,9 +75,7 @@ export function WorkspaceSwitcher({
             side={isMobile ? "bottom" : "right"}
             sideOffset={4}
           >
-            <DropdownMenuLabel className="text-muted-foreground text-xs">
-              Workspaces
-            </DropdownMenuLabel>
+            <DropdownMenuLabel className="text-muted-foreground text-xs">Workspaces</DropdownMenuLabel>
             {workspaces.map((workspace, idx) => (
               <DropdownMenuItem
                 key={workspace.name}
@@ -104,9 +95,7 @@ export function WorkspaceSwitcher({
               <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
                 <Plus className="size-4" />
               </div>
-              <div className="text-muted-foreground font-medium">
-                Add new workspace
-              </div>
+              <div className="text-muted-foreground font-medium">Add new workspace</div>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

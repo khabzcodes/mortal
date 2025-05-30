@@ -1,15 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { Editor } from "@tiptap/core";
 import { useEditorState } from "@tiptap/react";
-import {
-  BoldIcon,
-  CodeIcon,
-  ItalicIcon,
-  LucideIcon,
-  StrikethroughIcon,
-  UnderlineIcon,
-} from "lucide-react";
+import { BoldIcon, CodeIcon, ItalicIcon, LucideIcon, StrikethroughIcon, UnderlineIcon } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { LinkSelector } from "./link-selector";
 import { TextColorSelector } from "./text-color-selector";
 

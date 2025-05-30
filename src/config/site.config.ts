@@ -2,8 +2,7 @@ import { SiteConfig } from "@/types";
 
 export const siteConfig: SiteConfig = {
   name: "Nodify",
-  title:
-    "Nodify - The AI workspace where you achieve more without losing control of your data.",
+  title: "Nodify - The AI workspace where you achieve more without losing control of your data.",
   description: "Bring projects, wikis, and teams together with AI",
   origin: "https://titan.rdsx.dev",
   keywords: [

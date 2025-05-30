@@ -1,7 +1,8 @@
+import { relations } from "drizzle-orm";
 import { pgEnum, pgTable, text, time, timestamp } from "drizzle-orm/pg-core";
+
 import { user } from "./auth-schema";
 import { notes } from "./notes";
-import { relations } from "drizzle-orm";
 
 export const contributors = pgTable("contributors", {
   id: text("id").notNull().primaryKey(),
@@ -11,9 +12,7 @@ export const contributors = pgTable("contributors", {
   userId: text("user_id")
     .notNull()
     .references(() => user.id),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
 export const contributorsRelations = relations(contributors, ({ one }) => ({

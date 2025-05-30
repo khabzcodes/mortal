@@ -7,13 +7,8 @@ type InvitationWithOrganization = {
 };
 
 export type InvitationRepository = {
-  selectInvitationsByOrganizationId(
-    organizationId: string
-  ): Promise<Invitation[]>;
-  selectInvitationByEmailAndOrganizationId(
-    email: string,
-    organizationId: string
-  ): Promise<Invitation | null>;
+  selectInvitationsByOrganizationId(organizationId: string): Promise<Invitation[]>;
+  selectInvitationByEmailAndOrganizationId(email: string, organizationId: string): Promise<Invitation | null>;
   selectInvitationById(id: string): Promise<InvitationWithOrganization | null>;
   insertInvitation(data: Invitation): Promise<Invitation | null>;
 };

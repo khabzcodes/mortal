@@ -57,12 +57,7 @@ export class Logger {
   private shouldLog(level: LogLevel): boolean {
     if (!config.enabled) return false;
 
-    const levels = [
-      LogLevel.DEBUG,
-      LogLevel.INFO,
-      LogLevel.WARN,
-      LogLevel.ERROR,
-    ];
+    const levels = [LogLevel.DEBUG, LogLevel.INFO, LogLevel.WARN, LogLevel.ERROR];
     const minLevelIndex = levels.indexOf(config.minLevel);
     const currentLevelIndex = levels.indexOf(level);
 

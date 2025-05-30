@@ -1,6 +1,7 @@
+import { useEffect, useState } from "react";
+
 import { getSession } from "@/lib/auth-client";
 import { createLogger } from "@/lib/logger";
-import { useEffect, useState } from "react";
 
 const logger = createLogger("useCurrentUserImage");
 

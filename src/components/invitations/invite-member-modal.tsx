@@ -1,49 +1,26 @@
 "use client";
-import {
-  Dialog,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogContent,
-} from "@/components/ui/dialog";
-import {
-  CreateInvitationInputValidation,
-  createInvitationSchema,
-} from "@/validations/invitations";
+
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
-import { Button } from "../ui/button";
 import { QueryClient, useMutation } from "@tanstack/react-query";
-import { createInvitation } from "@/rpc/invitations";
-import { toast } from "sonner";
 import { Loader } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { createInvitation } from "@/rpc/invitations";
 import { QueryKeys } from "@/rpc/query-keys";
+import { CreateInvitationInputValidation, createInvitationSchema } from "@/validations/invitations";
+import { Button } from "../ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 interface InviteMemberModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }
 
-export const InviteMemberModal = ({
-  isOpen,
-  setIsOpen,
-}: InviteMemberModalProps) => {
+export const InviteMemberModal = ({ isOpen, setIsOpen }: InviteMemberModalProps) => {
   const queryClient = new QueryClient();
   const form = useForm<CreateInvitationInputValidation>({
     resolver: zodResolver(createInvitationSchema),
@@ -54,8 +31,7 @@ export const InviteMemberModal = ({
   });
 
   const mutation = useMutation({
-    mutationFn: (data: CreateInvitationInputValidation) =>
-      createInvitation(data),
+    mutationFn: (data: CreateInvitationInputValidation) => createInvitation(data),
     onSuccess: () => {
       toast.success("Invitation sent successfully");
       queryClient.invalidateQueries({
@@ -80,8 +56,7 @@ export const InviteMemberModal = ({
         <DialogHeader>
           <DialogTitle>Invite member</DialogTitle>
           <DialogDescription className="text-xs">
-            Invite a member to your workspace. They will receive an email with
-            instructions to join.
+            Invite a member to your workspace. They will receive an email with instructions to join.
           </DialogDescription>
         </DialogHeader>
         <div className="min-w-[400px]">
@@ -95,12 +70,7 @@ export const InviteMemberModal = ({
                     <FormItem>
                       <FormLabel htmlFor="email">Email</FormLabel>
                       <FormControl>
-                        <Input
-                          disabled={isLoading}
-                          {...field}
-                          type="email"
-                          className="border border-dashed"
-                        />
+                        <Input disabled={isLoading} {...field} type="email" className="border border-dashed" />
                       </FormControl>
                       <FormMessage className="text-xs text-destructive" />
                     </FormItem>
@@ -114,10 +84,7 @@ export const InviteMemberModal = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel htmlFor="role">Role</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger className="w-full border border-dashed">
                             <SelectValue placeholder="Select a role" />
@@ -133,13 +100,7 @@ export const InviteMemberModal = ({
                   )}
                 />
               </div>
-              <Button
-                disabled={isLoading}
-                type="submit"
-                size="sm"
-                variant="outline"
-                className="border border-dashed"
-              >
+              <Button disabled={isLoading} type="submit" size="sm" variant="outline" className="border border-dashed">
                 Send invite
                 {isLoading && <Loader />}
               </Button>

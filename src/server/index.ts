@@ -1,9 +1,10 @@
 import { Hono } from "hono";
-import { notes } from "./routes/notes";
-import { activities } from "./routes/activities";
+
 import { auth } from "@/lib/auth";
-import { members } from "./routes/members";
+import { activities } from "./routes/activities";
 import { invitations } from "./routes/invitations";
+import { members } from "./routes/members";
+import { notes } from "./routes/notes";
 import { projects } from "./routes/projects";
 
 export const app = new Hono<{

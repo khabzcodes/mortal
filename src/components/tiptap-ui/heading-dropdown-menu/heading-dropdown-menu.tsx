@@ -1,42 +1,38 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { isNodeSelection, type Editor } from "@tiptap/react"
-
-// --- Hooks ---
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
+import * as React from "react";
+import { isNodeSelection, type Editor } from "@tiptap/react";
 
 // --- Icons ---
-import { ChevronDownIcon } from "@/components/tiptap-icons/chevron-down-icon"
-import { HeadingIcon } from "@/components/tiptap-icons/heading-icon"
-
-// --- Lib ---
-import { isNodeInSchema } from "@/lib/tiptap-utils"
-
+import { ChevronDownIcon } from "@/components/tiptap-icons/chevron-down-icon";
+import { HeadingIcon } from "@/components/tiptap-icons/heading-icon";
+// --- UI Primitives ---
+import type { ButtonProps } from "@/components/tiptap-ui-primitive/button";
+import { Button } from "@/components/tiptap-ui-primitive/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/tiptap-ui-primitive/dropdown-menu";
 // --- Tiptap UI ---
 import {
+  getFormattedHeadingName,
   HeadingButton,
   headingIcons,
   type Level,
-  getFormattedHeadingName,
-} from "@/components/tiptap-ui/heading-button/heading-button"
-
-// --- UI Primitives ---
-import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
-import { Button } from "@/components/tiptap-ui-primitive/button"
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuGroup,
-} from "@/components/tiptap-ui-primitive/dropdown-menu"
+} from "@/components/tiptap-ui/heading-button/heading-button";
+// --- Hooks ---
+import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
+// --- Lib ---
+import { isNodeInSchema } from "@/lib/tiptap-utils";
 
 export interface HeadingDropdownMenuProps extends Omit<ButtonProps, "type"> {
-  editor?: Editor | null
-  levels?: Level[]
-  hideWhenUnavailable?: boolean
-  onOpenChange?: (isOpen: boolean) => void
+  editor?: Editor | null;
+  levels?: Level[];
+  hideWhenUnavailable?: boolean;
+  onOpenChange?: (isOpen: boolean) => void;
 }
 
 export function HeadingDropdownMenu({
@@ -46,58 +42,54 @@ export function HeadingDropdownMenu({
   onOpenChange,
   ...props
 }: HeadingDropdownMenuProps) {
-  const [isOpen, setIsOpen] = React.useState(false)
-  const editor = useTiptapEditor(providedEditor)
+  const [isOpen, setIsOpen] = React.useState(false);
+  const editor = useTiptapEditor(providedEditor);
 
-  const headingInSchema = isNodeInSchema("heading", editor)
+  const headingInSchema = isNodeInSchema("heading", editor);
 
   const handleOnOpenChange = React.useCallback(
     (open: boolean) => {
-      setIsOpen(open)
-      onOpenChange?.(open)
+      setIsOpen(open);
+      onOpenChange?.(open);
     },
     [onOpenChange]
-  )
+  );
 
   const getActiveIcon = React.useCallback(() => {
-    if (!editor) return <HeadingIcon className="tiptap-button-icon" />
+    if (!editor) return <HeadingIcon className="tiptap-button-icon" />;
 
-    const activeLevel = levels.find((level) =>
-      editor.isActive("heading", { level })
-    ) as Level | undefined
+    const activeLevel = levels.find((level) => editor.isActive("heading", { level })) as Level | undefined;
 
-    if (!activeLevel) return <HeadingIcon className="tiptap-button-icon" />
+    if (!activeLevel) return <HeadingIcon className="tiptap-button-icon" />;
 
-    const ActiveIcon = headingIcons[activeLevel]
-    return <ActiveIcon className="tiptap-button-icon" />
-  }, [editor, levels])
+    const ActiveIcon = headingIcons[activeLevel];
+    return <ActiveIcon className="tiptap-button-icon" />;
+  }, [editor, levels]);
 
   const canToggleAnyHeading = React.useCallback((): boolean => {
-    if (!editor) return false
-    return levels.some((level) =>
-      editor.can().toggleNode("heading", "paragraph", { level })
-    )
-  }, [editor, levels])
+    if (!editor) return false;
+    return levels.some((level) => editor.can().toggleNode("heading", "paragraph", { level }));
+  }, [editor, levels]);
 
-  const isDisabled = !canToggleAnyHeading()
-  const isAnyHeadingActive = editor?.isActive("heading") ?? false
+  const isDisabled = !canToggleAnyHeading();
+  const isAnyHeadingActive = editor?.isActive("heading") ?? false;
 
   const show = React.useMemo(() => {
     if (!headingInSchema || !editor) {
-      return false
+      return false;
     }
 
     if (hideWhenUnavailable) {
       if (isNodeSelection(editor.state.selection) || !canToggleAnyHeading()) {
-        return false
+        return false;
       }
     }
 
-    return true
-  }, [headingInSchema, editor, hideWhenUnavailable, canToggleAnyHeading])
+    return true;
+  }, [headingInSchema, editor, hideWhenUnavailable, canToggleAnyHeading]);
 
   if (!show || !editor || !editor.isEditable) {
-    return null
+    return null;
   }
 
   return (
@@ -125,18 +117,13 @@ export function HeadingDropdownMenu({
         <DropdownMenuGroup>
           {levels.map((level) => (
             <DropdownMenuItem key={`heading-${level}`} asChild>
-              <HeadingButton
-                editor={editor}
-                level={level}
-                text={getFormattedHeadingName(level)}
-                tooltip={""}
-              />
+              <HeadingButton editor={editor} level={level} text={getFormattedHeadingName(level)} tooltip={""} />
             </DropdownMenuItem>
           ))}
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
 
-export default HeadingDropdownMenu
+export default HeadingDropdownMenu;
